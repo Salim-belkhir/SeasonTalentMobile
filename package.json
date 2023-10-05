@@ -9,13 +9,21 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/webpack-config": "^19.0.0",
+    "babel-plugin-root-import": "^6.6.0",
     "expo": "~49.0.13",
+    "expo-font": "~11.4.0",
+    "expo-image-picker": "~14.3.2",
+    "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
+    "lottie-react-native": "5.1.6",
     "react": "18.2.0",
-    "react-native": "0.72.5",
     "react-dom": "18.2.0",
-    "react-native-web": "~0.19.6",
-    "@expo/webpack-config": "^19.0.0"
+    "react-native": "0.72.5",
+    "react-native-asset": "^2.1.1",
+    "react-native-reanimated": "~3.3.0",
+    "react-native-vector-image": "^0.4.4",
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
