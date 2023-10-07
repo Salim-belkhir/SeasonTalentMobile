@@ -1,13 +1,30 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { MainNavigator } from "~/navigation";
+import { useFonts } from "expo-font";
+import { CUSTOM_FONTS } from "~/constants";
+import * as SplashScreen from "expo-splash-screen";
+import { useCallback } from "react";
+import { View } from "react-native";
+
+SplashScreen.preventAutoHideAsync();
 
 const App = () => {
+ 
+  const [fontsLoaded] = useFonts(CUSTOM_FONTS);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Image
-        source={require("~/assets/images/logo_SeasonTalent.png")}
-        alt="Season Talent"
-      />
+    <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+      <MainNavigator />
     </View>
   );
 };
