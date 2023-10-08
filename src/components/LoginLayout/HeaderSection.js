@@ -1,19 +1,38 @@
 import { StyleSheet, View, Image } from "react-native";
-import React from "react";
-import { Button, Typography } from "~/components";
+import Typography from "../Typography";
 import { Colors } from "~/theme";
 
-const HeaderSection = ({navigation}) => {
+const HeaderSection = ({ navigation, logIn = true }) => {
   return (
-    <View style={styles.container}>
+    <View>
+      {/* This is the logo */}
       <Image
-        source={require("~/assets/images/logo_SeasonTalent.png")}
+        source={require("~/assets/images/logoSeasonTalent.png")}
         alt="Season Talent"
+        style={styles.logoSeasonTalent}
       />
-      <Typography type="l_bold" typographyStyle={styles.title}>
-        Login
-      </Typography>
-      <Button label="Login" onPress={() => {navigation.navigate("details")}} />
+      {/* This is the title container */}
+      <View style={styles.titleContainer}>
+        {logIn ? (
+          <View>
+            <Typography type="l_bold" typographyStyle={styles.title}>
+              Content de vous revoir 👋
+            </Typography>
+            <Typography type="l_medium" typographyStyle={styles.titleAction}>
+              Connectez-vous. Explorez les candidats !
+            </Typography>
+          </View>
+        ) : (
+          <View>
+            <Typography type="l_bold" typographyStyle={styles.title}>
+              Bienvenue sur Season Talent 👍
+            </Typography>
+            <Typography type="l_medium" typographyStyle={styles.titleAction}>
+              Inscrivez-vous. Explorez les candidats !
+            </Typography>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -21,34 +40,21 @@ const HeaderSection = ({navigation}) => {
 export default HeaderSection;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  logoSeasonTalent: {
+    width: 180,
+    height: 71,
+    resizeMode: "contain",
+    marginTop: 50,
+  },
+  titleContainer: {
+    marginTop: 34,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 24,
+    fontSize: 20,
+    lineHeight: 28,
+    marginBottom: 13,
   },
-  input: {
-    width: "80%",
-    height: 48,
-    backgroundColor: Colors.white,
-    borderColor: Colors.gray,
-    borderWidth: 1,
-    marginBottom: 16,
-    paddingHorizontal: 8,
-  },
-  button: {
-    backgroundColor: Colors.primary,
-    height: 48,
-    width: "80%",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 4,
-  },
-  buttonText: {
-    color: Colors.white,
-  },
+  titleAction: {
+    color: Colors.dark_grey,
+  }
 });

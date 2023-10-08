@@ -46,10 +46,10 @@ const MainNavigator = () => {
           }}
         />
          <Stack.Screen
-          name="details"
+          name="Details"
           component={DetailsScreen}
           options={{
-            headerTitle: "details",
+            headerTitle: "Details",
           }}
         />
       </Stack.Navigator>

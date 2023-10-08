@@ -7,7 +7,7 @@
     "icon": "./src/assets/images/logo_SeasonTalent.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/images/splashStart.png",
+      "image": "./src/assets/images/Start.png",
       "resizeMode": "contain",
       "backgroundColor": "#0E988C"
     },

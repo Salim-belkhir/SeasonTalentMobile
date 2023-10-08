@@ -1,12 +1,7 @@
-import { View } from "react-native";
 import { LoginLayout } from "~/components";
 
-const Login = ({navigation}) => {
-  return (
-    <View style={{ flex: 1 }}>
-      <LoginLayout navigation={navigation}/>
-    </View>
-  );
+const Login = ({ navigation }) => {
+  return <LoginLayout navigation={navigation} />;
 };
 
 export default Login;

@@ -34,8 +34,8 @@ const Button = ({
   ...otherProps
 }) => {
   const icon = {
-    delete: require("~/assets/icons/add.png"),
-    default: require("~/assets/icons/add.png"),
+    delete: require("~/assets/icons/trash.png"),
+    default: require("~/assets/icons/RightArrow.png"),
   };
 
   const themedLabelType = {
