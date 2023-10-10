@@ -8,6 +8,12 @@ const mapStateToProps = (state) => ({
   logState: state.logSignIn.logState,
 });
 
+/**
+ * Header section component for the login layout.
+ * @param {object} navigation - Navigation object for the component.
+ * @param {boolean} logState - Boolean indicating whether the user is logged in or not.
+ * @returns {JSX.Element} - Returns the JSX element for the header section.
+ */
 const HeaderSection = ({ navigation, logState }) => {
   return (
     <View>
