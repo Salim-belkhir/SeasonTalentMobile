@@ -3,6 +3,7 @@ import { View, TextInput as RNTextInput, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "~/theme";
 import Typography from "./Typography";
+import Icon from "./Icon";
 
 const TextInput = ({
   leftIcon,
@@ -12,7 +13,7 @@ const TextInput = ({
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [number, onChangeNumber] = useState(null);
+  const [value, onChangeValue] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleFocus = () => {
@@ -35,19 +36,19 @@ const TextInput = ({
           [
             styles.container,
             rest.InputStyle,
-            isFocused || number ? styles.focusedContainer : null,
+            isFocused || value ? styles.focusedContainer : null,
             error ? styles.errorContainer : null,
           ]
         }
       >
         {leftIcon && (
-          <AntDesign
+          <Icon
             name={leftIcon}
             size={20}
             color="black"
             style={[
               styles.icon,
-              isFocused || number ? styles.focusedIcon : null,
+              isFocused || value ? styles.focusedIcon : null,
               error ? styles.errorIcon : null,
             ]}
           />
@@ -59,9 +60,10 @@ const TextInput = ({
           selectionColor={Colors.primary_color}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          {...rest}
-          onChangeText={onChangeNumber}
+          onChange={onChangeValue}
           secureTextEntry={secureTextEntry && !showPassword}
+          placeholderTextColor={Colors.main_grey}
+          {...rest}
         />
         {rightIcon && (
           <AntDesign
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     marginLeft: 8,
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: "Montserrat-medium",
   },
   icon: {
