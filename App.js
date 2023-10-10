@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { MainNavigator } from "~/navigation";
 import { useFonts } from "expo-font";
-import { Fonts } from "~/theme";
+import { Fonts, Colors } from "~/theme";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback } from "react";
 import { View, StyleSheet } from "react-native";
-import { Colors } from "~/theme";
+import store from "~/redux/store";
+import { Provider } from "react-redux";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,9 +23,11 @@ const App = () => {
   }
 
   return (
-    <View onLayout={onLayoutRootView} style={globalStyles.container}>
-      <MainNavigator />
-    </View>
+    <Provider store={store}>
+      <View onLayout={onLayoutRootView} style={globalStyles.container}>
+        <MainNavigator />
+      </View>
+    </Provider>
   );
 };
 

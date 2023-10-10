@@ -1,8 +1,14 @@
 import { StyleSheet, View, Image } from "react-native";
 import Typography from "../Typography";
 import { Colors } from "~/theme";
+import React from "react";
+import { connect } from "react-redux";
 
-const HeaderSection = ({ navigation, logIn = true }) => {
+const mapStateToProps = (state) => ({
+  logState: state.logSignIn.logState,
+});
+
+const HeaderSection = ({ navigation, logState }) => {
   return (
     <View>
       {/* This is the logo */}
@@ -13,7 +19,7 @@ const HeaderSection = ({ navigation, logIn = true }) => {
       />
       {/* This is the title container */}
       <View style={styles.titleContainer}>
-        {logIn ? (
+        {logState ? (
           <View>
             <Typography type="l_bold" typographyStyle={styles.title}>
               Content de vous revoir 👋
@@ -37,7 +43,7 @@ const HeaderSection = ({ navigation, logIn = true }) => {
   );
 };
 
-export default HeaderSection;
+export default connect(mapStateToProps)(HeaderSection);
 
 const styles = StyleSheet.create({
   logoSeasonTalent: {

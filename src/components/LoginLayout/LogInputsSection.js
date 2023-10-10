@@ -2,20 +2,26 @@ import { StyleSheet, View } from "react-native";
 import TextInput from "../TextInput";
 import { Colors } from "~/theme";
 import Button from "../Button";
+import { connect } from "react-redux";
 
-const LogInputSection = ({ navigation, logIn = true }) => {
+const mapStateToProps = (state) => ({
+  logState: state.logSignIn.logState,
+});
+
+const LogInputSection = ({ navigation, logState }) => {
   return (
     <View style={styles.inputFieldsContainer}>
       {/* The input fields to log in or sign up */}
-      {logIn ? (
+      {logState ? (
         <View>
           <TextInput placeholder="Email" leftIcon="mail" />
           <TextInput
             placeholder="Mot de passe"
             leftIcon="lock"
             rightIcon={"eye"}
-            secureTextEntry={true}
+            secureTextEntry
             InputStyle={styles.input}
+            // error="Mot de passe incorrect !"
           />
 
           {/* Let's add a button  */}
@@ -55,7 +61,7 @@ const LogInputSection = ({ navigation, logIn = true }) => {
   );
 };
 
-export default LogInputSection;
+export default connect(mapStateToProps)(LogInputSection);
 
 const styles = StyleSheet.create({
   inputFieldsContainer: {
