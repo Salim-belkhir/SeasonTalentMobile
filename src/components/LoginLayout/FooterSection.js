@@ -54,10 +54,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(FooterSection);
 
 const styles = StyleSheet.create({
   continueParent: {
-    marginTop: 70,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
+    marginTop: 20,
   },
   continueText: {
     color: Colors.main_grey,
@@ -80,13 +80,12 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     alignSelf: "center",
-    marginTop: 30,
+    resizeMode: "contain",
   },
   logSwitchParent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
   },
   logSwitch: {
     color: Colors.main_grey,

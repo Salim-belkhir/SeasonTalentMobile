@@ -11,7 +11,7 @@ const material = {
   red: "#E0475F",
   green: "#17BF97",
   grey: "#CACBCE",
-  yellow: "#F6C90E",
+  yellow: "#ffcc00",
   light_grey: "#FAFAFD",
   medium_grey: "#F2F2F3",
   dark_grey: "#AFB0B6",
@@ -29,5 +29,6 @@ export default {
   tel_background_color: material.light_grey,
   input_gray: material.medium_grey,
   disabled_color: material.dark_grey,
+  warning_color: material.yellow,
   ...material,
 };

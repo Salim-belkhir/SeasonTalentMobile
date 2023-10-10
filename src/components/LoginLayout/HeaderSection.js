@@ -62,11 +62,11 @@ const styles = StyleSheet.create({
     marginTop: 34,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     lineHeight: 28,
     marginBottom: 13,
   },
   titleAction: {
     color: Colors.dark_grey,
-  }
+  },
 });
