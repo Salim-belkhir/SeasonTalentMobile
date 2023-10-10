@@ -1,3 +1,4 @@
+// lets create a reducer for our log in state
 const initialeState = {
   logState: false,
 };

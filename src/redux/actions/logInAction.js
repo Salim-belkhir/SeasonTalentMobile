@@ -1,3 +1,4 @@
+// Holds the action creators for the logInAction
 const logIn = () => ({
   type: "LOG_IN",
 });
