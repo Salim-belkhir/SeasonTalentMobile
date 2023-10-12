@@ -11,12 +11,12 @@ const initialeState = {
  */
 const logInReducer = (state = initialeState, action) => {
   switch (action.type) {
-    case "LOG_IN":
+    case "SIGN_IN":
       return {
         ...state,
         logState: true,
       };
-    case "SIGN_IN":
+    case "SIGN_UP":
       return {
         ...state,
         logState: false,
