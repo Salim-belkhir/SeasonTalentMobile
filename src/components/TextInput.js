@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: Colors.main_grey,
-    borderRadius: 12,
+    borderRadius: 9,
     paddingHorizontal: 16,
     paddingVertical: 8,
     height: 52,
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: Colors.red,
-    marginTop: 8,
+    marginTop: 2,
     marginLeft: 21,
   },
   errorContainer: {
