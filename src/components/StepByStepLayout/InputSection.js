@@ -23,16 +23,30 @@ const InputSection = ({navigation}) => {
         </View>
 
         <View>
-            <Typography type="l_bold" typographyStyle={styles.siret}>
+            <Typography type="l_bold" typographyStyle={{top: 180, color: Colors.greenBlue, fontSize: 15}}>
                 N° SIRET
             </Typography>
         </View>
 
-        <View style={{ top: 190, flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-            <TextInput InputStyle={styles.numbers} keyboardType="numeric"/>
-            <TextInput InputStyle={styles.numbers} keyboardType="numeric"/>
-
+        <View style={{ top: 210, flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+            <TextInput InputStyle={styles.numbers} keyboardType="numeric" maxLength={3}/>
+            <TextInput InputStyle={styles.numbers} keyboardType="numeric" maxLength={3}/>
+            <TextInput InputStyle={styles.numbers} keyboardType="numeric" maxLength={3}/>
+            <TextInput InputStyle={styles.numbers2} keyboardType="numeric" maxLength={5}/>
         </View>
+
+        <View>
+            <Typography type="l_bold" typographyStyle={{ top: 240, color: Colors.greenBlue, fontSize: 15}}>
+                Num Tel
+            </Typography>
+            <TextInput InputStyle={{top: 260}}/>
+        </View>
+
+        <Button
+            label="Continuez"
+            type="secondary"
+            buttonStyle={{top : 280}}
+        />
       </View>
         
     );
@@ -62,13 +76,16 @@ const styles = StyleSheet.create({
         height: 284,
         resizeMode: "contain",
     },
-    siret: {
-        top: 180,
-        color: Colors.greenBlue,
-        fontSize: 15,
-    },
     numbers: {
         width: 80,
+        height: 34,
+        marginLeft: 10,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: Colors.dark_grey,
+    },
+    numbers2: {
+        width: 100,
         height: 34,
         marginLeft: 10,
         borderRadius: 12,
