@@ -51,7 +51,7 @@ const SignInSection = ({ navigation }) => {
       }) => (
         <View>
           <TextInput
-            placeholder="Name"
+            placeholder="Nom Prénom"
             leftIcon="user"
             onChangeText={handleChange("name")}
             onBlur={handleBlur("name")}
@@ -73,7 +73,7 @@ const SignInSection = ({ navigation }) => {
             returnKeyType="next"
           />
           <TextInput
-            placeholder="Password"
+            placeholder="Mot de passe"
             leftIcon="lock"
             rightIcon="eye"
             textContentType="oneTimeCode"
@@ -87,7 +87,7 @@ const SignInSection = ({ navigation }) => {
             autoCapitalize="none"
           />
           <TextInput
-            placeholder="Confirm Password"
+            placeholder="Confirmer le mot de passe"
             leftIcon="lock"
             rightIcon="eye"
             textContentType="oneTimeCode"

@@ -48,7 +48,7 @@ const LogInSection = ({ navigation }) => {
             returnKeyType="next"
           />
           <TextInput
-            placeholder="Password"
+            placeholder="Mot de passe"
             leftIcon="lock"
             rightIcon="eye"
             textContentType="oneTimeCode"
