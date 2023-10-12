@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
 import { connect } from "react-redux";
 import React from "react";
-import LogInSection from "./LogInSection";
+import LogInSection from "./SignInSection";
 import SignInSection from "./SignUpSection";
 
 const mapStateToProps = (state) => ({

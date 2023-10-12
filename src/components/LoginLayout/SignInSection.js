@@ -5,13 +5,14 @@ import * as Yup from "yup";
 import Button from "../Button";
 import { Colors } from "~/theme";
 
-const LogInSection = ({ navigation }) => {
-  const initialValues = { email: "", password: "" };
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Votre mail est invalide !").required("Requis"),
-    password: Yup.string().required("Requis"),
-  });
+const initialValues = { email: "", password: "" };
 
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email("Votre mail est invalide !").required("Requis"),
+  password: Yup.string().required("Requis"),
+});
+
+const LogInSection = ({ navigation }) => {
   const handleLogIn = (values) => {
     // Handle log in logic here
     console.log(values);

@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { Colors } from "~/theme";
 import Typography from "../Typography";
-import { logIn, signIn } from "~/redux/actions";
+import { signIn, signUp } from "~/redux/actions";
 import { connect } from "react-redux";
 
 const mapStateToProps = (state) => ({
@@ -10,11 +10,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  logIn,
+  signUp,
   signIn,
 };
 
-const FooterSection = ({ navigation, logState, logIn, signIn }) => {
+const FooterSection = ({ navigation, logState, signUp, signIn }) => {
   return (
     <View>
       <View style={[styles.continueParent, styles.buttonParentLayout]}>
@@ -40,7 +40,7 @@ const FooterSection = ({ navigation, logState, logIn, signIn }) => {
           type="l_bold"
           typographyStyle={styles.switch}
           onPress={() => {
-            logState ? signIn() : logIn();
+            logState ? signUp() : signIn();
           }}
         >
           {logState ? "Inscrivez-vous" : "Connectez-vous"}

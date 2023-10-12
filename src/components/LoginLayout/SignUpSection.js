@@ -1,35 +1,45 @@
-import TextInput from "../TextInput";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Button from "../Button";
+import TextInput from "../TextInput";
 import { Colors } from "~/theme";
 
-const SignInSection = ({ navigation }) => {
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Requis"),
-    email: Yup.string().email("Votre mail est invalide !").required("Requis"),
-    password: Yup.string().required("Requis"),
-    confirmPassword: Yup.string()
-      .oneOf(
-        [Yup.ref("password"), null],
-        "Les mots de passe ne correspondent pas"
-      )
-      .required("Requis"),
-  });
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Requis"),
+  email: Yup.string().email("Votre mail est invalide !").required("Requis"),
+  password: Yup.string().required("Requis"),
+  confirmPassword: Yup.string()
+    .oneOf(
+      [Yup.ref("password"), null],
+      "Les mots de passe ne correspondent pas"
+    )
+    .required("Requis"),
+});
 
+const initialValues = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
+const SignInSection = ({ navigation }) => {
   const handleSignUp = (values) => {
     // Handle sign up logic here
     console.log(values);
     navigation.navigate("Details");
   };
 
+  const formikProps = {
+    initialValues: initialValues,
+    validationSchema,
+    onSubmit: handleSignUp,
+  };
+
   return (
-    <Formik
-      initialValues={{ name: "", email: "", password: "", confirmPassword: "" }}
-      validationSchema={validationSchema}
-      onSubmit={handleSignUp}
-    >
+    <Formik {...formikProps}>
       {({
         handleChange,
         handleBlur,
@@ -37,6 +47,7 @@ const SignInSection = ({ navigation }) => {
         values,
         errors,
         touched,
+        isValid,
       }) => (
         <View>
           <TextInput
