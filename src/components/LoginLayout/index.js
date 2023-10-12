@@ -2,16 +2,27 @@ import HeaderSection from "./HeaderSection";
 import LogInputsSection from "./LogInputsSection";
 import FooterSection from "./FooterSection";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  Keyboard,
+} from "react-native";
 import { Colors } from "~/theme";
 
 const LoginLayout = ({ navigation }) => {
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <View style={styles.container}>
-      <HeaderSection navigation={navigation} />
-      <LogInputsSection navigation={navigation} />
-      <FooterSection navigation={navigation} />
-    </View>
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <View style={styles.container}>
+        <HeaderSection navigation={navigation} />
+        <LogInputsSection navigation={navigation} />
+        <FooterSection navigation={navigation} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

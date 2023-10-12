@@ -43,6 +43,7 @@ const Button = ({
     secondary: "l_bold",
     tertiary: "s_bold",
     delete: "l_bold",
+    disabled: "l_bold",
   };
 
   return (
