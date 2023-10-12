@@ -6,9 +6,10 @@ import Button from "../Button";
 import { Colors } from "~/theme";
 
 const LogInSection = ({ navigation }) => {
+  const initialValues = { email: "", password: "" };
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().required("Required"),
+    email: Yup.string().email("Votre mail est invalide !").required("Requis"),
+    password: Yup.string().required("Requis"),
   });
 
   const handleLogIn = (values) => {
@@ -17,12 +18,14 @@ const LogInSection = ({ navigation }) => {
     navigation.navigate("Details");
   };
 
+  const formikProps = {
+    initialValues: initialValues,
+    validationSchema,
+    onSubmit: handleLogIn,
+  };
+
   return (
-    <Formik
-      initialValues={{ email: "", password: "" }}
-      validationSchema={validationSchema}
-      onSubmit={handleLogIn}
-    >
+    <Formik {...formikProps}>
       {({
         handleChange,
         handleBlur,
@@ -38,37 +41,38 @@ const LogInSection = ({ navigation }) => {
             onChangeText={handleChange("email")}
             onBlur={handleBlur("email")}
             value={values.email}
-            error={errors.email}
-            touched={touched.email}
+            error={touched.email && errors.email}
             autoCapitalize="none"
-            // keyboardType="email-address"
             InputStyle={styles.input}
+            returnKeyType="next"
           />
           <TextInput
             placeholder="Password"
             leftIcon="lock"
+            rightIcon="eye"
+            textContentType="oneTimeCode"
             onChangeText={handleChange("password")}
             onBlur={handleBlur("password")}
             value={values.password}
-            error={errors.password}
-            touched={touched.password}
+            error={touched.password && errors.password}
             secureTextEntry
             InputStyle={styles.input}
+            autoCapitalize="none"
           />
           <Button
-            title="Log In"
+            label="Se connecter"
             onPress={handleSubmit}
-            // type={
-            //   errors.email ||
-            //   errors.password ||
-            //   !values.email ||
-            //   !values.password
-            //     ? "disabled"
-            //     : "primary"
-            // }
-            // disabled={!values.email || !values.password}
             labelTypographyStyle={styles.buttonLabel}
             hideIcon
+            buttonStyle={styles.button}
+            disabled={
+              !(
+                values.email &&
+                values.password &&
+                !errors.email &&
+                !errors.password
+              )
+            }
           />
         </View>
       )}
@@ -80,7 +84,10 @@ export default LogInSection;
 
 const styles = StyleSheet.create({
   input: {
-    marginBottom: 20,
+    marginTop: 10,
+  },
+  button: {
+    marginTop: 20,
   },
   buttonLabel: {
     color: Colors.main_white,

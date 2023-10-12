@@ -7,22 +7,21 @@ import { Colors } from "~/theme";
 
 const SignInSection = ({ navigation }) => {
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().required("Required"),
+    name: Yup.string().required("Requis"),
+    email: Yup.string().email("Votre mail est invalide !").required("Requis"),
+    password: Yup.string().required("Requis"),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Required"),
+      .oneOf(
+        [Yup.ref("password"), null],
+        "Les mots de passe ne correspondent pas"
+      )
+      .required("Requis"),
   });
 
   const handleSignUp = (values) => {
     // Handle sign up logic here
     console.log(values);
     navigation.navigate("Details");
-  };
-
-  const handleAlertModalClose = () => {
-    setAlertModalVisible(false);
   };
 
   return (
@@ -46,70 +45,69 @@ const SignInSection = ({ navigation }) => {
             onChangeText={handleChange("name")}
             onBlur={handleBlur("name")}
             value={values.name}
-            error={errors.name}
-            touched={touched.name}
-            autoCapitalize="none"
-            keyboardType="default"
-            InputStyle={styles.input}
+            error={touched.name && errors.name}
+            returnKeyType="next"
           />
           <TextInput
             placeholder="Email"
-            leftIcon="email"
+            leftIcon="mail"
+            keyboardType="email-address"
+            textContentType="emailAddress"
             onChangeText={handleChange("email")}
             onBlur={handleBlur("email")}
             value={values.email}
-            error={errors.email}
-            touched={touched.email}
+            error={touched.email && errors.email}
             autoCapitalize="none"
-            keyboardType="email-address"
             InputStyle={styles.input}
+            returnKeyType="next"
           />
           <TextInput
             placeholder="Password"
             leftIcon="lock"
+            rightIcon="eye"
+            textContentType="oneTimeCode"
             onChangeText={handleChange("password")}
             onBlur={handleBlur("password")}
             value={values.password}
-            error={errors.password}
-            touched={touched.password}
+            error={touched.password && errors.password}
             secureTextEntry
             InputStyle={styles.input}
+            returnKeyType="next"
+            autoCapitalize="none"
           />
           <TextInput
             placeholder="Confirm Password"
             leftIcon="lock"
+            rightIcon="eye"
+            textContentType="oneTimeCode"
             onChangeText={handleChange("confirmPassword")}
             onBlur={handleBlur("confirmPassword")}
             value={values.confirmPassword}
-            error={errors.confirmPassword}
-            touched={touched.confirmPassword}
+            error={touched.confirmPassword && errors.confirmPassword}
             secureTextEntry
             InputStyle={styles.input}
+            returnKeyType="done"
+            autoCapitalize="none"
+            editable={values.password ? true : false}
           />
           <Button
-            title="Sign Up"
+            label="S'inscrire"
             onPress={handleSubmit}
-            style={styles.button}
             labelTypographyStyle={styles.buttonLabel}
-            disabled={
-              errors.email ||
-              errors.password ||
-              errors.confirmPassword ||
-              !values.email ||
-              !values.password ||
-              !values.confirmPassword
-            }
-            type={
-              errors.email ||
-              errors.password ||
-              errors.confirmPassword ||
-              !values.email ||
-              !values.password ||
-              !values.confirmPassword
-                ? "disabled"
-                : "primary"
-            }
             hideIcon
+            buttonStyle={styles.button}
+            disabled={
+              !(
+                values.name &&
+                values.email &&
+                values.password &&
+                values.confirmPassword &&
+                !errors.name &&
+                !errors.email &&
+                !errors.password &&
+                !errors.confirmPassword
+              )
+            }
           />
         </View>
       )}
@@ -121,10 +119,10 @@ export default SignInSection;
 
 const styles = StyleSheet.create({
   input: {
-    marginBottom: 10,
+    marginTop: 15,
   },
   button: {
-    marginTop: 10,
+    marginTop: 15,
   },
   buttonLabel: {
     color: Colors.main_white,

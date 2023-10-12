@@ -3,7 +3,7 @@ import { Colors } from "~/theme";
 import { connect } from "react-redux";
 import React from "react";
 import LogInSection from "./LogInSection";
-import SignInSection from "./SignInSection";
+import SignInSection from "./SignUpSection";
 
 const mapStateToProps = (state) => ({
   logState: state.logSignIn.logState,
