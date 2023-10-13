@@ -4,6 +4,9 @@ import { Colors } from "~/theme";
 import Typography from "../Typography";
 import { signIn, signUp } from "~/redux/actions";
 import { connect } from "react-redux";
+import Button from "../Button";
+import { signOut } from "firebase/auth";
+import { auth } from "../../../firebaseConfig";
 
 const mapStateToProps = (state) => ({
   logState: state.logSignIn.logState,
@@ -29,6 +32,12 @@ const FooterSection = ({ navigation, logState, signUp, signIn }) => {
         source={require("~/assets/icons/google.png")}
         style={styles.socialIcon}
       />
+
+      {/* <Button
+        label="deconnexion"
+        onPress={async () => await signOut(auth)}
+        hideIcon
+      /> */}
 
       <View style={styles.logSwitchParent}>
         <Typography type="l_medium" typographyStyle={styles.logSwitch}>
