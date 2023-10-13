@@ -19,17 +19,18 @@ export default HeaderSection;
 const styles = StyleSheet.create({
     ellipse: {
         width: 416,
-        height: 416,
+        height: 250,
         backgroundColor: "rgba(14, 152, 140, 0.12)",
         borderRadius: 416,
-        position: "absolute",
-        left: 0,
-        top: -218,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        top: -80,
+        left: -30,
     },
     logoSeasonTalent: {
         width: 180,
         height: 71,
-        marginTop: 280,
-        marginLeft: 108,
+        top: 120,
+        left: 108,
     },
 });

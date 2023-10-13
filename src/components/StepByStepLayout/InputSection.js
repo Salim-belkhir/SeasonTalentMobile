@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { StyleSheet, View, Image } from "react-native";
 import Typography from "../Typography";
 import { Colors } from "~/theme";
@@ -5,16 +6,38 @@ import Button from "../Button";
 import TextInput from "../TextInput";
 
 const InputSection = ({navigation}) => {
-    return (
-      <View>
+    const [siret, setSiret] = useState('');
+    const [numTel, setNumTel] = useState('');
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-        <View style={{ top: 183, flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-            <View style={styles.avancement}/>
-            <View style={styles.rond}/>
-            <View style={styles.rond}/>
+    const handleSiretChange = (text) => {
+        setSiret(text);
+        updateButtonState(text, numTel);
+    };
+
+    const handleNumTelChange = (text) => {
+        setNumTel(text);
+        updateButtonState(siret, text);
+    };
+
+    const updateButtonState = (siret, numTel) => {
+        if (siret.length > 0 && numTel.length > 0) {
+        setIsButtonDisabled(false);
+        } else {
+        setIsButtonDisabled(true);
+        }
+    };
+
+    return (
+      <View style={styles.page}>
+
+        <View style={styles.progression}>
+            <View style={styles.actual_step}/>
+            <View style={styles.circle}/>
+            <View style={styles.circle}/>
         </View>
 
-        <View>
+        <View style={styles.schema_view}>
             <Image
                 source={require("~/assets/images/sub_step1.png")}
                 alt="Schéma d'illustration"
@@ -23,30 +46,22 @@ const InputSection = ({navigation}) => {
         </View>
 
         <View>
-            <Typography type="l_bold" typographyStyle={{top: 180, color: Colors.greenBlue, fontSize: 15}}>
+            <Typography type="l_bold" typographyStyle={styles.siret_title}>
                 N° SIRET
             </Typography>
+            <TextInput leftIcon="idcard" keyboardType="numeric" maxLength={14} value={siret} onChangeText={handleSiretChange}/>
         </View>
-
-        <View style={{ top: 210, flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-            <TextInput InputStyle={styles.numbers} keyboardType="numeric" maxLength={3}/>
-            <TextInput InputStyle={styles.numbers} keyboardType="numeric" maxLength={3}/>
-            <TextInput InputStyle={styles.numbers} keyboardType="numeric" maxLength={3}/>
-            <TextInput InputStyle={styles.numbers2} keyboardType="numeric" maxLength={5}/>
-        </View>
-
+        
         <View>
-            <Typography type="l_bold" typographyStyle={{ top: 240, color: Colors.greenBlue, fontSize: 15}}>
+            <Typography type="l_bold" typographyStyle={styles.num_tel}>
                 Num Tel
             </Typography>
-            <TextInput InputStyle={{top: 260}}/>
+            <TextInput leftIcon="phone" keyboardType="numeric" value={numTel} onChangeText={handleNumTelChange}/>
         </View>
 
-        <Button
-            label="Continuez"
-            type="secondary"
-            buttonStyle={{top : 280}}
-        />
+        <View style={styles.button}>
+            <Button label="Continuez" disabled={isButtonDisabled} hideIcon/>
+        </View>
       </View>
         
     );
@@ -55,41 +70,49 @@ const InputSection = ({navigation}) => {
 export default InputSection;
 
 const styles = StyleSheet.create({
-    avancement: {
+    page: {
+        flex: 1,
+    },
+    progression: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    actual_step: {
         width: 30,
         height: 8,
         borderRadius: 4,
         marginLeft: 5,
         backgroundColor: Colors.greenBlue,
     },
-    rond: {
+    circle: {
         width: 8,
         height: 8,
         borderRadius: 4,
         marginLeft: 5,
         backgroundColor: Colors.grey,
     },
+    schema_view: { 
+        justifyContent: "center",
+        alignItems: "center",
+    },
     schema: {
-        top: 210,
-        left: 41,
         width: 284,
         height: 284,
         resizeMode: "contain",
     },
-    numbers: {
-        width: 80,
-        height: 34,
-        marginLeft: 10,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: Colors.dark_grey,
+    siret_title: {
+        color: Colors.greenBlue,
+        fontSize: 15,
+        paddingBottom: 10,
     },
-    numbers2: {
-        width: 100,
-        height: 34,
-        marginLeft: 10,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: Colors.dark_grey,
+    num_tel: {
+        color: Colors.greenBlue,
+        fontSize: 15,
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+    button: {
+        paddingTop: 20,
     },
 });
