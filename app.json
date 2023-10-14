@@ -4,7 +4,7 @@
     "slug": "SeasonTalent",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/logo_SeasonTalent.png",
+    "icon": "./src/assets/icons/logo2.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./src/assets/images/Start.png",

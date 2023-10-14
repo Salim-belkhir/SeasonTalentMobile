@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
+import authReducer from "./authReducer";
 import logInReducer from "./logInReducer";
-
 /**
  * Combines multiple reducers into a single reducer function.
  * @function
@@ -10,6 +10,7 @@ import logInReducer from "./logInReducer";
  */
 const myReducer = combineReducers({
   logSignIn: logInReducer,
+  googleAuth: authReducer,
 });
 
 export default myReducer;
