@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Image } from "react-native";
-import Typography from "../Typography";
+import Typography from "../../Typography";
 import { Colors } from "~/theme";
-import Button from "../Button";
-import TextInput from "../TextInput";
+import Button from "../../Button";
+import TextInput from "../../TextInput";
 
 const InputSection = ({navigation}) => {
     const [siret, setSiret] = useState('');
@@ -60,7 +60,11 @@ const InputSection = ({navigation}) => {
         </View>
 
         <View style={styles.button}>
-            <Button label="Continuez" disabled={isButtonDisabled} hideIcon/>
+            <Button
+                label="Continuez"
+                disabled={isButtonDisabled}
+                onPress={() => navigation.navigate("SecondStep")}
+                hideIcon/>
         </View>
       </View>
         
@@ -72,6 +76,7 @@ export default InputSection;
 const styles = StyleSheet.create({
     page: {
         flex: 1,
+        paddingTop: 25,
     },
     progression: {
         flexDirection: "row",

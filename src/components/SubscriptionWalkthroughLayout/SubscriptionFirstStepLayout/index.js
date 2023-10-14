@@ -1,10 +1,10 @@
-import HeaderSection from "./HeaderSection";
+import HeaderSection from "../HeaderSection";
 import InputSection from "./InputSection";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
 
-const StepByStepLayout = ({ navigation }) => {
+const SubscriptionFirstStepLayout = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <HeaderSection navigation={navigation} />
@@ -13,7 +13,7 @@ const StepByStepLayout = ({ navigation }) => {
   );
 };
 
-export default StepByStepLayout;
+export default SubscriptionFirstStepLayout;
 
 const styles = StyleSheet.create({
   container: {

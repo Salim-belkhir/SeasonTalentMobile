@@ -26,7 +26,7 @@ const FooterSection = ({ navigation, logIn = true }) => {
         <Typography
           type="l_bold"
           typographyStyle={styles.switch}
-          onPress={() => navigation.push("Details")}
+          onPress={() => navigation.push("SubscriptionWalkthrough")}
         >
           Inscrivez-vous
         </Typography>
