@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, TextInput as RNTextInput, StyleSheet } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "~/theme";
 import Typography from "./Typography";
 import Icon from "./Icon";
