@@ -10,15 +10,15 @@ const BottomTab = createBottomTabNavigator();
 const MainBottomTabNavigator = () => {
   return (
     <BottomTab.Navigator
-      initialRouteName="Candidats"
+      initialRouteName="Emplois"
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: Colors.primary_color,
         tabBarInactiveTintColor: Colors.main_grey,
         headerShown: false,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 12,
           fontFamily: "Montserrat-Regular",
-          fontWeight: "700",
+          fontWeight: "500",
         },
       })}
     >

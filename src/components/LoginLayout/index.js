@@ -120,7 +120,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(LoginLayout);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 33,
+    padding: 23,
     backgroundColor: Colors.main_white,
   },
 });

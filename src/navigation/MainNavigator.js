@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeScreen, Login } from "~/screens";
+import { Login } from "~/screens";
 import MainBottomTabNavigator from "./MainBottomTabNavigator";
 import { connect } from "react-redux";
 const mapStateToProps = (state) => ({
