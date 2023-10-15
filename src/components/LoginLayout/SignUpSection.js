@@ -6,6 +6,7 @@ import Button from "../Button";
 import TextInput from "../TextInput";
 import { Colors } from "~/theme";
 
+// This is the validation schema used to validate the form fields
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Requis"),
   email: Yup.string().email("Votre mail est invalide !").required("Requis"),
@@ -18,6 +19,7 @@ const validationSchema = Yup.object().shape({
     .required("Requis"),
 });
 
+// These are the initial values for the form fields
 const initialValues = {
   name: "",
   email: "",
@@ -25,13 +27,23 @@ const initialValues = {
   confirmPassword: "",
 };
 
+/**
+ * A component that displays a sign-up form and handles sign-up logic.
+ * @param {Object} navigation - The navigation object used to navigate between screens.
+ * @returns {JSX.Element} - A JSX element that displays the sign-up form.
+ */
 const SignInSection = ({ navigation }) => {
+  /**
+   * A function that handles sign-up logic.
+   * @param {Object} values - An object containing the form values.
+   */
   const handleSignUp = (values) => {
     // Handle sign up logic here
     console.log(values);
     navigation.navigate("Details");
   };
 
+  // Formik props object
   const formikProps = {
     initialValues: initialValues,
     validationSchema,
@@ -50,8 +62,9 @@ const SignInSection = ({ navigation }) => {
         isValid,
       }) => (
         <View>
+          {/* Name input */}
           <TextInput
-            placeholder="Name"
+            placeholder="Nom Prénom"
             leftIcon="user"
             onChangeText={handleChange("name")}
             onBlur={handleBlur("name")}
@@ -59,6 +72,7 @@ const SignInSection = ({ navigation }) => {
             error={touched.name && errors.name}
             returnKeyType="next"
           />
+          {/* Email input */}
           <TextInput
             placeholder="Email"
             leftIcon="mail"
@@ -72,8 +86,9 @@ const SignInSection = ({ navigation }) => {
             InputStyle={styles.input}
             returnKeyType="next"
           />
+          {/* Password input */}
           <TextInput
-            placeholder="Password"
+            placeholder="Mot de passe"
             leftIcon="lock"
             rightIcon="eye"
             textContentType="oneTimeCode"
@@ -86,8 +101,9 @@ const SignInSection = ({ navigation }) => {
             returnKeyType="next"
             autoCapitalize="none"
           />
+          {/* Confirm password input */}
           <TextInput
-            placeholder="Confirm Password"
+            placeholder="Confirmer le mot de passe"
             leftIcon="lock"
             rightIcon="eye"
             textContentType="oneTimeCode"
@@ -101,6 +117,7 @@ const SignInSection = ({ navigation }) => {
             autoCapitalize="none"
             editable={values.password ? true : false}
           />
+          {/* Sign up button */}
           <Button
             label="S'inscrire"
             onPress={handleSubmit}

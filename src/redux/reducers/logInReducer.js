@@ -1,3 +1,5 @@
+import { SIGN_IN, SIGN_UP } from "../actions";
+
 const initialeState = {
   logState: true,
 };
@@ -11,12 +13,12 @@ const initialeState = {
  */
 const logInReducer = (state = initialeState, action) => {
   switch (action.type) {
-    case "SIGN_IN":
+    case SIGN_IN:
       return {
         ...state,
         logState: true,
       };
-    case "SIGN_UP":
+    case SIGN_UP:
       return {
         ...state,
         logState: false,

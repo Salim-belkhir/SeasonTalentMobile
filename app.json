@@ -4,7 +4,7 @@
     "slug": "SeasonTalent",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/logo_SeasonTalent.png",
+    "icon": "./src/assets/icons/logo2.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./src/assets/images/Start.png",
@@ -13,16 +13,24 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.SeasonTalent"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/logo_SeasonTalent.png",
         "backgroundColor": "#0E988C"
-      }
+      },
+      "package": "com.ayoub_hk.SeasonTalent"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a574e553-5301-4b85-bcbb-ac0921200b83"
+      }
+    },
+    "scheme": "SeasonTalent"
   }
 }

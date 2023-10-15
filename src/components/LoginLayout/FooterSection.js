@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import { Colors } from "~/theme";
 import Typography from "../Typography";
 import { signIn, signUp } from "~/redux/actions";
@@ -14,7 +14,7 @@ const mapDispatchToProps = {
   signIn,
 };
 
-const FooterSection = ({ navigation, logState, signUp, signIn }) => {
+const FooterSection = ({ logState, signUp, signIn, promptAsync }) => {
   return (
     <View>
       <View style={[styles.continueParent, styles.buttonParentLayout]}>
@@ -25,10 +25,14 @@ const FooterSection = ({ navigation, logState, signUp, signIn }) => {
         <View style={[styles.lineView, styles.lineViewLayout]} />
       </View>
 
-      <Image
-        source={require("~/assets/icons/google.png")}
-        style={styles.socialIcon}
-      />
+      {/* {loading && <ActivityIndicator sizew="large" />} */}
+
+      <TouchableOpacity onPress={() => promptAsync()}>
+        <Image
+          source={require("~/assets/icons/google.png")}
+          style={styles.socialIcon}
+        />
+      </TouchableOpacity>
 
       <View style={styles.logSwitchParent}>
         <Typography type="l_medium" typographyStyle={styles.logSwitch}>

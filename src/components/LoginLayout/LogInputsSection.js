@@ -5,10 +5,19 @@ import React from "react";
 import LogInSection from "./SignInSection";
 import SignInSection from "./SignUpSection";
 
+// this is the state from redux store
+//to check if the user is trying to subscribe or login
 const mapStateToProps = (state) => ({
   logState: state.logSignIn.logState,
 });
 
+/**
+ * Renders the login or sign up section based on the logState prop.
+ * @param {Object} props - The component props.
+ * @param {Object} props.navigation - The navigation object.
+ * @param {boolean} props.logState - The login state.
+ * @returns {JSX.Element} - The rendered component.
+ */
 const LogInputSection = ({ navigation, logState }) => {
   return (
     <View style={styles.inputFieldsContainer}>
