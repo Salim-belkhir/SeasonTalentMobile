@@ -1,91 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import { Colors } from "~/theme";
 import Typography from "../Typography";
-import { signIn, signUp, googleSignIn } from "~/redux/actions";
+import { signIn, signUp } from "~/redux/actions";
 import { connect } from "react-redux";
-import * as Google from "expo-auth-session/providers/google";
-import * as WebBrowser from "expo-web-browser";
-import {
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithCredential,
-} from "firebase/auth";
-import { auth } from "../../../firebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-WebBrowser.maybeCompleteAuthSession();
 
 const mapStateToProps = (state) => ({
   logState: state.logSignIn.logState,
-  userInfo: state.googleAuth.userInfo,
-  isAuthenticated: state.googleAuth.isAuthenticated,
 });
 
 const mapDispatchToProps = {
   signUp,
   signIn,
-  googleSignIn,
 };
 
-const FooterSection = ({
-  navigation,
-  logState,
-  signUp,
-  signIn,
-  googleSignIn,
-  userInfo,
-}) => {
-  const [loading, setLoading] = useState(false);
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId:
-      "119884661682-bsjnv2nrfle9vu6ks3n5cp3d66b5ikvb.apps.googleusercontent.com",
-    androidClientId:
-      "119884661682-uk1elmgv2kt5tfk7jco9rc02ra2emooj.apps.googleusercontent.com",
-    // iosClientId: IOS_CLIENT_ID,
-    // androidClientId: ANDROID_CLIENT_ID,
-  });
-
-  useEffect(() => {
-    if (response?.type === "success") {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential);
-    }
-  }, [response]);
-
-  const checkLocalUser = async () => {
-    try {
-      setLoading(true);
-      const userJSON = await AsyncStorage.getItem("@user");
-      const userData = userJSON ? JSON.parse(userJSON) : null;
-      console.log("Checking local user : ", userData);
-      console.log("Checking local user : ", userInfo);
-    } catch (e) {
-      Alert.alert("Error", e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    checkLocalUser();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("user", JSON.stringify(user, null, 2));
-        googleSignIn(user);
-        AsyncStorage.setItem("@user", JSON.stringify(user));
-        navigation.navigate("Home");
-      } else {
-        console.log("user is NOT logged in", JSON.stringify(user, null, 2));
-        AsyncStorage.removeItem("@user");
-        navigation.navigate("Login");
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
+const FooterSection = ({ logState, signUp, signIn, promptAsync }) => {
   return (
     <View>
       <View style={[styles.continueParent, styles.buttonParentLayout]}>

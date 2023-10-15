@@ -5,24 +5,38 @@ import * as Yup from "yup";
 import Button from "../Button";
 import { Colors } from "~/theme";
 
+// These are the initial values for the form fields
 const initialValues = { email: "", password: "" };
 
+// This is the validation schema used to validate the form fields
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Votre mail est invalide !").required("Requis"),
   password: Yup.string().required("Requis"),
 });
 
+/**
+ * A component that displays a login form and handles the login logic.
+ *
+ * @param {object} navigation - The navigation object from React Navigation.
+ * @returns {JSX.Element} - A JSX element that displays the login form.
+ */
 const LogInSection = ({ navigation }) => {
+  /**
+   * Handles the login logic when the form is submitted.
+   *
+   * @param {object} values - The form values submitted by the user.
+   */
   const handleLogIn = (values) => {
     // Handle log in logic here
     console.log(values);
     navigation.navigate("Details");
   };
 
+  // Formik props object that contains the initial values, validation schema, and submit function
   const formikProps = {
-    initialValues: initialValues,
-    validationSchema,
-    onSubmit: handleLogIn,
+    initialValues: initialValues, // The initial values for the form fields
+    validationSchema, // The validation schema for the form fields
+    onSubmit: handleLogIn, // The function to call when the form is submitted
   };
 
   return (
@@ -36,6 +50,7 @@ const LogInSection = ({ navigation }) => {
         touched,
       }) => (
         <View>
+          {/* Email input field */}
           <TextInput
             placeholder="Email"
             leftIcon="mail"
@@ -47,6 +62,8 @@ const LogInSection = ({ navigation }) => {
             InputStyle={styles.input}
             returnKeyType="next"
           />
+
+          {/* Password input field */}
           <TextInput
             placeholder="Mot de passe"
             leftIcon="lock"
@@ -60,6 +77,8 @@ const LogInSection = ({ navigation }) => {
             InputStyle={styles.input}
             autoCapitalize="none"
           />
+
+          {/* Login button */}
           <Button
             label="Se connecter"
             onPress={handleSubmit}

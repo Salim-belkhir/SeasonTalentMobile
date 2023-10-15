@@ -5,6 +5,16 @@ import { Colors } from "~/theme";
 import Typography from "./Typography";
 import Icon from "./Icon";
 
+/**
+ * A custom TextInput component that accepts various props to customize its appearance and behavior.
+ * @param {Object} props - The props object that contains the following properties:
+ * @param {string} props.leftIcon - The name of the icon to display on the left side of the input.
+ * @param {string} props.rightIcon - The name of the icon to display on the right side of the input.
+ * @param {boolean} props.secureTextEntry - A flag that indicates whether the input should be masked for password entry.
+ * @param {string} props.error - An error message to display below the input if there is an error.
+ * @param {Object} props.rest - Any additional props to pass to the underlying TextInput component.
+ * @returns {JSX.Element} A custom TextInput component.
+ */
 const TextInput = ({
   leftIcon,
   rightIcon,
@@ -16,14 +26,23 @@ const TextInput = ({
   const [value, onChangeValue] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
+  /**
+   * Handles the focus event for the input.
+   */
   const handleFocus = () => {
     setIsFocused(true);
   };
 
+  /**
+   * Handles the blur event for the input.
+   */
   const handleBlur = () => {
     setIsFocused(false);
   };
 
+  /**
+   * Toggles the visibility of the password for secure text entry inputs.
+   */
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -66,7 +85,7 @@ const TextInput = ({
           {...rest}
         />
         {rightIcon && (
-          <AntDesign
+          <Icon
             name={rightIcon}
             size={24}
             color={showPassword ? Colors.main_black : Colors.main_grey}
