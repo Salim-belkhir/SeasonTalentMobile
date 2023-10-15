@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SubscriptionFirstStepLayout from "~/components/SubscriptionWalkthroughLayout/SubscriptionFirstStepLayout";
 import SubscriptionSecondStepLayout from "~/components/SubscriptionWalkthroughLayout/SubscriptionSecondStepLayout";
+import SubscriptionThirdStepLayout from "~/components/SubscriptionWalkthroughLayout/SubscriptionThirdStepLayout";
 
 import React from "react";
 
@@ -23,6 +24,14 @@ const SubscriptionWalkthroughStackNavigator = () => {
                 component={SubscriptionSecondStepLayout}
                 options={{
                     headerTitle: "SecondStep",
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="ThirdStep"
+                component={SubscriptionThirdStepLayout}
+                options={{
+                    headerTitle: "ThirdStep",
                     headerShown: false,
                 }}
             />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image } from "react-native";
+import { Text, StyleSheet, View, Image } from "react-native";
 import Typography from "../../Typography";
 import { Colors } from "~/theme";
 import Button from "../../Button";
@@ -57,17 +57,20 @@ const InputSection = ({navigation}) => {
             </Typography>
 
             <View style={styles.inputs}>
-                <TextInput placeholder="Nom" value={name} onChangeText={handleNameChange}/>
-                <TextInput placeholder="Adresse" value={adress} onChangeText={handleNumAdressChange}/>
+                <TextInput placeholder="Nom" leftIcon="book" value={name} onChangeText={handleNameChange}/>
+                <Text></Text>
+                <TextInput placeholder="Adresse" leftIcon="enviromento" value={adress} onChangeText={handleNumAdressChange}/>
+                <Text></Text>
                 <TextInput placeholder="Contact" leftIcon="mail" value={contact} onChangeText={handleContactChange}/>
             </View>
 
-            <View style={styles.button}>
+            <View>
                 <Button
                     label="Continuez"
                     disabled={isButtonDisabled}
                     onPress={() => navigation.navigate("ThirdStep")}
-                    hideIcon/>
+                    hideIcon
+                />
             </View>
 
         </View>
@@ -117,6 +120,6 @@ const styles = StyleSheet.create({
 
     },
     inputs: {
-        paddingBottom: 20,
+        paddingBottom: 30,
     },
 });
