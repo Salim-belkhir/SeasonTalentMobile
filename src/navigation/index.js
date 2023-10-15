@@ -1,3 +1,3 @@
-import MainNavigator from './MainNavigator';
+import MainNavigator from "./MainNavigator";
 
 export { MainNavigator };

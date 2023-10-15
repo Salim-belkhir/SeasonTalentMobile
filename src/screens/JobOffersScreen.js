@@ -22,7 +22,7 @@ const mapDispatchToProps = {
  * @param {function} googleSignOut - The function used to sign out the user from Google.
  * @returns {JSX.Element} - The Home screen component JSX.Element.
  */
-const HomeScreen = ({ navigation, googleSignOut }) => {
+const JobOffersScreen = ({ navigation, googleSignOut }) => {
     /**
      * Handles the sign out process.
      * @returns {Promise<void>}
@@ -45,4 +45,4 @@ const HomeScreen = ({ navigation, googleSignOut }) => {
     );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(JobOffersScreen);

@@ -73,7 +73,7 @@ const LoginLayout = ({ navigation, googleSignIn }) => {
       if (userData) {
         googleSignIn(userData);
         // console.log("cheking user the store : ", userInfo);
-        navigation.navigate("Home");
+        navigation.navigate("MainBottomTabNavigator");
       }
     } catch (e) {
       Alert.alert("Error", e.message);
@@ -89,7 +89,7 @@ const LoginLayout = ({ navigation, googleSignIn }) => {
         // console.log("user", JSON.stringify(user, null, 2));
         googleSignIn(user);
         AsyncStorage.setItem("@user", JSON.stringify(user));
-        navigation.navigate("Home");
+        navigation.navigate("MainBottomTabNavigator");
       } else {
         // console.log("user is NOT logged in", JSON.stringify(user, null, 2));
         AsyncStorage.removeItem("@user");
