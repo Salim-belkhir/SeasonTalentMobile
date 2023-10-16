@@ -1,31 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Image } from "react-native";
 import Typography from "../../Typography";
 import { Colors } from "~/theme";
 import Button from "../../Button";
 import TextInput from "../../TextInput";
+import { Formik } from "formik";
+import * as Yup from "yup";
+
+const initialValues = { siret: "", phoneNumber: "" };
+
+const validationSchema = Yup.object().shape({
+    siret: Yup.string()
+                .matches(/^[0-9]{14}$/, "Exactement 14 chiffres requis")
+                .required("Requis"),
+    phoneNumber: Yup.string()
+                .matches(/^[0-9]{10}$/, "Exactement 10 chiffres requis")
+                .required("Requis"),
+});
 
 const InputSection = ({navigation}) => {
-    const [siret, setSiret] = useState('');
-    const [numTel, setNumTel] = useState('');
-    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-    const handleSiretChange = (text) => {
-        setSiret(text);
-        updateButtonState(text, numTel);
+    const handleFirstStep = (values) => {
+        console.log(values);
+        navigation.navigate("SecondStep");
     };
 
-    const handleNumTelChange = (text) => {
-        setNumTel(text);
-        updateButtonState(siret, text);
-    };
-
-    const updateButtonState = (siret, numTel) => {
-        if (siret.length > 0 && numTel.length > 0) {
-        setIsButtonDisabled(false);
-        } else {
-        setIsButtonDisabled(true);
-        }
+    const formikProps = {
+        initialValues: initialValues,
+        validationSchema,
+        onSubmit: handleFirstStep,
     };
 
     return (
@@ -45,27 +48,65 @@ const InputSection = ({navigation}) => {
             />
         </View>
 
-        <View>
-            <Typography type="l_bold" typographyStyle={styles.siret_title}>
-                N° SIRET
-            </Typography>
-            <TextInput leftIcon="idcard" keyboardType="numeric" maxLength={14} value={siret} onChangeText={handleSiretChange}/>
-        </View>
-        
-        <View>
-            <Typography type="l_bold" typographyStyle={styles.num_tel}>
-                Num Tel
-            </Typography>
-            <TextInput leftIcon="phone" keyboardType="numeric" value={numTel} onChangeText={handleNumTelChange}/>
-        </View>
+        <Formik {...formikProps}>
+            {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+            }) => (
 
-        <View style={styles.button}>
-            <Button
-                label="Continuez"
-                disabled={isButtonDisabled}
-                onPress={() => navigation.navigate("SecondStep")}
-                hideIcon/>
-        </View>
+            <View>
+
+                <Typography type="l_bold" typographyStyle={styles.siret_title}>
+                    N° SIRET
+                </Typography>
+                <TextInput 
+                    leftIcon="idcard"
+                    keyboardType="numeric"
+                    maxLength={14}
+                    onChangeText={handleChange("siret")}
+                    onBlur={handleBlur("siret")}
+                    value={values.siret}
+                    error={touched.siret && errors.siret}
+                    autoCapitalize="none"
+                />
+            
+                <Typography type="l_bold" typographyStyle={styles.num_tel}>
+                    Num Tel
+                </Typography>
+                <TextInput
+                    leftIcon="phone"
+                    keyboardType="numeric"
+                    maxLength={10}
+                    onChangeText={handleChange("phoneNumber")}
+                    onBlur={handleBlur("phoneNumber")}
+                    value={values.phoneNumber}
+                    error={touched.phoneNumber && errors.phoneNumber}
+                    autoCapitalize="none"
+                />
+
+                <View style={styles.button}>
+                    <Button
+                        label="Continuez"
+                        onPress={handleSubmit}
+                        labelTypographyStyle={styles.buttonLabel}
+                        hideIcon
+                        disabled={
+                        !(
+                            values.siret &&
+                            values.phoneNumber &&
+                            !errors.siret &&
+                            !errors.phoneNumber
+                        )
+                        }
+                    />
+                </View>
+            </View>
+            )}
+        </Formik>
       </View>
         
     );
@@ -119,5 +160,8 @@ const styles = StyleSheet.create({
     },
     button: {
         paddingTop: 20,
+    },
+    buttonLabel: {
+        color: Colors.main_white,
     },
 });

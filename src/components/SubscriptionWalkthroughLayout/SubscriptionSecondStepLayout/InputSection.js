@@ -4,35 +4,28 @@ import Typography from "../../Typography";
 import { Colors } from "~/theme";
 import Button from "../../Button";
 import TextInput from "../../TextInput";
+import { Formik } from "formik";
+import * as Yup from "yup";
+
+const initialValues = { name: "", adress: "", contact: "" };
+
+const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Requis"),
+    adress: Yup.string().required("Requis"),
+    contact: Yup.string().email("Email invalide").required("Requis"),
+});
 
 const InputSection = ({navigation}) => {
 
-    const [name, setName] = useState('');
-    const [adress, setAdress] = useState('');
-    const [contact, setContact] = useState('');
-    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-
-    const handleNameChange = (text) => {
-        setName(text);
-        updateButtonState(name, adress, contact);
+    const handleSecondStep = (values) => {
+        console.log(values);
+        navigation.navigate("ThirdStep");
     };
 
-    const handleNumAdressChange = (text) => {
-        setAdress(text);
-        updateButtonState(name, adress, contact);
-    };
-
-    const handleContactChange = (text) => {
-        setContact(text);
-        updateButtonState(name, adress, contact);
-      };
-
-    const updateButtonState = (name, adress, contact) => {
-        if (name.length > 0 && adress.length > 0 && contact.length > 0) {
-            setIsButtonDisabled(false);
-        } else {
-            setIsButtonDisabled(true);
-        }
+    const formikProps = {
+        initialValues: initialValues,
+        validationSchema,
+        onSubmit: handleSecondStep,
     };
 
     return (
@@ -56,22 +49,69 @@ const InputSection = ({navigation}) => {
                 Ajoutez un établissemement
             </Typography>
 
-            <View style={styles.inputs}>
-                <TextInput placeholder="Nom" leftIcon="book" value={name} onChangeText={handleNameChange}/>
-                <Text></Text>
-                <TextInput placeholder="Adresse" leftIcon="enviromento" value={adress} onChangeText={handleNumAdressChange}/>
-                <Text></Text>
-                <TextInput placeholder="Contact" leftIcon="mail" value={contact} onChangeText={handleContactChange}/>
-            </View>
+            <Formik {...formikProps}>
+                {({
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    values,
+                    errors,
+                    touched,
+                }) => (
 
-            <View>
-                <Button
-                    label="Continuez"
-                    disabled={isButtonDisabled}
-                    onPress={() => navigation.navigate("ThirdStep")}
-                    hideIcon
-                />
-            </View>
+
+                <View style={styles.inputs}>
+                    <TextInput
+                        placeholder="Nom"
+                        leftIcon="book"
+                        onChangeText={handleChange("name")}
+                        onBlur={handleBlur("name")}
+                        value={values.name}
+                        error={touched.name && errors.name}
+                        returnKeyType="next"
+                    />
+                    <Text></Text>
+                    <TextInput
+                        placeholder="Adresse"
+                        leftIcon="enviromento"
+                        onChangeText={handleChange("adress")}
+                        onBlur={handleBlur("adress")}
+                        value={values.adress}
+                        error={touched.adress && errors.adress}
+                        returnKeyType="next"
+                    />
+                    <Text></Text>
+                    <TextInput
+                        placeholder="Contact"
+                        leftIcon="mail"
+                        onChangeText={handleChange("contact")}
+                        onBlur={handleBlur("contact")}
+                        value={values.contact}
+                        error={touched.contact && errors.contact}
+                    />
+                    
+                    <View style={styles.button}>
+                        <Button
+                            label="Continuez"
+                            onPress={handleSubmit}
+                            labelTypographyStyle={styles.buttonLabel}
+                            hideIcon
+                            disabled={
+                            !(
+                                values.name &&
+                                values.adress &&
+                                values.contact &&
+                                !errors.name &&
+                                !errors.adress &&
+                                !errors.contact
+                            )
+                            }
+                        />
+                    </View>
+                </View>
+
+                )}
+            </Formik>
 
         </View>
 
@@ -121,5 +161,11 @@ const styles = StyleSheet.create({
     },
     inputs: {
         paddingBottom: 30,
+    },
+    button: {
+        paddingTop: 25,
+    },
+    buttonLabel: {
+        color: Colors.main_white,
     },
 });
