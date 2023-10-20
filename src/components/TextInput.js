@@ -19,6 +19,8 @@ const TextInput = ({
   rightIcon,
   secureTextEntry,
   error,
+  inputStyle,
+  inputTypographyStyle,
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -53,7 +55,7 @@ const TextInput = ({
           // lets accept more styles from the outside
           [
             styles.container,
-            rest.InputStyle,
+            inputStyle,
             isFocused || value ? styles.focusedContainer : null,
             error ? styles.errorContainer : null,
           ]
@@ -72,7 +74,7 @@ const TextInput = ({
           />
         )}
         <RNTextInput
-          style={[styles.input]}
+          style={[styles.input, inputTypographyStyle]}
           keyboardType="default"
           returnKeyType="done"
           selectionColor={Colors.primary_color}

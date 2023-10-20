@@ -6,6 +6,10 @@ import AlertModal from "./Modal";
 import Icon from "./Icon";
 import DefaultLayout from "./DefaultLayout";
 import SearchJobOffer from "./SearchJobOffer";
+import NavigatorButton from "./NavigatorButton";
+import MainHeader from "./MainHeader";
+import FlatList from "./FlatList";
+import ItemFlatList from "./ItemFlatList";
 
 export {
   Button,
@@ -16,4 +20,8 @@ export {
   LoginLayout,
   DefaultLayout,
   SearchJobOffer,
+  NavigatorButton,
+  MainHeader,
+  FlatList,
+  ItemFlatList
 };

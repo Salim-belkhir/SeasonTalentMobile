@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login } from "~/screens";
 import MainBottomTabNavigator from "./MainBottomTabNavigator";
 import { connect } from "react-redux";
+
 const mapStateToProps = (state) => ({
   isAuthenticated: state.googleAuth.isAuthenticated,
   userInfo: state.googleAuth.userInfo,
@@ -35,7 +36,7 @@ const MainNavigator = ({ isAuthenticated }) => {
           headerShown: false,
         }}
       >
-        {!isAuthenticated && (
+        {!isAuthenticated ? (
           <Stack.Screen
             name="Login"
             component={Login}
@@ -44,11 +45,12 @@ const MainNavigator = ({ isAuthenticated }) => {
               headerShown: false,
             }}
           />
+        ) : (
+          <Stack.Screen
+            name="MainBottomTabNavigator"
+            component={MainBottomTabNavigator}
+          />
         )}
-        <Stack.Screen
-          name="MainBottomTabNavigator"
-          component={MainBottomTabNavigator}
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );

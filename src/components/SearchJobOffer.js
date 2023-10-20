@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet } from "react-native";
 import TextInput from "./TextInput";
 import { Formik } from "formik";
 import Button from "./Button";
@@ -20,10 +20,10 @@ const SearchJobOffer = () => {
             onChangeText={handleChange("search")}
             onBlur={handleBlur("search")}
             value={values.search}
-            style={styles.textInput}
+            inputStyle={styles.textInput}
           />
           <Button hideIcon buttonStyle={styles.button}>
-            <Icon name="filter" size={20} color={Colors.primary_color} />
+            <Icon name="filter" size={24} color={Colors.primary_color} />
           </Button>
         </View>
       )}
@@ -35,17 +35,25 @@ export default SearchJobOffer;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 21,
     flexDirection: "row",
     justifyContent: "space-between",
+    flexWrap: "wrap",
+    marginTop: 19,
   },
   textInput: {
-    width: "65%",
+    width: 270,
+    height: 48,
+    borderWidth: 1,
+    borderRadius: 12,
+    backgroundColor: Colors.main_white,
+    borderColor: Colors.main_white,
   },
   button: {
-    width: "20%",
-    backgroundColor: Colors.input_gray,
-    borderColor: Colors.input_gray,
+    width: 60,
+    height: 48,
+    marginLeft: 8,
+    borderRadius: 12,
+    backgroundColor: Colors.main_white,
+    borderColor: Colors.main_white,
   },
 });

@@ -59,7 +59,7 @@ const LogInSection = ({ navigation }) => {
             value={values.email}
             error={touched.email && errors.email}
             autoCapitalize="none"
-            InputStyle={styles.input}
+            inputStyle={styles.input}
             returnKeyType="next"
           />
 
@@ -74,7 +74,7 @@ const LogInSection = ({ navigation }) => {
             value={values.password}
             error={touched.password && errors.password}
             secureTextEntry
-            InputStyle={styles.input}
+            inputStyle={styles.input}
             autoCapitalize="none"
           />
 

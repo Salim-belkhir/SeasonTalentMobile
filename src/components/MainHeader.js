@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import Typography from "../Typography";
+import Typography from "./Typography";
 import { Colors } from "~/theme";
 import { connect } from "react-redux";
 
@@ -41,8 +41,6 @@ export default connect(mapStateToProps)(MainHeader);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 40,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
