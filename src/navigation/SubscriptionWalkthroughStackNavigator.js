@@ -12,6 +12,14 @@ const SubscriptionWalkthroughStackNavigator = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen
+                name="ThirdStep"
+                component={SubscriptionThirdStepLayout}
+                options={{
+                    headerTitle: "ThirdStep",
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
                 name="FirstStep"
                 component={SubscriptionFirstStepLayout}
                 options={{
@@ -27,14 +35,7 @@ const SubscriptionWalkthroughStackNavigator = () => {
                     headerShown: false,
                 }}
             />
-            <Stack.Screen
-                name="ThirdStep"
-                component={SubscriptionThirdStepLayout}
-                options={{
-                    headerTitle: "ThirdStep",
-                    headerShown: false,
-                }}
-            />
+            
         </Stack.Navigator>
     );
 };

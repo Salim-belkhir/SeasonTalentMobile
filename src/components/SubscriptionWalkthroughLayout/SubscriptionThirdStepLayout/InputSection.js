@@ -1,124 +1,230 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import Typography from "../../Typography";
 import { Colors } from "~/theme";
 import Button from "../../Button";
-import TextInput from "../../TextInput";
+import * as DocumentPicker from "expo-document-picker";
 
-const InputSection = ({navigation}) => {
+function getFileIcon(extension) {
+  const iconSource =
+    extension.toLowerCase() === "docx" || extension.toLowerCase() === "doc"
+      ? require("~/assets/icons/docx.png")
+      : require("~/assets/icons/pdf.png");
 
-    return (
-        <View style={styles.page}>
-            <View style={styles.progression}>
-                <View style={styles.circle}/>
-                <View style={styles.circle}/>
-                <View style={styles.actual_step}/>
+  return (
+    <Image
+      source={iconSource}
+      alt={`${extension} icon`}
+      style={styles.extension_icon}
+    />
+  );
+}
+
+const InputSection = ({ navigation }) => {
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const pickDocument = async () => {
+    let document = await DocumentPicker.getDocumentAsync({});
+    if (!document.cancelled) {
+      const fileName = document.assets[0].name;
+      const extension = fileName.split(".").pop();
+      const nameWithoutExtension = fileName.replace(`.${extension}`, "");
+
+      const newFile = {
+        name: nameWithoutExtension,
+        size: (document.assets[0].size / 1000).toFixed(2) + " KB",
+        extension: extension,
+      };
+
+      setSelectedFiles([...selectedFiles, newFile]);
+    }
+  };
+
+  const handleRemoveFile = (index) => {
+    const updatedFiles = [...selectedFiles];
+    updatedFiles.splice(index, 1);
+    setSelectedFiles(updatedFiles);
+  };
+
+  return (
+    <View style={styles.page}>
+      <View style={styles.progression}>
+        <View style={styles.circle} />
+        <View style={styles.circle} />
+        <View style={styles.actual_step} />
+      </View>
+
+      <Typography type="l_bold" typographyStyle={styles.title}>
+        Téléchargez des documents
+      </Typography>
+
+      <View style={styles.div}>
+        <Text style={styles.text}>
+          Téléchargez les documents {"\n"} nécessaires (contrat , ... , ...)
+        </Text>
+
+        <ScrollView
+          style={styles.download}
+          contentContainerStyle={[selectedFiles.length >= 3 && { height: 200 }]}
+        >
+          {selectedFiles.length === 0 ? (
+            <View style={styles.initialText}>
+              <Text style={styles.downloadText}>
+                Téléchargez un Doc/Docx/PDF
+              </Text>
             </View>
-
-            <Typography type="l_bold" typographyStyle={styles.title}>
-                Téléchargez des documents
-            </Typography>
-
-            <View style={styles.div}>
-                <Text style={styles.text}>Téléchargez les documents {"\n"} nécessaires (contrat , ... , ...)</Text>
-
-                <View style={styles.download}>
-                    <Text style={styles.downloadText}>Téléverser un Doc/Docx/PDF</Text>
+          ) : (
+            selectedFiles.map((file, index) => (
+              <View style={styles.selectedFileContainer} key={index}>
+                <View style={styles.iconContainer}>
+                  {getFileIcon(file.extension)}
                 </View>
-
-                <View style={styles.button}>
-                    <Button
-                        label="Téléchargez"
-                        hideIcon
-                    />
+                <View style={styles.fileInfo}>
+                  <Text>{file.name}</Text>
+                  <Text style={styles.fileSize}>{file.size}</Text>
                 </View>
-            </View>
+                <TouchableOpacity
+                  style={styles.removeIconContainer}
+                  onPress={() => handleRemoveFile(index)}
+                >
+                  <Image
+                    source={require("~/assets/icons/cross.png")}
+                    style={styles.removeIcon}
+                  />
+                </TouchableOpacity>
+              </View>
+            ))
+          )}
+        </ScrollView>
 
-            <View style={styles.submitButton}>
-
-                <Button
-                    label="Continuez"
-                    disabled
-                    hideIcon
-                />
-            
-            </View>
-                
+        <View style={styles.button}>
+          <Button
+            label="Téléverser"
+            onPress={pickDocument}
+            labelTypographyStyle={styles.buttonLabel}
+            hideIcon
+          />
         </View>
 
-    )
+        <Text></Text>
+      </View>
+      <Button
+        label="Continuez"
+        disabled={selectedFiles.length === 0}
+        labelTypographyStyle={styles.buttonLabel}
+        hideIcon
+        buttonStyle={styles.submitButton}
+      />
+    </View>
+  );
 };
-
 
 export default InputSection;
 
 const styles = StyleSheet.create({
-    page: {
-        flex: 1,
-        paddingTop: 25,
-    },
-    progression: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    actual_step: {
-        width: 30,
-        height: 8,
-        borderRadius: 4,
-        marginLeft: 5,
-        backgroundColor: Colors.greenBlue,
-    },
-    circle: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        marginLeft: 5,
-        backgroundColor: Colors.grey,
-    },
-    title: {
-        fontSize: 16,
-        marginTop: 25,
-    },
-    div: {
-        width: 327,
-        height: 315,
-        borderWidth: 1,
-        borderColor: Colors.greenBlue,
-        borderStyle: "dashed",
-        borderRadius: 24,
-        marginTop: 24,
-        marginLeft: 7,
-    },
-    text: {
-        fontSize: 13,
-        color: Colors.dark_grey,
-        marginTop: 40,
-        marginLeft: 58,
-    },
-    download: {
-        width: 263,
-        height: 73,
-        borderRadius: 12,
-        marginTop: 32,
-        marginLeft: 32,
-        backgroundColor: Colors.medium_grey,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    downloadText: {
-        fontSize: 14,
-        color: Colors.greenBlue,
-    },
-    button: {
-        width: 184,
-        marginTop: 32,
-        marginLeft: 64,
-    },
-    submitButton: {
-        width: 327,
-        height: 56,
-        marginTop: 133,
-    },
-
+  page: {
+    flex: 1,
+    paddingTop: 25,
+  },
+  progression: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  actual_step: {
+    width: 30,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 5,
+    backgroundColor: Colors.greenBlue,
+  },
+  circle: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 5,
+    backgroundColor: Colors.grey,
+  },
+  title: {
+    fontSize: 16,
+    marginTop: 25,
+  },
+  div: {
+    width: 327,
+    borderWidth: 1,
+    borderColor: Colors.greenBlue,
+    borderStyle: "dashed",
+    borderRadius: 24,
+    marginTop: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  text: {
+    fontSize: 13,
+    color: Colors.dark_grey,
+    marginTop: 40,
+  },
+  download: {
+    borderRadius: 12,
+    padding: 10,
+    width: 300,
+    marginTop: 20,
+    paddingHorizontal: 15,
+    backgroundColor: Colors.medium_grey,
+  },
+  selectedFileContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 4,
+    marginTop: 4,
+  },
+  iconContainer: {
+    marginRight: 16,
+    marginLeft: 10,
+  },
+  initialText: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  downloadText: {
+    fontSize: 14,
+    color: Colors.greenBlue,
+  },
+  fileInfo: {
+    flex: 1,
+    marginRight: 25,
+  },
+  fileSize: {
+    fontSize: 12,
+    color: Colors.dark_grey,
+  },
+  button: {
+    width: 184,
+    marginTop: 32,
+  },
+  buttonLabel: {
+    color: Colors.main_white,
+  },
+  submitButton: {
+    marginTop: 32,
+  },
+  extension_icon: {
+    width: 33,
+    height: 41,
+  },
+  removeIconContainer: {
+    width: 20,
+    height: 20,
+  },
+  removeIcon: {
+    width: 12,
+    height: 12,
+  },
 });
