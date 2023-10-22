@@ -1,26 +1,48 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import JobOffersScreen from "~/screens/JobOffersScreen";
-import CandidatesScreen from "~/screens/CandidatesScreen";
-import CompaniesScreen from "~/screens/CompaniesScreen";
-import ProfileScreen from "~/screens/ProfileScreen";
+import JobOffersNavigator from "./JobOffersNavigator";
+import { CandidatesScreen, CompaniesScreen, ProfileScreen } from "~/screens";
 import { Icon } from "~/components";
 import { Colors } from "~/theme";
 const BottomTab = createBottomTabNavigator();
 
 const MainBottomTabNavigator = () => {
+  const handleScreenListeners = ({ navigation, route }) => {
+    const recursivelyFindRouteName = ({ routes, index }) => {
+      if (routes[index].state) {
+        return recursivelyFindRouteName(routes[index].state);
+      } else {
+        return routes[index].name;
+      }
+    };
+    const currentScreen = recursivelyFindRouteName(navigation.getState());
+
+    // TODO: change it by a switch case
+    if (
+      currentScreen === "EmploisDetails" ||
+      currentScreen === "EmploisAjouter"
+    ) {
+      navigation.setOptions({ tabBarStyle: { display: "none" } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: "flex" } });
+    }
+  };
+
   return (
     <BottomTab.Navigator
       initialRouteName="Emplois"
-      screenOptions={({ route }) => ({
-        tabBarActiveTintColor: Colors.primary_color,
-        tabBarInactiveTintColor: Colors.main_grey,
-        headerShown: false,
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontFamily: "Montserrat-Regular",
-          fontWeight: "500",
-        },
-      })}
+      screenOptions={({ route }) => {
+        return {
+          tabBarActiveTintColor: Colors.primary_color,
+          tabBarInactiveTintColor: Colors.main_grey,
+          headerShown: false,
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontFamily: "Montserrat-Regular",
+            fontWeight: "500",
+          },
+        };
+      }}
+      screenListeners={handleScreenListeners}
     >
       <BottomTab.Screen
         name="Candidats"
@@ -33,7 +55,7 @@ const MainBottomTabNavigator = () => {
       />
       <BottomTab.Screen
         name="Emplois"
-        component={JobOffersScreen}
+        component={JobOffersNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="appstore-o" size={size} color={color} />

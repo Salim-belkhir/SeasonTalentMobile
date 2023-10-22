@@ -4,8 +4,7 @@ import DefaultLayout from "~/components/DefaultLayout";
 import MainHeader from "~/components/MainHeader";
 import NavigatorButton from "~/components/NavigatorButton";
 import { connect } from "react-redux";
-import { ScrollView, View, VirtualizedList, StyleSheet } from "react-native";
-import { Colors } from "~/theme";
+import { View, StyleSheet } from "react-native";
 
 const mapStateToProps = (state) => {
   return {
@@ -20,11 +19,12 @@ const JobOffersScreen = ({ navigation, jobOffers }) => {
         <View style={styles.header}>
           <MainHeader navigation={navigation} />
           <SearchJobOffer />
-          <NavigatorButton label="Créer une offre d'emploi" leftIcon="plus" />
-          <Typography
-            type="l_bold"
-            typographyStyle={{ marginTop: 19, marginBottom: 21, fontSize: 16 }}
-          >
+          <NavigatorButton
+            label="Créer une offre d'emploi"
+            leftIcon="plus"
+            navigate={() => navigation.push("EmploisAjouter")}
+          />
+          <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
             Les offres actuelles
           </Typography>
         </View>
@@ -42,7 +42,9 @@ const styles = StyleSheet.create({
     paddingLeft: 23,
     paddingRight: 23,
   },
-  header: {
-    marginTop: 70,
+  currentOffersTitle: {
+    marginTop: 19,
+    marginBottom: 21,
+    fontSize: 16,
   },
 });

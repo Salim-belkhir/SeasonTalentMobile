@@ -2,6 +2,9 @@ import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Typography from "./Typography";
 import { Colors } from "~/theme";
 import { connect } from "react-redux";
+import Button from "./Button";
+import Icon from "./Icon";
+import { useNavigation } from "@react-navigation/native";
 
 const mapStateToProps = (state) => ({
   userInfo: state.googleAuth.userInfo,
@@ -37,17 +40,67 @@ const MainHeader = ({ navigation, userInfo }) => {
   );
 };
 
+MainHeader.basicHeader = connect(mapStateToProps)(function ({ userInfo }) {
+  const navigation = useNavigation();
+  return (
+    <View style={styles.container}>
+      <View style={styles.goBacktitleContainer}>
+        <Button
+          onPress={() => navigation.pop()}
+          buttonStyle={styles.goBackButton}
+        >
+          <Icon name="left" size={28} color={Colors.main_black} />
+        </Button>
+        <Typography type="l_bold" typographyStyle={styles.userName}>
+          {userInfo.displayName + " 👋"}
+        </Typography>
+      </View>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("MainBottomTabNavigator", {
+            screen: "Profil",
+          })
+        }
+      >
+        <Image
+          source={{ url: userInfo.photoURL }}
+          alt="Season Talent"
+          style={styles.profilePicture}
+        />
+        <View style={styles.greenPoint} />
+      </TouchableOpacity>
+    </View>
+  );
+});
+
+MainHeader.goBackOnly = function ({ navigation, title }) {
+  return (
+    <View style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Typography type="l_medium" typographyStyle={styles.titleAction}>
+          {title}
+        </Typography>
+      </View>
+    </View>
+  );
+};
+
 export default connect(mapStateToProps)(MainHeader);
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    marginTop: 70,
   },
   titleContainer: {
     justifyContent: "center",
     alignItems: "flex-start",
+  },
+  goBacktitleContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   titleAction: {
     color: Colors.dark_grey,
@@ -79,5 +132,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary_color,
     borderWidth: 4,
     borderColor: Colors.main_white,
+  },
+  goBackButton: {
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    marginRight: 22,
+    height: 60,
+    width: 40,
   },
 });
