@@ -3,17 +3,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeScreen, Login } from "~/screens";
 import React from "react";
 import { View, Text } from "react-native";
-import SubscriptionWalkthroughStackNavigator from "./SubscriptionWalkthroughStackNavigator";
-
+import SubscriptionWalkthroughNavigator from "./SubscriptionWalkthroughNavigator";
 
 const DetailsScreen = () => {
-    return (
-        <View >
-        <Text>Details!</Text>
-        </View>
-    );
-    }
-
+  return (
+    <View>
+      <Text>Details!</Text>
+    </View>
+  );
+};
 
 const Stack = createNativeStackNavigator();
 
@@ -32,16 +30,16 @@ const MainNavigator = () => {
       // }}
       >
         <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-                headerTitle: "Login",
-                headerShown: false,
-            }}
+          name="Login"
+          component={Login}
+          options={{
+            headerTitle: "Login",
+            headerShown: false,
+          }}
         />
         <Stack.Screen
           name="SubscriptionWalkthrough"
-          component={SubscriptionWalkthroughStackNavigator}
+          component={SubscriptionWalkthroughNavigator}
           options={{
             headerTitle: "SubscriptionWalkthrough",
             headerShown: false,
@@ -54,7 +52,7 @@ const MainNavigator = () => {
             headerTitle: "Home",
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Details"
           component={DetailsScreen}
           options={{

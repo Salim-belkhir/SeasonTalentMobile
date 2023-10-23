@@ -7,9 +7,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import Typography from "../../Typography";
+import DefaultLayout from "~/components/DefaultLayout";
+import HeaderSection from "~/components/SubscriptionWalkthroughLayout/HeaderSection";
+import { Typography, Button } from "~/components";
 import { Colors } from "~/theme";
-import Button from "../../Button";
 import * as DocumentPicker from "expo-document-picker";
 
 function getFileIcon(extension) {
@@ -27,7 +28,7 @@ function getFileIcon(extension) {
   );
 }
 
-const InputSection = ({ navigation }) => {
+const SubscriptionThirdStep = ({ navigation }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const pickDocument = async () => {
@@ -54,82 +55,94 @@ const InputSection = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.page}>
-      <View style={styles.progression}>
-        <View style={styles.circle} />
-        <View style={styles.circle} />
-        <View style={styles.actual_step} />
-      </View>
+    <DefaultLayout>
+      <View style={styles.container}>
+        <HeaderSection />
+        <View style={styles.page}>
+          <View style={styles.progression}>
+            <View style={styles.circle} />
+            <View style={styles.circle} />
+            <View style={styles.actual_step} />
+          </View>
 
-      <Typography type="l_bold" typographyStyle={styles.title}>
-        Téléchargez des documents
-      </Typography>
+          <Typography type="l_bold" typographyStyle={styles.title}>
+            Téléchargez des documents
+          </Typography>
 
-      <View style={styles.div}>
-        <Text style={styles.text}>
-          Téléchargez les documents {"\n"} nécessaires (contrat , ... , ...)
-        </Text>
+          <View style={styles.div}>
+            <Text style={styles.text}>
+              Téléchargez les documents {"\n"} nécessaires (contrat , ... , ...)
+            </Text>
 
-        <ScrollView
-          style={styles.download}
-          contentContainerStyle={[selectedFiles.length >= 3 && { height: 200 }]}
-        >
-          {selectedFiles.length === 0 ? (
-            <View style={styles.initialText}>
-              <Text style={styles.downloadText}>
-                Téléchargez un Doc/Docx/PDF
-              </Text>
+            <ScrollView
+              style={styles.download}
+              contentContainerStyle={[
+                selectedFiles.length >= 3 && { height: 200 },
+              ]}
+            >
+              {selectedFiles.length === 0 ? (
+                <View style={styles.initialText}>
+                  <Text style={styles.downloadText}>
+                    Téléchargez un Doc/Docx/PDF
+                  </Text>
+                </View>
+              ) : (
+                selectedFiles.map((file, index) => (
+                  <View style={styles.selectedFileContainer} key={index}>
+                    <View style={styles.iconContainer}>
+                      {getFileIcon(file.extension)}
+                    </View>
+                    <View style={styles.fileInfo}>
+                      <Text>{file.name}</Text>
+                      <Text style={styles.fileSize}>{file.size}</Text>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.removeIconContainer}
+                      onPress={() => handleRemoveFile(index)}
+                    >
+                      <Image
+                        source={require("~/assets/icons/cross.png")}
+                        style={styles.removeIcon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                ))
+              )}
+            </ScrollView>
+
+            <View style={styles.button}>
+              <Button
+                label="Téléverser"
+                onPress={pickDocument}
+                labelTypographyStyle={styles.buttonLabel}
+                hideIcon
+              />
             </View>
-          ) : (
-            selectedFiles.map((file, index) => (
-              <View style={styles.selectedFileContainer} key={index}>
-                <View style={styles.iconContainer}>
-                  {getFileIcon(file.extension)}
-                </View>
-                <View style={styles.fileInfo}>
-                  <Text>{file.name}</Text>
-                  <Text style={styles.fileSize}>{file.size}</Text>
-                </View>
-                <TouchableOpacity
-                  style={styles.removeIconContainer}
-                  onPress={() => handleRemoveFile(index)}
-                >
-                  <Image
-                    source={require("~/assets/icons/cross.png")}
-                    style={styles.removeIcon}
-                  />
-                </TouchableOpacity>
-              </View>
-            ))
-          )}
-        </ScrollView>
 
-        <View style={styles.button}>
+            <Text></Text>
+          </View>
           <Button
-            label="Téléverser"
-            onPress={pickDocument}
+            label="Continuez"
+            onPress={() => navigation.navigate("End")}
+            disabled={selectedFiles.length === 0}
             labelTypographyStyle={styles.buttonLabel}
             hideIcon
+            buttonStyle={styles.submitButton}
           />
         </View>
-
-        <Text></Text>
       </View>
-      <Button
-        label="Continuez"
-        onPress={() => navigation.navigate("End")}
-        disabled={selectedFiles.length === 0}
-        labelTypographyStyle={styles.buttonLabel}
-        hideIcon
-        buttonStyle={styles.submitButton}
-      />
-    </View>
+    </DefaultLayout>
   );
 };
 
-export default InputSection;
+export default SubscriptionThirdStep;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 33,
+    backgroundColor: Colors.main_white,
+  },
   page: {
     flex: 1,
     paddingTop: 25,
