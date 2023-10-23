@@ -117,6 +117,7 @@ const InputSection = ({ navigation }) => {
       </View>
       <Button
         label="Continuez"
+        onPress={() => navigation.navigate("End")}
         disabled={selectedFiles.length === 0}
         labelTypographyStyle={styles.buttonLabel}
         hideIcon
