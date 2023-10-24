@@ -1,11 +1,12 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Keyboard } from "react-native";
 import {
   MainHeader,
   Typography,
   DefaultLayout,
   TextInput,
   FlatList,
+  Button,
 } from "~/components";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -30,7 +31,6 @@ const validationSchema = Yup.object().shape({
   salary: Yup.number()
     .typeError("Le salaire doit etre un chiffre")
     .required("Requis"),
-
   description: Yup.string().required("Requis"),
 });
 
@@ -41,21 +41,25 @@ const initialValues = {
   place: "",
   salary: "",
   description: "",
-  advantage: "",
+  advantage: { label: "", id: "" },
   advantages: [],
+  skill: { label: "", id: "" },
   skills: [],
 };
 
 const etablissementList = [
   {
+    id: 1,
     label: "Etablissement 1",
     value: "etablissement1",
   },
   {
+    id: 2,
     label: "Etablissement 2",
     value: "etablissement2",
   },
   {
+    id: 3,
     label: "Etablissement 3",
     value: "etablissement3",
   },
@@ -93,6 +97,7 @@ const CreateJobOffer = ({ navigation }) => {
             setFieldValue,
           }) => (
             <View style={styles.formContainer}>
+              {/* let's create a textIn */}
               <TextInput
                 label="Titre de l'offre"
                 leftIcon="carryout"
@@ -198,30 +203,121 @@ const CreateJobOffer = ({ navigation }) => {
                   setFieldValue("advantage", value);
                 }}
                 onBlur={handleBlur("advantage")}
-                value={values.advantage}
+                value={values.advantage.label}
                 error={touched.advantage && errors.advantage}
                 returnKeyType="next"
                 onSubmitEditing={() => {
-                  if (values.advantage) {
+                  if (values.advantage.label !== "") {
                     setFieldValue("advantages", [
                       ...values.advantages,
-                      values.advantage,
+                      {
+                        label: values.advantage,
+                        id: values.advantages.length + 1,
+                      },
                     ]);
-                    setFieldValue("advantage", "");
+                    setFieldValue("advantage", {
+                      label: "",
+                      id: "",
+                    });
                   }
                 }}
                 inputStyle={styles.input}
               />
-              <FlatList items={values.advantages} />
+              <FlatList
+                items={values.advantages}
+                type={"simpleItems"}
+                listStyle={[
+                  { marginTop: values.advantages.length > 0 ? 15 : 0 },
+                ]}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                onPressedItem={(item) => {
+                  setFieldValue(
+                    "advantages",
+                    values.advantages.filter((advantage) => advantage !== item)
+                  );
+                }}
+              />
+
               <TextInput
-                label="Description"
-                leftIcon="filetext1"
-                placeholder="Description"
-                onChangeText={handleChange("description")}
-                onBlur={handleBlur("description")}
-                value={values.description}
-                error={touched.description && errors.description}
+                label="Compétences"
+                leftIcon="pluscircleo"
+                placeholder="Compétences"
+                onChangeText={(value) => {
+                  setFieldValue("skill", value);
+                }}
+                onBlur={handleBlur("skill")}
+                value={values.skill.label}
+                error={touched.skill && errors.skill}
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  if (values.skill.label !== "") {
+                    setFieldValue("skills", [
+                      ...values.skills,
+                      {
+                        label: values.skill,
+                        id: values.skills.length + 1,
+                      },
+                    ]);
+                    setFieldValue("skill", {
+                      label: "",
+                      id: "",
+                    });
+                  }
+                }}
                 inputStyle={styles.input}
+              />
+
+              <FlatList
+                items={values.skills}
+                type={"simpleItems"}
+                listStyle={[{ marginTop: values.skills.length > 0 ? 15 : 0 }]}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                onPressedItem={(item) => {
+                  setFieldValue(
+                    "skills",
+                    values.skills.filter((skill) => skill !== item)
+                  );
+                }}
+              />
+
+              <TextInput
+                placeholder="Description"
+                leftIcon="filetext1"
+                multiline
+                onChangeText={handleChange("description")}
+                value={values.description}
+                onKeyPress={({ nativeEvent }) => {
+                  if (nativeEvent.key === "Enter") {
+                    Keyboard.dismiss();
+                  }
+                }}
+                inputStyle={styles.descriptionInput}
+                inputTextStyle={styles.descriptionInputText}
+              />
+
+              <Button
+                label="Créer"
+                hideIcon
+                onPress={handleSubmit}
+                buttonStyle={{
+                  marginTop: 15,
+                  backgroundColor: Colors.main_white,
+                }}
+                labelTypographyStyle={{ color: Colors.main_white }}
+                disabled={
+                  !(
+                    values.title &&
+                    values.startDate &&
+                    values.endDate &&
+                    values.place &&
+                    values.salary &&
+                    values.description &&
+                    values.advantages.length > 0 &&
+                    values.skills.length > 0
+                  )
+                }
               />
             </View>
           )}
@@ -308,4 +404,9 @@ const styles = StyleSheet.create({
     // fontSize: 15,
     // fontFamily: "Montserrat-medium",
   },
+  descriptionInput: {
+    marginTop: 15,
+    textAlignVertical: "top",
+  },
+  descriptionInputText: {},
 });

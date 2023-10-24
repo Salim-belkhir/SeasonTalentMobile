@@ -8,9 +8,12 @@ const FlatList = ({
   items,
   itemsStyle,
   listStyle,
+  onPressedItem,
   ...otherProps
 }) => {
-  const renderItem = ({ item }) => <ItemFlatList item={item} />;
+  const renderItem = ({ item }) => (
+    <ItemFlatList item={item} type={type} onPress={onPressedItem} />
+  );
   const renderSeparator = () => <View style={styles.separator} />;
 
   return (
@@ -23,6 +26,7 @@ const FlatList = ({
       contentContainerStyle={[styles.list, listStyle]}
       showsVerticalScrollIndicator={false}
       {...otherProps}
+      on
     />
   );
 };
