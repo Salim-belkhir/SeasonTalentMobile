@@ -4,6 +4,8 @@ import CandidatesScreen from "./CandidatesScreen";
 import CompaniesScreen from "./CompaniesScreen";
 import ProfileScreen from "./ProfileScreen";
 import Login from "./Login";
+import ProfileHomeScreen from "./profile/ProfileHomeScreen";
+import SubscriptionDetailsScreen from "./profile/SubscriptionDetailsScreen";
 
 export {
   JobOffersScreen,
@@ -11,5 +13,7 @@ export {
   CandidatesScreen,
   CompaniesScreen,
   ProfileScreen,
+  ProfileHomeScreen,
   Login,
+  SubscriptionDetailsScreen,
 };

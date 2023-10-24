@@ -3,6 +3,7 @@ import JobOffersNavigator from "./JobOffersNavigator";
 import { CandidatesScreen, CompaniesScreen, ProfileScreen } from "~/screens";
 import { Icon } from "~/components";
 import { Colors } from "~/theme";
+import ProfileNavigator from "./ProfileNavigator";
 const BottomTab = createBottomTabNavigator();
 
 const MainBottomTabNavigator = () => {
@@ -73,7 +74,7 @@ const MainBottomTabNavigator = () => {
       />
       <BottomTab.Screen
         name="Profil"
-        component={ProfileScreen}
+        component={ProfileNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="user" size={size} color={color} />
