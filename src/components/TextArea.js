@@ -1,73 +1,26 @@
 import React, { useState } from "react";
-import {
-  View,
-  TextInput as RNTextInput,
-  StyleSheet,
-  Keyboard,
-} from "react-native";
+import { View, TextInput as RNTextInput, StyleSheet } from "react-native";
 import { Colors } from "~/theme";
 import Typography from "./Typography";
 import Icon from "./Icon";
-import TextArea from "./TextArea";
-import Button from "./Button";
 
-/**
- * A custom TextInput component that accepts various props to customize its appearance and behavior.
- * @param {Object} props - The props object that contains the following properties:
- * @param {string} props.leftIcon - The name of the icon to display on the left side of the input.
- * @param {string} props.rightIcon - The name of the icon to display on the right side of the input.
- * @param {boolean} props.secureTextEntry - A flag that indicates whether the input should be masked for password entry.
- * @param {string} props.error - An error message to display below the input if there is an error.
- * @param {Object} props.rest - Any additional props to pass to the underlying TextInput component.
- * @returns {JSX.Element} A custom TextInput component.
- */
-const TextInput = ({
+const TextArea = ({
   leftIcon,
   rightIcon,
   secureTextEntry,
   error,
-  inputStyle,
-  inputTypographyStyle,
-  textArea,
+  textAreaStyle,
+  textAreaTypographyStyle,
   ...rest
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const [value, onChangeValue] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-
-  /**
-   * Handles the focus event for the input.
-   */
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  /**
-   * Handles the blur event for the input.
-   */
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
-
-  /**
-   * Toggles the visibility of the password for secure text entry inputs.
-   */
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  onPress = () => {
-    Keyboard.dismiss();
-  };
-
   return (
-    <View>
+    <>
       <View
         style={
           // lets accept more styles from the outside
           [
             styles.container,
-            inputStyle,
+            textAreaStyle,
             isFocused || value ? styles.focusedContainer : null,
             error ? styles.errorContainer : null,
           ]
@@ -106,24 +59,17 @@ const TextInput = ({
             onPress={toggleShowPassword}
           />
         )}
-        {textArea && (
-          <Button
-            label="terminer"
-            buttonStyle={styles.textAreaButton}
-            labelTypographyStyle={styles.textAreaButtonLabel}
-            hideIcon
-            onPress={onPress}
-          />
-        )}
       </View>
       {error && (
         <Typography type="s_medium" typographyStyle={styles.error}>
           {error}
         </Typography>
       )}
-    </View>
+    </>
   );
 };
+
+export default TextArea;
 
 const styles = StyleSheet.create({
   container: {
@@ -163,15 +109,4 @@ const styles = StyleSheet.create({
   errorIcon: {
     color: Colors.red,
   },
-
-  textAreaButton: {
-    backgroundColor: "transparent",
-    borderWidth: 0,
-    height: 48,
-  },
-  textAreaButtonLabel: {
-    color: Colors.dark_grey,
-  },
 });
-
-export default TextInput;

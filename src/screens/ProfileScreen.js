@@ -6,6 +6,7 @@ import { auth } from "../../firebaseConfig";
 import { googleSignOut } from "~/redux/actions";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Colors } from "~/theme";
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.googleAuth.isAuthenticated,
@@ -29,7 +30,14 @@ const ProfileScreen = ({ navigation, googleSignOut }) => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: Colors.main_white,
+      }}
+    >
       <Text>ProfileScreen</Text>
       {/* <Button
         label="Navigate to CompaniesScreen"

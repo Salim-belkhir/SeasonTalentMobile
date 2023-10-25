@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     height: 170,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 10,
+    marginRight: 26,
   },
   simpleItem: {
     backgroundColor: Colors.pure_white,

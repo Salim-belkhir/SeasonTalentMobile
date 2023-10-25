@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Keyboard } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Keyboard,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+} from "react-native";
 import {
   MainHeader,
   Typography,
@@ -80,249 +86,265 @@ const CreateJobOffer = ({ navigation }) => {
 
   return (
     <DefaultLayout navigation={navigation}>
-      <View style={styles.container}>
-        <MainHeader.basicHeader />
-        <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
-          Création d’une offre d’emploi
-        </Typography>
+      <KeyboardAvoidingView style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <>
+            <MainHeader.basicHeader />
+            <Typography
+              type="l_bold"
+              typographyStyle={styles.currentOffersTitle}
+            >
+              Création d’une offre d’emploi
+            </Typography>
 
-        <Formik {...formikProps}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-            setFieldValue,
-          }) => (
-            <View style={styles.formContainer}>
-              {/* let's create a textIn */}
-              <TextInput
-                label="Titre de l'offre"
-                leftIcon="carryout"
-                placeholder="Titre de l'offre"
-                onChangeText={handleChange("title")}
-                onBlur={handleBlur("title")}
-                value={values.title}
-                error={touched.title && errors.title}
-                returnKeyType="next"
-              />
+            <Formik {...formikProps}>
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+                setFieldValue,
+              }) => (
+                <View style={styles.formContainer}>
+                  {/* let's create a textIn */}
+                  <TextInput
+                    label="Titre de l'offre"
+                    leftIcon="carryout"
+                    placeholder="Titre de l'offre"
+                    onChangeText={handleChange("title")}
+                    onBlur={handleBlur("title")}
+                    value={values.title}
+                    error={touched.title && errors.title}
+                    returnKeyType="next"
+                  />
 
-              <View style={styles.dateTimePickersContainer}>
-                <View style={styles.dateTimePickerContainer}>
-                  <Icon name="calendar" size={20} color={Colors.main_grey} />
-                  <Typography
-                    type="l_regular"
-                    typographyStyle={styles.dateTimePickerLabel}
-                  >
-                    Du :
-                  </Typography>
-                  <RNDateTimePicker
-                    value={values.startDate || new Date()}
-                    onChange={(event, selectedDate) => {
-                      setFieldValue("startDate", selectedDate);
+                  <View style={styles.dateTimePickersContainer}>
+                    <View style={styles.dateTimePickerContainer}>
+                      <Icon
+                        name="calendar"
+                        size={20}
+                        color={Colors.main_grey}
+                      />
+                      <Typography
+                        type="l_regular"
+                        typographyStyle={styles.dateTimePickerLabel}
+                      >
+                        Du :
+                      </Typography>
+                      <RNDateTimePicker
+                        value={values.startDate || new Date()}
+                        onChange={(event, selectedDate) => {
+                          setFieldValue("startDate", selectedDate);
+                        }}
+                        style={styles.dateTimePicker}
+                      />
+                    </View>
+
+                    <View style={styles.dateTimePickerContainer}>
+                      <Icon
+                        name="calendar"
+                        size={20}
+                        color={Colors.main_grey}
+                      />
+                      <Typography
+                        type="l_regular"
+                        typographyStyle={styles.dateTimePickerLabel}
+                      >
+                        Au :
+                      </Typography>
+                      <RNDateTimePicker
+                        value={values.startDate || new Date()}
+                        onChange={(event, selectedDate) => {
+                          setFieldValue("endDate", selectedDate);
+                        }}
+                        style={styles.dateTimePicker}
+                      />
+                    </View>
+                  </View>
+
+                  <SelectDropdown
+                    data={etablissementList}
+                    onSelect={(selectedItem, index) => {
+                      setFieldValue("place", selectedItem.value);
                     }}
-                    style={styles.dateTimePicker}
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                      return selectedItem.label;
+                    }}
+                    rowTextForSelection={(item, index) => {
+                      return item.label;
+                    }}
+                    defaultButtonText="Selectionner un établissement"
+                    renderDropdownIcon={(isOpened) => {
+                      return (
+                        <Icon
+                          name={isOpened ? "up" : "down"}
+                          color={Colors.main_grey}
+                          size={24}
+                        />
+                      );
+                    }}
+                    dropdownIconPosition={"right"}
+                    renderSearchInputLeftIcon={() => {
+                      return (
+                        <Icon
+                          name="search1"
+                          size={20}
+                          color={Colors.main_grey}
+                          style={{ marginLeft: 10 }}
+                        />
+                      );
+                    }}
+                    search
+                    searchPlaceHolder="Rechercher un établissement"
+                    buttonStyle={styles.selectButton}
+                    buttonTextStyle={styles.selectButtonText}
+                    dropdownStyle={styles.dropDown}
+                    rowStyle={styles.dropDownRow}
+                    rowTextStyle={styles.dropDownRowText}
+                  />
+                  <TextInput
+                    label="Salaire"
+                    leftIcon="wallet"
+                    placeholder="Salaire"
+                    onChangeText={handleChange("salary")}
+                    onBlur={handleBlur("salary")}
+                    value={values.salary}
+                    error={touched.salary && errors.salary}
+                    inputStyle={styles.input}
+                  />
+                  <TextInput
+                    label="Avantages"
+                    leftIcon="pluscircleo"
+                    placeholder="Avantages"
+                    onChangeText={(value) => {
+                      setFieldValue("advantage", value);
+                    }}
+                    onBlur={handleBlur("advantage")}
+                    value={values.advantage.label}
+                    error={touched.advantage && errors.advantage}
+                    returnKeyType="next"
+                    onSubmitEditing={() => {
+                      if (values.advantage.label !== "") {
+                        setFieldValue("advantages", [
+                          ...values.advantages,
+                          {
+                            label: values.advantage,
+                            id: values.advantages.length + 1,
+                          },
+                        ]);
+                        setFieldValue("advantage", {
+                          label: "",
+                          id: "",
+                        });
+                      }
+                    }}
+                    inputStyle={styles.input}
+                  />
+                  <FlatList
+                    items={values.advantages}
+                    type={"simpleItems"}
+                    listStyle={[
+                      { marginTop: values.advantages.length > 0 ? 15 : 0 },
+                    ]}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    onPressedItem={(item) => {
+                      setFieldValue(
+                        "advantages",
+                        values.advantages.filter(
+                          (advantage) => advantage !== item
+                        )
+                      );
+                    }}
+                  />
+
+                  <TextInput
+                    label="Compétences"
+                    leftIcon="pluscircleo"
+                    placeholder="Compétences"
+                    onChangeText={(value) => {
+                      setFieldValue("skill", value);
+                    }}
+                    onBlur={handleBlur("skill")}
+                    value={values.skill.label}
+                    error={touched.skill && errors.skill}
+                    returnKeyType="next"
+                    onSubmitEditing={() => {
+                      if (values.skill.label !== "") {
+                        setFieldValue("skills", [
+                          ...values.skills,
+                          {
+                            label: values.skill,
+                            id: values.skills.length + 1,
+                          },
+                        ]);
+                        setFieldValue("skill", {
+                          label: "",
+                          id: "",
+                        });
+                      }
+                    }}
+                    inputStyle={styles.input}
+                  />
+
+                  <FlatList
+                    items={values.skills}
+                    type={"simpleItems"}
+                    listStyle={[
+                      { marginTop: values.skills.length > 0 ? 15 : 0 },
+                    ]}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    onPressedItem={(item) => {
+                      setFieldValue(
+                        "skills",
+                        values.skills.filter((skill) => skill !== item)
+                      );
+                    }}
+                  />
+
+                  <TextInput
+                    placeholder="Description"
+                    leftIcon="filetext1"
+                    multiline
+                    onChangeText={handleChange("description")}
+                    value={values.description}
+                    inputStyle={styles.descriptionInput}
+                    inputTextStyle={styles.descriptionInputText}
+                    textArea
+                  ></TextInput>
+
+                  <Button
+                    label="Créer"
+                    hideIcon
+                    onPress={handleSubmit}
+                    buttonStyle={{
+                      marginTop: 15,
+                    }}
+                    labelTypographyStyle={{
+                      color: Colors.main_white,
+                    }}
+                    disabled={
+                      !(
+                        values.title &&
+                        values.startDate &&
+                        values.endDate &&
+                        values.place &&
+                        values.salary &&
+                        values.description &&
+                        values.advantages.length > 0 &&
+                        values.skills.length > 0
+                      )
+                    }
                   />
                 </View>
-
-                <View style={styles.dateTimePickerContainer}>
-                  <Icon name="calendar" size={20} color={Colors.main_grey} />
-                  <Typography
-                    type="l_regular"
-                    typographyStyle={styles.dateTimePickerLabel}
-                  >
-                    Au :
-                  </Typography>
-                  <RNDateTimePicker
-                    value={values.startDate || new Date()}
-                    onChange={(event, selectedDate) => {
-                      setFieldValue("endDate", selectedDate);
-                    }}
-                    style={styles.dateTimePicker}
-                  />
-                </View>
-              </View>
-
-              <SelectDropdown
-                data={etablissementList}
-                onSelect={(selectedItem, index) => {
-                  setFieldValue("place", selectedItem.value);
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem.label;
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item.label;
-                }}
-                defaultButtonText="Selectionner un établissement"
-                renderDropdownIcon={(isOpened) => {
-                  return (
-                    <Icon
-                      name={isOpened ? "up" : "down"}
-                      color={Colors.main_grey}
-                      size={24}
-                    />
-                  );
-                }}
-                dropdownIconPosition={"right"}
-                renderSearchInputLeftIcon={() => {
-                  return (
-                    <Icon
-                      name="search1"
-                      size={20}
-                      color={Colors.main_grey}
-                      style={{ marginLeft: 10 }}
-                    />
-                  );
-                }}
-                search
-                searchPlaceHolder="Rechercher un établissement"
-                buttonStyle={styles.selectButton}
-                buttonTextStyle={styles.selectButtonText}
-                dropdownStyle={styles.dropDown}
-                rowStyle={styles.dropDownRow}
-                rowTextStyle={styles.dropDownRowText}
-              />
-              <TextInput
-                label="Salaire"
-                leftIcon="wallet"
-                placeholder="Salaire"
-                onChangeText={handleChange("salary")}
-                onBlur={handleBlur("salary")}
-                value={values.salary}
-                error={touched.salary && errors.salary}
-                inputStyle={styles.input}
-              />
-              <TextInput
-                label="Avantages"
-                leftIcon="pluscircleo"
-                placeholder="Avantages"
-                onChangeText={(value) => {
-                  setFieldValue("advantage", value);
-                }}
-                onBlur={handleBlur("advantage")}
-                value={values.advantage.label}
-                error={touched.advantage && errors.advantage}
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  if (values.advantage.label !== "") {
-                    setFieldValue("advantages", [
-                      ...values.advantages,
-                      {
-                        label: values.advantage,
-                        id: values.advantages.length + 1,
-                      },
-                    ]);
-                    setFieldValue("advantage", {
-                      label: "",
-                      id: "",
-                    });
-                  }
-                }}
-                inputStyle={styles.input}
-              />
-              <FlatList
-                items={values.advantages}
-                type={"simpleItems"}
-                listStyle={[
-                  { marginTop: values.advantages.length > 0 ? 15 : 0 },
-                ]}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                onPressedItem={(item) => {
-                  setFieldValue(
-                    "advantages",
-                    values.advantages.filter((advantage) => advantage !== item)
-                  );
-                }}
-              />
-
-              <TextInput
-                label="Compétences"
-                leftIcon="pluscircleo"
-                placeholder="Compétences"
-                onChangeText={(value) => {
-                  setFieldValue("skill", value);
-                }}
-                onBlur={handleBlur("skill")}
-                value={values.skill.label}
-                error={touched.skill && errors.skill}
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  if (values.skill.label !== "") {
-                    setFieldValue("skills", [
-                      ...values.skills,
-                      {
-                        label: values.skill,
-                        id: values.skills.length + 1,
-                      },
-                    ]);
-                    setFieldValue("skill", {
-                      label: "",
-                      id: "",
-                    });
-                  }
-                }}
-                inputStyle={styles.input}
-              />
-
-              <FlatList
-                items={values.skills}
-                type={"simpleItems"}
-                listStyle={[{ marginTop: values.skills.length > 0 ? 15 : 0 }]}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                onPressedItem={(item) => {
-                  setFieldValue(
-                    "skills",
-                    values.skills.filter((skill) => skill !== item)
-                  );
-                }}
-              />
-
-              <TextInput
-                placeholder="Description"
-                leftIcon="filetext1"
-                multiline
-                onChangeText={handleChange("description")}
-                value={values.description}
-                onKeyPress={({ nativeEvent }) => {
-                  if (nativeEvent.key === "Enter") {
-                    Keyboard.dismiss();
-                  }
-                }}
-                inputStyle={styles.descriptionInput}
-                inputTextStyle={styles.descriptionInputText}
-              />
-
-              <Button
-                label="Créer"
-                hideIcon
-                onPress={handleSubmit}
-                buttonStyle={{
-                  marginTop: 15,
-                  backgroundColor: Colors.main_white,
-                }}
-                labelTypographyStyle={{ color: Colors.main_white }}
-                disabled={
-                  !(
-                    values.title &&
-                    values.startDate &&
-                    values.endDate &&
-                    values.place &&
-                    values.salary &&
-                    values.description &&
-                    values.advantages.length > 0 &&
-                    values.skills.length > 0
-                  )
-                }
-              />
-            </View>
-          )}
-        </Formik>
-      </View>
+              )}
+            </Formik>
+          </>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </DefaultLayout>
   );
 };
@@ -334,6 +356,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 23,
     paddingRight: 23,
+    backgroundColor: Colors.main_white,
   },
   currentOffersTitle: {
     marginTop: 19,

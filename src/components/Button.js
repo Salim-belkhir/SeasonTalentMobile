@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.medium_grey,
     borderColor: Colors.medium_grey,
   },
+  
 
   delete_disabled: {
     backgroundColor: Colors.medium_grey,

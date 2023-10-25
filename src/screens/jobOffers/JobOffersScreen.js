@@ -5,6 +5,7 @@ import MainHeader from "~/components/MainHeader";
 import NavigatorButton from "~/components/NavigatorButton";
 import { connect } from "react-redux";
 import { View, StyleSheet } from "react-native";
+import { Colors } from "~/theme";
 
 const mapStateToProps = (state) => {
   return {
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 23,
     paddingRight: 23,
+    backgroundColor: Colors.main_white,
   },
   currentOffersTitle: {
     marginTop: 19,

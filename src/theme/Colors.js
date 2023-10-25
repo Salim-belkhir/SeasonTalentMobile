@@ -14,7 +14,7 @@ const material = {
   yellow: "#ffcc00",
   light_grey: "#FAFAFD",
   medium_grey: "#F2F2F3",
-  dark_grey: "#AFB0B6",
+  dark_grey: "#95969D",
 };
 
 /**
