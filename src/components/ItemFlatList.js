@@ -26,6 +26,28 @@ const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
   );
 };
 
+ItemFlatList.Subscription = ({subscription, newSubSelected, onPress}) => {
+  subscription.name = subscription.name.charAt(0).toUpperCase() + subscription.name.slice(1).toLowerCase();
+
+  const backgroundColor = subscription.name === newSubSelected?.name ? `${subscription.color}33` : Colors.pure_white;
+
+  return (
+    <TouchableOpacity onPress={(event) => onPress(subscription)}>
+      <View style={{...styles.cardSub, backgroundColor}}>
+        <Image source={ subscription.logo} style={styles.logoSub} />
+        <View style={styles.sectionTextSub}>
+            <Typography type="l_bold" typographyStyle={{fontSize: 17, color: subscription.color}}>
+              {subscription.name}
+            </Typography>
+            <Typography type="s_regular">
+                {subscription.description}
+            </Typography>
+        </View>
+    </View>
+    </TouchableOpacity>
+  )
+};
+
 export default ItemFlatList;
 
 const styles = StyleSheet.create({
@@ -55,5 +77,29 @@ const styles = StyleSheet.create({
     height: 60,
     resizeMode: "contain",
     marginBottom: 5,
+  },
+  cardSub: {
+    width: "95%",
+    backgroundColor: Colors.pure_white,
+    height: 100,
+    display: "grid",
+    flexDirection: "row",
+    borderRadius: 8,
+    marginRight: "auto",
+    marginLeft: "auto",
+  },
+  sectionTextSub:{
+    width: "80%",
+    marginTop: 25,
+    marginLeft: "auto",
+    display: "flex",
+    flexDirection: "column",
+  },
+  logoSub: {
+      width: 42,
+      height: 42,
+      resizeMode: "contain",
+      marginLeft: 5,
+      marginTop: 5,
   },
 });

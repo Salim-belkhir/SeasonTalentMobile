@@ -1,6 +1,7 @@
 import React from "react";
 import { FlatList as Fl, StyleSheet, View } from "react-native";
 import ItemFlatList from "./ItemFlatList";
+import { TYPE_ITEM_FLAT_LIST } from "~/constants/TypeItemFlatList";
 
 const FlatList = ({
   navigation,
@@ -9,11 +10,20 @@ const FlatList = ({
   itemsStyle,
   listStyle,
   onPressedItem,
+  itemType,
   ...otherProps
 }) => {
-  const renderItem = ({ item }) => (
-    <ItemFlatList item={item} type={type} onPress={onPressedItem} />
-  );
+
+  let renderItem = null;
+
+  switch(itemType){
+    case TYPE_ITEM_FLAT_LIST.SUBSCRIPTION_CARD:
+      renderItem = ({ item }) => <ItemFlatList.Subscription subscription={item} {...otherProps} onPress={onPressedItem} />;
+      break;
+    default:
+      renderItem = ({ item }) => <ItemFlatList item={item} type={type} onPress={onPressedItem} />;
+  }
+  
   const renderSeparator = () => <View style={styles.separator} />;
 
   return (
