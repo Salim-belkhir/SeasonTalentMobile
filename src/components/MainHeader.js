@@ -85,6 +85,30 @@ MainHeader.goBackOnly = function ({ navigation, title }) {
   );
 };
 
+
+MainHeader.arrowBackAndButtonRight = function ({ navigation, labelButton, styleButton, actionButton }) {
+  return (
+    <View style={{...styles.container, marginTop: 50}}>
+      <View style={styles.goBacktitleContainer}>
+        <Button
+          onPress={() => navigation.pop()}
+          buttonStyle={styles.goBackButton}
+        >
+          <Icon name="left" size={28} color={Colors.main_black} />
+        </Button>
+      </View>
+      <Button
+        style={styleButton}
+        onPress={actionButton}
+      >
+        <Typography type="l_bold" typographyStyle={styleButton}>
+          {labelButton}
+        </Typography>
+      </Button>
+    </View>
+  );
+}
+
 export default connect(mapStateToProps)(MainHeader);
 
 const styles = StyleSheet.create({
