@@ -23,5 +23,5 @@ export {
   NavigatorButton,
   MainHeader,
   FlatList,
-  ItemFlatList
+  ItemFlatList,
 };

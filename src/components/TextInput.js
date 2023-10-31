@@ -108,7 +108,7 @@ const TextInput = ({
         )}
         {textArea && (
           <Button
-            label="terminer"
+            label="Terminer"
             buttonStyle={styles.textAreaButton}
             labelTypographyStyle={styles.textAreaButtonLabel}
             hideIcon
@@ -167,10 +167,12 @@ const styles = StyleSheet.create({
   textAreaButton: {
     backgroundColor: "transparent",
     borderWidth: 0,
-    height: 48,
+    position: "absolute",
+    right: 15,
+    bottom: -5,
   },
   textAreaButtonLabel: {
-    color: Colors.dark_grey,
+    color: Colors.main_grey,
   },
 });
 
