@@ -73,14 +73,21 @@ MainHeader.basicHeader = connect(mapStateToProps)(function ({ userInfo }) {
   );
 });
 
-MainHeader.goBackOnly = function ({ navigation, title }) {
+MainHeader.goBackOnly = function ({
+  children,
+  headerStyle,
+  goBackButtonStyle,
+}) {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Typography type="l_medium" typographyStyle={styles.titleAction}>
-          {title}
-        </Typography>
-      </View>
+    <View style={[headerStyle]}>
+      <Button
+        onPress={() => navigation.pop()}
+        buttonStyle={[styles.goBackButton, goBackButtonStyle]}
+      >
+        <Icon name="left" size={28} color={Colors.main_white} />
+      </Button>
+      {children}
     </View>
   );
 };

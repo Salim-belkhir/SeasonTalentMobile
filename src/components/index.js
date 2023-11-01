@@ -10,6 +10,7 @@ import NavigatorButton from "./NavigatorButton";
 import MainHeader from "./MainHeader";
 import FlatList from "./FlatList";
 import ItemFlatList from "./ItemFlatList";
+import DetailsLayout from "./DetailsLayout";
 
 export {
   Button,
@@ -24,4 +25,5 @@ export {
   MainHeader,
   FlatList,
   ItemFlatList,
+  DetailsLayout,
 };

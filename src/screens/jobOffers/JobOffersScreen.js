@@ -29,7 +29,13 @@ const JobOffersScreen = ({ navigation, jobOffers }) => {
             Les offres actuelles
           </Typography>
         </View>
-        <FlatList items={jobOffers} type="horizontalList" />
+        <FlatList
+          items={jobOffers}
+          type="horizontalList"
+          onPressedItem={(item) =>
+            navigation.navigate("EmploisDetails", { item })
+          }
+        />
       </View>
     </DefaultLayout>
   );

@@ -9,6 +9,7 @@ const initialState = {
       company: "Jacquet",
       location: "Montpellier",
       duration: "Juin - Août",
+      salary: "1500€",
       logo: "https://upload.wikimedia.org/wikipedia/commons/b/bb/JACQUET_LOGO_Drapeau_Avec_Ombre.png",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -21,6 +22,7 @@ const initialState = {
       company: "Google",
       location: "Paris",
       duration: "CDI",
+      salary: "1500€",
       logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -38,6 +40,7 @@ const initialState = {
       company: "Apple",
       location: "Cupertino",
       duration: "CDI",
+      salary: "1500€",
       logo: "https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202106080953",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -55,6 +58,7 @@ const initialState = {
       company: "Facebook",
       location: "Menlo Park",
       duration: "CDI",
+      salary: "1500€",
       logo: "https://www.facebook.com/images/fb_icon_325x325.png",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -72,6 +76,7 @@ const initialState = {
       company: "Microsoft",
       location: "Redmond",
       duration: "CDI",
+      salary: "1500€",
       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1024px-Microsoft_logo.svg.png",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -89,6 +94,7 @@ const initialState = {
       company: "Netflix",
       location: "Los Gatos",
       duration: "CDI",
+      salary: "1500€",
       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1024px-Netflix_2015_logo.svg.png",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -104,6 +110,7 @@ const initialState = {
       id: 9,
       title: "Développeur Ruby",
       company: "Airbnb",
+      salary: "1500€",
       location: "San Francisco",
       duration: "CDI",
       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/1024px-Airbnb_Logo_B%C3%A9lo.svg.png",
@@ -123,6 +130,7 @@ const initialState = {
       company: "Amazon",
       location: "Seattle",
       duration: "CDI",
+      salary: "1500€",
       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -140,6 +148,7 @@ const initialState = {
       company: "Spotify",
       location: "Stockholm",
       duration: "CDI",
+      salary: "1500€",
       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
