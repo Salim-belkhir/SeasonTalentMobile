@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet, Platform } from "react-native";
 import { Typography, TextInput, FlatList, Button } from "~/components";
@@ -15,6 +15,7 @@ import { jobOfferActions } from "~/redux/actions";
 // Define mapDispatchToProps to connect createJobOffer action to the component
 const mapDispatchToProps = {
   createJobOffer: jobOfferActions.createJobOffer,
+  updateJobOffer: jobOfferActions.updateJobOffer,
 };
 
 // Define the validation schema for the form
@@ -33,7 +34,7 @@ const initialValues = {
   title: "",
   startDate: "",
   endDate: "",
-  place: "",
+  company: "",
   salary: "",
   description: "",
   advantage: { label: "", id: "" },
@@ -71,39 +72,73 @@ const etablissementList = [
  * @param {Function} props.createJobOffer - The function to create a job offer.
  * @returns {JSX.Element} - The component's elements.
  */
-const CreateJobOfferForm = ({ createJobOffer }) => {
+const CreateJobOfferForm = ({
+  createJobOffer,
+  updateJobOffer,
+  dataToUpdate,
+}) => {
   const navigation = useNavigation();
 
+  // add advantage and skill to dataToUpdate if they don't exist
+  if (dataToUpdate && !dataToUpdate.advantage) {
+    dataToUpdate.advantage = { label: "", id: "" };
+  }
+
+  if (dataToUpdate && !dataToUpdate.skill) {
+    dataToUpdate.skill = { label: "", id: "" };
+  }
+
+  // Define the initial values for the form fields, checking for the presence of dataToUpdate
+  const initialFormValues = dataToUpdate ? { ...dataToUpdate } : initialValues;
+
+  // If there is dataToUpdate, set the initial form values to update an existing job offer
+  const [formValues, setFormValues] = React.useState(initialFormValues);
+
+  // Handle setting initial values when dataToUpdate changes
+  useEffect(() => {
+    if (dataToUpdate) {
+      setFormValues({ ...dataToUpdate });
+    }
+  }, [dataToUpdate]);
+
   /**
-   * Handles the submission of the form.
+   * Handles the submission of the form to either create or update a job offer.
    *
    * @param {Object} values - The form values.
    */
-  const handleCreateJobOffer = (values) => {
-    // add a field logo with a random logo from internet
-    createJobOffer({
+  const handleJobOfferAction = (values) => {
+    const jobOfferData = {
       ...values,
+      id: dataToUpdate ? dataToUpdate.id : Math.random().toString(),
       logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-      // format the date to be like this : "01 Janvier - 31 Janvier"
-      duration: `${values.startDate.toLocaleString("default", {
-        month: "long",
-        day: "numeric",
-      })} - ${values.endDate.toLocaleString("default", {
-        month: "long",
-        day: "numeric",
-      })}`,
-      location: etablissementList.find(
-        (etablissement) => etablissement.value === values.place
-      ).location,
-    });
+      location: dataToUpdate
+        ? dataToUpdate.location
+        : etablissementList.find(
+            (etablissement) => etablissement.value === values.company
+          ).location,
+      startDate: values.startDate.toISOString(),
+      endDate: values.endDate.toISOString(),
+    };
+
+    if (dataToUpdate) {
+      // If dataToUpdate exists, update the job offer
+      // Assuming an update function from jobOfferActions is available
+      // Recompany 'updateJobOffer' with your actual update function
+
+      updateJobOffer(jobOfferData);
+    } else {
+      // Otherwise, create a new job offer
+      createJobOffer(jobOfferData);
+    }
+
     navigation.navigate("EmploisHome");
   };
 
   // Define the props for the Formik component
   const formikProps = {
-    initialValues: initialValues,
+    initialValues: formValues,
     validationSchema,
-    onSubmit: handleCreateJobOffer,
+    onSubmit: handleJobOfferAction,
   };
 
   return (
@@ -118,6 +153,11 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
         setFieldValue,
       }) => (
         <>
+          <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
+            {dataToUpdate
+              ? "Modification d’une offre d’emploi"
+              : " Création d’une offre d’emploi"}
+          </Typography>
           <KeyboardAwareScrollView
             contentContainerStyle={styles.scrollContent}
             extraScrollHeight={Platform.OS === "ios" ? 200 : 0}
@@ -163,13 +203,20 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
                   Du :
                 </Typography>
                 <RNDateTimePicker
-                  value={values.startDate || new Date()}
+                  value={
+                    dataToUpdate
+                      ? new Date(dataToUpdate.startDate)
+                      : values.startDate
+                      ? new Date(values.startDate)
+                      : new Date()
+                  }
                   onChange={(event, selectedDate) => {
                     setFieldValue("startDate", selectedDate);
                   }}
                   style={styles.dateTimePicker}
                   textColor={Colors.primary_color}
                   accentColor={Colors.primary_color}
+                  locale="fr-FR"
                 />
               </View>
 
@@ -200,13 +247,20 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
                   Au :
                 </Typography>
                 <RNDateTimePicker
-                  value={values.startDate || new Date()}
+                  value={
+                    dataToUpdate
+                      ? new Date(dataToUpdate.endDate)
+                      : values.endDate
+                      ? new Date(values.endDate)
+                      : new Date()
+                  }
                   onChange={(event, selectedDate) => {
                     setFieldValue("endDate", selectedDate);
                   }}
                   style={styles.dateTimePicker}
                   textColor={Colors.primary_color}
                   accentColor={Colors.primary_color}
+                  locale="fr-FR"
                 />
               </View>
             </View>
@@ -214,7 +268,7 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
             <SelectDropdown
               data={etablissementList}
               onSelect={(selectedItem, index) => {
-                setFieldValue("place", selectedItem.value);
+                setFieldValue("company", selectedItem.value);
               }}
               buttonTextAfterSelection={(selectedItem, index) => {
                 return selectedItem.label;
@@ -228,7 +282,7 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
                   <Icon
                     name={isOpened ? "up" : "down"}
                     color={
-                      values.place ? Colors.primary_color : Colors.main_grey
+                      values.company ? Colors.primary_color : Colors.main_grey
                     }
                     size={24}
                   />
@@ -249,11 +303,11 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
               searchPlaceHolder="Rechercher un établissement"
               buttonStyle={[
                 styles.selectButton,
-                values.place && { borderBottomColor: Colors.primary_color },
+                values.company && { borderBottomColor: Colors.primary_color },
               ]}
               buttonTextStyle={[
                 styles.selectButtonText,
-                values.place && { color: Colors.primary_color },
+                values.company && { color: Colors.primary_color },
               ]}
               dropdownStyle={styles.dropDown}
               rowStyle={styles.dropDownRow}
@@ -272,8 +326,8 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
             />
             <TextInput
               label="Avantages"
-              leftIcon="pluscircleo"
               placeholder="Avantages"
+              leftIcon="pluscircleo"
               onChangeText={(value) => {
                 setFieldValue("advantage", value);
               }}
@@ -314,8 +368,8 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
 
             <TextInput
               label="Compétences"
-              leftIcon="pluscircleo"
               placeholder="Compétences"
+              leftIcon="pluscircleo"
               onChangeText={(value) => {
                 setFieldValue("skill", value);
               }}
@@ -367,7 +421,7 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
             />
           </KeyboardAwareScrollView>
           <Button
-            label="Créer"
+            label={dataToUpdate ? "Modifier" : "Créer"}
             hideIcon
             onPress={handleSubmit}
             buttonStyle={{
@@ -378,16 +432,31 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
               color: Colors.main_white,
             }}
             disabled={
-              !(
-                values.title &&
-                values.startDate &&
-                values.endDate &&
-                values.place &&
-                values.salary &&
-                values.description &&
-                values.advantages.length > 0 &&
-                values.skills.length > 0
-              )
+              // If dataToUpdate exists
+              dataToUpdate
+                ? // Check if all fields in dataToUpdate are the same as the form values
+                  Object.keys(dataToUpdate).every((key) => {
+                    if (key === "advantages" || key === "skills") {
+                      return (
+                        dataToUpdate[key].length === values[key].length &&
+                        dataToUpdate[key].every(
+                          (item, index) => item === values[key][index]
+                        )
+                      );
+                    }
+                    return dataToUpdate[key] === values[key];
+                  })
+                : // If form values are not filled or have missing required fields
+                  !(
+                    values.title &&
+                    values.startDate &&
+                    values.endDate &&
+                    values.company &&
+                    values.salary &&
+                    values.description &&
+                    values.advantages.length > 0 &&
+                    values.skills.length > 0
+                  )
             }
           />
         </>
@@ -399,6 +468,11 @@ const CreateJobOfferForm = ({ createJobOffer }) => {
 export default connect(null, mapDispatchToProps)(CreateJobOfferForm);
 
 const styles = StyleSheet.create({
+  currentOffersTitle: {
+    marginTop: 19,
+    marginBottom: 21,
+    fontSize: 16,
+  },
   dateTimePickersContainer: {
     flexDirection: "row",
     justifyContent: "space-between",

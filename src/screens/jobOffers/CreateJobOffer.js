@@ -4,15 +4,12 @@ import { MainHeader, Typography, DefaultLayout } from "~/components";
 import { CreateJobOfferForm } from "~/components/JobOffersComponents";
 import { Colors } from "~/theme";
 
-const CreateJobOffer = () => {
+const CreateJobOffer = ({ route }) => {
   return (
     <DefaultLayout>
       <View style={styles.container}>
         <MainHeader.basicHeader />
-        <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
-          Création d’une offre d’emploi
-        </Typography>
-        <CreateJobOfferForm />
+        <CreateJobOfferForm dataToUpdate={route.params?.data} />
       </View>
     </DefaultLayout>
   );
@@ -26,10 +23,5 @@ const styles = StyleSheet.create({
     paddingLeft: 23,
     paddingRight: 23,
     backgroundColor: Colors.main_white,
-  },
-  currentOffersTitle: {
-    marginTop: 19,
-    marginBottom: 21,
-    fontSize: 16,
   },
 });

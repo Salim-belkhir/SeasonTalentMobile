@@ -6,7 +6,6 @@ import { Colors } from "~/theme";
 const BottomTab = createBottomTabNavigator();
 
 const MainBottomTabNavigator = () => {
-  
   const handleScreenListeners = ({ navigation }) => {
     const recursivelyFindRouteName = ({ routes, index }) => {
       if (routes[index].state) {
@@ -17,8 +16,6 @@ const MainBottomTabNavigator = () => {
     };
 
     const currentScreen = recursivelyFindRouteName(navigation.getState());
-
-    console.log(currentScreen);
 
     // Use a switch case to handle different screen names
     switch (currentScreen) {

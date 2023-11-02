@@ -15,7 +15,7 @@ const DetailsLayout = ({ data }) => {
     >
       <DetailsHeader data={data} />
       <DetailsTabContent data={data} />
-      <DetailsFooter />
+      <DetailsFooter data={data} />
     </View>
   );
 };

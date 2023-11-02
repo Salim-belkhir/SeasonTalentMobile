@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     bottom: -5,
   },
   textAreaButtonLabel: {
-    color: Colors.main_grey,
+    color: Colors.primary_color,
   },
 });
 

@@ -1,11 +1,12 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Button } from "~/components";
+import Button from "../Button";
 import { Colors } from "~/theme";
 import { useNavigation } from "@react-navigation/native";
 
 const DetailsFooter = ({ data }) => {
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Button

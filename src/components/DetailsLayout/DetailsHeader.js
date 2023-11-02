@@ -8,23 +8,33 @@ import Icon from "../Icon";
 import { useNavigation } from "@react-navigation/native";
 import AlertModal from "../Modal";
 import { connect } from "react-redux";
-import { deleteJobOffer } from "~/redux/actions";
+import { jobOfferActions } from "~/redux/actions";
 
-const mapDispatchToProps = (dispatch) => ({
-  deleteJobOffer: (id) => dispatch(deleteJobOffer(id)),
-});
-
-const DetailsHeader = ({ data }) => {
+// Define mapDispatchToProps to connect createJobOffer action to the component
+const mapDispatchToProps = {
+  deleteJobOffer: jobOfferActions.deleteJobOffer,
+};
+const DetailsHeader = ({ data, deleteJobOffer }) => {
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState(false);
-
-  const deleteJobOffer = () => setShowModal(true);
+  
+  const deleteJobModal = () => setShowModal(true);
   const confirmDelete = () => {
     setShowModal(false);
     deleteJobOffer(data.id);
     navigation.pop();
   };
   const cancelDelete = () => setShowModal(false);
+
+  const start = new Date(data.startDate).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "short",
+  });
+
+  const end = new Date(data.endDate).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "short",
+  });
 
   return (
     <MainHeader.goBackOnly
@@ -52,7 +62,10 @@ const DetailsHeader = ({ data }) => {
         <View style={styles.otherInfosContainer}>
           {[
             { name: "enviroment", text: data.company },
-            { name: "calendar", text: data.duration },
+            {
+              name: "calendar",
+              text: start + " - " + end,
+            },
             { name: "wallet", text: data.salary },
           ].map(({ name, text }) => (
             <View key={name} style={styles.info}>
@@ -64,7 +77,7 @@ const DetailsHeader = ({ data }) => {
           ))}
         </View>
       </View>
-      <Button buttonStyle={styles.rightActionButton} onPress={deleteJobOffer}>
+      <Button buttonStyle={styles.rightActionButton} onPress={deleteJobModal}>
         <Icon name="delete" size={30} color={Colors.error_color} />
       </Button>
     </MainHeader.goBackOnly>
