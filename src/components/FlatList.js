@@ -21,7 +21,7 @@ const FlatList = ({
       data={items}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
-      numColumns={type === "horizontalList" ? 2 : 1}
+      numColumns={type === "horizontalList" && 2}
       ItemSeparatorComponent={renderSeparator}
       contentContainerStyle={[styles.list, listStyle]}
       showsVerticalScrollIndicator={false}
@@ -37,5 +37,4 @@ const styles = StyleSheet.create({
   separator: {
     height: 20,
   },
-  list: {},
 });

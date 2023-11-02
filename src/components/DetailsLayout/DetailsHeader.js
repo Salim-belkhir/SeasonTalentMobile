@@ -7,24 +7,24 @@ import Typography from "../Typography";
 import Icon from "../Icon";
 import { useNavigation } from "@react-navigation/native";
 import AlertModal from "../Modal";
+import { connect } from "react-redux";
+import { deleteJobOffer } from "~/redux/actions";
+
+const mapDispatchToProps = (dispatch) => ({
+  deleteJobOffer: (id) => dispatch(deleteJobOffer(id)),
+});
 
 const DetailsHeader = ({ data }) => {
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState(false);
 
-  const deleteJobOffer = () => {
-    setShowModal(true);
-  };
-
+  const deleteJobOffer = () => setShowModal(true);
   const confirmDelete = () => {
-    console.log("delete");
-    //navigate to previous screen
+    setShowModal(false);
+    deleteJobOffer(data.id);
     navigation.pop();
   };
-
-  const cancelDelete = () => {
-    setShowModal(false);
-  };
+  const cancelDelete = () => setShowModal(false);
 
   return (
     <MainHeader.goBackOnly
@@ -50,24 +50,18 @@ const DetailsHeader = ({ data }) => {
         </Typography>
 
         <View style={styles.otherInfosContainer}>
-          <View style={styles.info}>
-            <Icon name="enviroment" size={20} color={Colors.main_white} />
-            <Typography type="l_regular" typographyStyle={styles.infoText}>
-              {data.company}
-            </Typography>
-          </View>
-          <View style={styles.info}>
-            <Icon name="calendar" size={20} color={Colors.main_white} />
-            <Typography type="l_regular" typographyStyle={styles.infoText}>
-              {data.duration}
-            </Typography>
-          </View>
-          <View style={styles.info}>
-            <Icon name="wallet" size={20} color={Colors.main_white} />
-            <Typography type="l_regular" typographyStyle={styles.infoText}>
-              {data.salary}
-            </Typography>
-          </View>
+          {[
+            { name: "enviroment", text: data.company },
+            { name: "calendar", text: data.duration },
+            { name: "wallet", text: data.salary },
+          ].map(({ name, text }) => (
+            <View key={name} style={styles.info}>
+              <Icon name={name} size={16} color={Colors.main_white} />
+              <Typography type="l_regular" typographyStyle={styles.infoText}>
+                {text}
+              </Typography>
+            </View>
+          ))}
         </View>
       </View>
       <Button buttonStyle={styles.rightActionButton} onPress={deleteJobOffer}>
@@ -77,7 +71,7 @@ const DetailsHeader = ({ data }) => {
   );
 };
 
-export default DetailsHeader;
+export default connect(null, mapDispatchToProps)(DetailsHeader);
 
 const styles = StyleSheet.create({
   container: {
@@ -141,9 +135,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: `${Colors.main_white}70`,
     borderRadius: 50,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-    marginLeft: 15,
+    paddingHorizontal: 8,
+    margin: 12,
   },
   infoText: {
     fontSize: 14,

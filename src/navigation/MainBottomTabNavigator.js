@@ -6,7 +6,8 @@ import { Colors } from "~/theme";
 const BottomTab = createBottomTabNavigator();
 
 const MainBottomTabNavigator = () => {
-  const handleScreenListeners = ({ navigation, route }) => {
+  
+  const handleScreenListeners = ({ navigation }) => {
     const recursivelyFindRouteName = ({ routes, index }) => {
       if (routes[index].state) {
         return recursivelyFindRouteName(routes[index].state);
@@ -14,16 +15,22 @@ const MainBottomTabNavigator = () => {
         return routes[index].name;
       }
     };
+
     const currentScreen = recursivelyFindRouteName(navigation.getState());
 
-    // TODO: change it by a switch case
-    if (
-      currentScreen === "EmploisDetails" ||
-      currentScreen === "EmploisAjouter"
-    ) {
-      navigation.setOptions({ tabBarStyle: { display: "none" } });
-    } else {
-      navigation.setOptions({ tabBarStyle: { display: "flex" } });
+    console.log(currentScreen);
+
+    // Use a switch case to handle different screen names
+    switch (currentScreen) {
+      case "EmploisDetails":
+      case "EmploisAjouter":
+        navigation.setOptions({
+          tabBarStyle: { display: "none" },
+        });
+        break;
+      default:
+        navigation.setOptions({ tabBarStyle: { display: "flex" } });
+        break;
     }
   };
 
@@ -43,6 +50,9 @@ const MainBottomTabNavigator = () => {
         };
       }}
       screenListeners={handleScreenListeners}
+      setOptions={{
+        headerShown: false,
+      }}
     >
       <BottomTab.Screen
         name="Candidats"

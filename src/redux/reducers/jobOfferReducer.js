@@ -5,34 +5,50 @@ const initialState = {
   jobOffers: [
     {
       id: 1,
-      title: "Préparateur de commande",
-      company: "Jacquet",
-      location: "Montpellier",
-      duration: "Juin - Août",
-      salary: "1500€",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/b/bb/JACQUET_LOGO_Drapeau_Avec_Ombre.png",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
-      advantages: ["Salaire compétitif", "Télétravail", "Mutuelle"],
-      skills: ["Rigueur", "Sens de l'organisation", "Travail en équipe"],
-    },
-    {
-      id: 2,
-      title: "Développeur Fullstack",
+      title: "Développeur Fullstack JS",
       company: "Google",
-      location: "Paris",
+      location: "Mountain View",
       duration: "CDI",
       salary: "1500€",
       logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis varit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis varvit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis varit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis it amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nis",
       advantages: [
-        "Salaire compétitif",
-        "Télétravail",
-        "Mutuelle",
-        "Stock options",
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+        {
+          id: 4,
+          label: "Stock options",
+        },
       ],
-      skills: ["JavaScript", "React", "Node.js", "MongoDB"],
+      skills: [
+        {
+          id: 1,
+          label: "JavaScript",
+        },
+        {
+          id: 2,
+          label: "React",
+        },
+        {
+          id: 3,
+          label: "Node.js",
+        },
+        {
+          id: 4,
+          label: "MongoDB",
+        },
+      ],
     },
     {
       id: 3,
@@ -45,12 +61,41 @@ const initialState = {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
       advantages: [
-        "Salaire compétitif",
-        "Télétravail",
-        "Mutuelle",
-        "Stock options",
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+        {
+          id: 4,
+          label: "Stock options",
+        },
       ],
-      skills: ["Design thinking", "Adobe Creative Suite", "Sketch", "Figma"],
+      skills: [
+        {
+          id: 1,
+          label: "Design thinking",
+        },
+        {
+          id: 2,
+          label: "Adobe Creative Suite",
+        },
+        {
+          id: 3,
+          label: "Sketch",
+        },
+        {
+          id: 4,
+          label: "Figma",
+        },
+      ],
     },
     {
       id: 5,
@@ -63,12 +108,41 @@ const initialState = {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
       advantages: [
-        "Salaire compétitif",
-        "Télétravail",
-        "Mutuelle",
-        "Stock options",
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+        {
+          id: 4,
+          label: "Stock options",
+        },
       ],
-      skills: ["Swift", "Objective-C", "Xcode", "iOS SDK"],
+      skills: [
+        {
+          id: 1,
+          label: "Swift",
+        },
+        {
+          id: 2,
+          label: "Objective-C",
+        },
+        {
+          id: 3,
+          label: "Xcode",
+        },
+        {
+          id: 4,
+          label: "iOS SDK",
+        },
+      ],
     },
     {
       id: 6,
@@ -81,12 +155,41 @@ const initialState = {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
       advantages: [
-        "Salaire compétitif",
-        "Télétravail",
-        "Mutuelle",
-        "Stock options",
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+        {
+          id: 4,
+          label: "Stock options",
+        },
       ],
-      skills: ["Java", "Spring", "Hibernate", "Maven"],
+      skills: [
+        {
+          id: 1,
+          label: "Java",
+        },
+        {
+          id: 2,
+          label: "Spring",
+        },
+        {
+          id: 3,
+          label: "Hibernate",
+        },
+        {
+          id: 4,
+          label: "Maven",
+        },
+      ],
     },
     {
       id: 7,
@@ -99,12 +202,41 @@ const initialState = {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
       advantages: [
-        "Salaire compétitif",
-        "Télétravail",
-        "Mutuelle",
-        "Stock options",
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+        {
+          id: 4,
+          label: "Stock options",
+        },
       ],
-      skills: ["Python", "Django", "Flask", "Pandas"],
+      skills: [
+        {
+          id: 1,
+          label: "Python",
+        },
+        {
+          id: 2,
+          label: "Django",
+        },
+        {
+          id: 3,
+          label: "Flask",
+        },
+        {
+          id: 4,
+          label: "Pandas",
+        },
+      ],
     },
     {
       id: 9,
@@ -117,12 +249,41 @@ const initialState = {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
       advantages: [
-        "Salaire compétitif",
-        "Télétravail",
-        "Mutuelle",
-        "Stock options",
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+        {
+          id: 4,
+          label: "Stock options",
+        },
       ],
-      skills: ["Ruby", "Ruby on Rails", "RSpec", "Capistrano"],
+      skills: [
+        {
+          id: 1,
+          label: "Ruby",
+        },
+        {
+          id: 2,
+          label: "Ruby on Rails",
+        },
+        {
+          id: 3,
+          label: "RSpec",
+        },
+        {
+          id: 4,
+          label: "Capistrano",
+        },
+      ],
     },
     {
       id: 10,
@@ -135,12 +296,41 @@ const initialState = {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
       advantages: [
-        "Salaire compétitif",
-        "Télétravail",
-        "Mutuelle",
-        "Stock options",
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+        {
+          id: 4,
+          label: "Stock options",
+        },
       ],
-      skills: ["C++", "STL", "Boost", "Qt"],
+      skills: [
+        {
+          id: 1,
+          label: "C++",
+        },
+        {
+          id: 2,
+          label: "STL",
+        },
+        {
+          id: 3,
+          label: "Boost",
+        },
+        {
+          id: 4,
+          label: "Qt",
+        },
+      ],
     },
     {
       id: 12,
@@ -152,8 +342,42 @@ const initialState = {
       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
-      advantages: ["Salaire compétitif", "Télétravail", "Mutuelle"],
-      skills: ["Go", "Gin", "MongoDB", "Docker"],
+      advantages: [
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+        {
+          id: 4,
+          label: "Stock options",
+        },
+      ],
+      skills: [
+        {
+          id: 1,
+          label: "Go",
+        },
+        {
+          id: 2,
+          label: "Docker",
+        },
+        {
+          id: 3,
+          label: "Kubernetes",
+        },
+        {
+          id: 4,
+          label: "Terraform",
+        },
+      ],
     },
   ],
   loading: false,
