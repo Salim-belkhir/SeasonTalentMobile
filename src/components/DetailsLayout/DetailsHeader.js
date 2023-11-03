@@ -17,7 +17,7 @@ const mapDispatchToProps = {
 const DetailsHeader = ({ data, deleteJobOffer }) => {
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState(false);
-  
+
   const deleteJobModal = () => setShowModal(true);
   const confirmDelete = () => {
     setShowModal(false);
@@ -40,6 +40,7 @@ const DetailsHeader = ({ data, deleteJobOffer }) => {
     <MainHeader.goBackOnly
       headerStyle={styles.container}
       goBackButtonStyle={styles.goBackButton}
+      colorIcon={Colors.main_white}
     >
       <AlertModal
         visible={showModal}
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 23,
     alignItems: "center",
     justifyContent: "center",
+    zIndex: -1,
   },
   companyLogo: {
     width: 100,

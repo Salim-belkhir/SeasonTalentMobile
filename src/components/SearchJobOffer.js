@@ -6,7 +6,7 @@ import Button from "./Button";
 import Icon from "./Icon";
 import { Colors } from "~/theme";
 
-const SearchJobOffer = () => {
+const SearchJobOffer = ({ setIsSearching }) => {
   return (
     <Formik
       initialValues={{ search: "" }}
@@ -19,6 +19,7 @@ const SearchJobOffer = () => {
             leftIcon="search1"
             onChangeText={handleChange("search")}
             onBlur={handleBlur("search")}
+            onFocus={() => setIsSearching(true)}
             value={values.search}
             inputStyle={styles.textInput}
           />

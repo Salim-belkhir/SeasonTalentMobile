@@ -77,6 +77,7 @@ MainHeader.goBackOnly = function ({
   children,
   headerStyle,
   goBackButtonStyle,
+  colorIcon,
 }) {
   const navigation = useNavigation();
   return (
@@ -85,7 +86,19 @@ MainHeader.goBackOnly = function ({
         onPress={() => navigation.pop()}
         buttonStyle={[styles.goBackButton, goBackButtonStyle]}
       >
-        <Icon name="left" size={28} color={Colors.main_white} />
+        <Icon name="left" size={28} color={colorIcon || Colors.main_black} />
+      </Button>
+      {children}
+    </View>
+  );
+};
+
+MainHeader.exitOnly = function ({ children, headerStyle, colorIcon, onPress }) {
+  const navigation = useNavigation();
+  return (
+    <View style={[headerStyle]}>
+      <Button onPress={onPress} buttonStyle={styles.goBackButton}>
+        <Icon name="close" size={28} color={colorIcon || Colors.main_black} />
       </Button>
       {children}
     </View>
@@ -118,8 +131,8 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
   profilePicture: {
-    width: 54,
-    height: 54,
+    width: 50,
+    height: 50,
     borderRadius: 50,
     resizeMode: "contain",
     borderColor: Colors.primary_color,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, SearchJobOffer, Typography } from "~/components";
 import DefaultLayout from "~/components/DefaultLayout";
 import MainHeader from "~/components/MainHeader";
@@ -7,19 +7,33 @@ import { connect } from "react-redux";
 import { View, StyleSheet } from "react-native";
 import { Colors } from "~/theme";
 
-const mapStateToProps = (state) => {
-  return {
-    jobOffers: state.jobOffers.jobOffers,
-  };
-};
+const mapStateToProps = (state) => ({
+  jobOffers: state.jobOffers.jobOffers,
+});
 
 const JobOffersScreen = ({ navigation, jobOffers }) => {
+  const [isSearching, setIsSearching] = useState(false);
+
+  const header = !isSearching ? (
+    <MainHeader navigation={navigation} />
+  ) : (
+    <MainHeader.exitOnly
+      headerStyle={styles.headerStyle}
+      goBackButtonStyle={styles.goBackButton}
+      onPress={() => setIsSearching(false)}
+    >
+      <Typography type="l_bold" typographyStyle={styles.headerTitle}>
+        Recherche
+      </Typography>
+    </MainHeader.exitOnly>
+  );
+
   return (
     <DefaultLayout navigation={navigation}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <MainHeader navigation={navigation} />
-          <SearchJobOffer />
+          {header}
+          <SearchJobOffer setIsSearching={setIsSearching} />
           <NavigatorButton
             label="Créer une offre d'emploi"
             leftIcon="plus"
@@ -55,4 +69,14 @@ const styles = StyleSheet.create({
     marginBottom: 21,
     fontSize: 16,
   },
+  headerStyle: {
+    marginTop: 65,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerTitle: {
+    fontSize: 20,
+    alignSelf: "center",
+  },
+  goBackButton: {},
 });
