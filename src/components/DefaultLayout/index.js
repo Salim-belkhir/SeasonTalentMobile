@@ -5,7 +5,7 @@ import { Colors } from "~/theme";
 const DefaultLayout = ({ children }) => {
   return (
     <TouchableWithoutFeedback
-      style={{ backgroundColor: Colors.main_white }}
+      style={{ backgroundColor: Colors.main_white, flex: 1 }}
       onPress={Keyboard.dismiss}
     >
       {children}

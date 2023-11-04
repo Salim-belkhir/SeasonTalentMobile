@@ -1,16 +1,22 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { MainNavigator } from "~/navigation";
 import { useFonts } from "expo-font";
 import { Fonts, Colors } from "~/theme";
 import * as SplashScreen from "expo-splash-screen";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import store from "~/redux/store";
 import { Provider } from "react-redux";
+import { enableScreens } from "react-native-screens";
 
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const [fontsLoaded] = useFonts(Fonts.CUSTOM_FONTS);
+  useEffect(() => {
+    if (Platform.OS === "ios") {
+      enableScreens(false);
+    }
+  }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {

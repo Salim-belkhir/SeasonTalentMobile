@@ -19,6 +19,7 @@ const MainBottomTabNavigator = () => {
 
     // Use a switch case to handle different screen names
     switch (currentScreen) {
+      case "EmploisRecherche":
       case "EmploisDetails":
       case "EmploisAjouter":
         navigation.setOptions({
@@ -34,17 +35,15 @@ const MainBottomTabNavigator = () => {
   return (
     <BottomTab.Navigator
       initialRouteName="Emplois"
-      screenOptions={({ route }) => {
-        return {
-          tabBarActiveTintColor: Colors.primary_color,
-          tabBarInactiveTintColor: Colors.main_grey,
-          headerShown: false,
-          tabBarLabelStyle: {
-            fontSize: 12,
-            fontFamily: "Montserrat-Regular",
-            fontWeight: "500",
-          },
-        };
+      screenOptions={{
+        tabBarActiveTintColor: Colors.primary_color,
+        tabBarInactiveTintColor: Colors.main_grey,
+        headerShown: false,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontFamily: "Montserrat-Regular",
+          fontWeight: "500",
+        },
       }}
       screenListeners={handleScreenListeners}
       setOptions={{

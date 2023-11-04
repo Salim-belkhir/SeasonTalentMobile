@@ -1,7 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { JobOffersScreen, CreateJobOffer } from "~/screens";
-import DetailsJobOffer from "~/screens/jobOffers/DetailsJobOfferScreen";
+import { JobOffersScreen, CreateJobOffer, DetailsJobOffer } from "~/screens";
 import SearchNavigator from "./SearchNavigator";
 
 const Stack = createNativeStackNavigator();
@@ -15,8 +14,8 @@ const JobOffersNavigator = () => {
       }}
     >
       <Stack.Screen name="EmploisHome" component={JobOffersScreen} />
-      <Stack.Screen name="EmploisDetails" component={DetailsJobOffer} />
       <Stack.Screen name="EmploisAjouter" component={CreateJobOffer} />
+      <Stack.Screen name="EmploisDetails" component={DetailsJobOffer} />
       <Stack.Screen
         name="EmploisRecherche"
         component={SearchNavigator}

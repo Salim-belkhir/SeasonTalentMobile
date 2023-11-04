@@ -9,8 +9,8 @@ const DetailsLayout = ({ data }) => {
   return (
     <View
       style={{
-        backgroundColor: Colors.main_white,
         flex: 1,
+        backgroundColor: Colors.main_white,
       }}
     >
       <DetailsHeader data={data} />

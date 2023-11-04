@@ -7,7 +7,7 @@ import Icon from "./Icon";
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "~/theme";
 
-const SearchJobOffer = ({ setIsSearching, setSearchHistory }) => {
+const SearchJobOffer = ({ setSearchHistory, action }) => {
   const navigation = useNavigation();
   const handleSubmit = (values, { resetForm }) => {
     setSearchHistory((history) => [values.search, ...history]);
@@ -23,7 +23,7 @@ const SearchJobOffer = ({ setIsSearching, setSearchHistory }) => {
             leftIcon="search1"
             onChangeText={handleChange("search")}
             onBlur={handleBlur("search")}
-            onFocus={() => navigation.navigate("EmploisRecherche")}
+            onFocus={action}
             value={values.search}
             inputStyle={styles.textInput}
             onSubmitEditing={handleSubmit}
