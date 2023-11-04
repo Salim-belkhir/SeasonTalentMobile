@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginTop: 19,
+    marginTop: 16,
   },
   textInput: {
     height: 48,

@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderWidth: 0,
     marginRight: 22,
-    height: 60,
     width: 40,
   },
 });

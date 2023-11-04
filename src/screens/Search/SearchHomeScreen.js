@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import { MainHeader, Typography, SearchJobOffer, Button } from "~/components";
+import {
+  MainHeader,
+  Typography,
+  SearchJobOffer,
+  Button,
+  Icon,
+} from "~/components";
 import { Colors } from "~/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -37,19 +43,42 @@ const SearchHome = ({ navigation, route }) => {
         </Typography>
       </MainHeader.exitOnly>
       <SearchJobOffer setSearchHistory={setSearchHistory} />
-      <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
-        Historique des recherche
-      </Typography>
-      <Button
-        label="Effacer l'historique"
-        onPress={clear}
-        hideIcon
-        buttonStyle={{ marginBottom: 35 }}
-      />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
+          Historique des recherche
+        </Typography>
+        <Button
+          label="Effacer"
+          onPress={clear}
+          hideIcon
+          buttonStyle={{
+            backgroundColor: "transparent",
+            borderColor: "transparent",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 0,
+            paddingVertical: 0,
+          }}
+          labelTypographyStyle={{
+            color: Colors.error_color,
+            fontSize: 14,
+          }}
+        />
+      </View>
       {searchHistory.length > 0 &&
         searchHistory.map((item, index) => (
           <View key={index} style={styles.tabContentTextContainer}>
-            <Typography type="l_medium">{item}</Typography>
+            <Icon name="sync" size={24} color={Colors.main_grey} />
+            <Typography type="l_medium" typographyStyle={styles.historyText}>
+              {item}
+            </Typography>
+            <Icon name="close" size={24} color={Colors.main_grey} />
           </View>
         ))}
       <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
@@ -69,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.main_white,
   },
   headerStyle: {
-    marginTop: 65,
+    marginTop: 70,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -90,12 +119,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: Colors.main_white,
-    borderRadius: 9,
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderColor: Colors.main_grey,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    height: 52,
+    flexWrap: "wrap",
     marginBottom: 10,
+    paddingVertical: 10,
+  },
+  historyText: {
+    color: Colors.main_grey,
+    width: "80%",
   },
 });
