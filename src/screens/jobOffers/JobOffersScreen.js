@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, SearchJobOffer, Typography } from "~/components";
 import DefaultLayout from "~/components/DefaultLayout";
 import MainHeader from "~/components/MainHeader";
@@ -6,6 +6,7 @@ import NavigatorButton from "~/components/NavigatorButton";
 import { connect } from "react-redux";
 import { View, StyleSheet } from "react-native";
 import { Colors } from "~/theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const mapStateToProps = (state) => ({
   jobOffers: state.jobOffers.jobOffers,
@@ -13,6 +14,19 @@ const mapStateToProps = (state) => ({
 
 const JobOffersScreen = ({ navigation, jobOffers }) => {
   const [isSearching, setIsSearching] = useState(false);
+  const [searchHistory, setSearchHistory] = useState([]);
+
+  useEffect(() => {
+    AsyncStorage.getItem("searchHistory").then((history) => {
+      if (history) {
+        setSearchHistory(JSON.parse(history));
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    AsyncStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+  }, [searchHistory]);
 
   const header = !isSearching ? (
     <MainHeader navigation={navigation} />
@@ -28,28 +42,53 @@ const JobOffersScreen = ({ navigation, jobOffers }) => {
     </MainHeader.exitOnly>
   );
 
+  const currentOffersTitle = !isSearching
+    ? "Offres d'emploi actuelles"
+    : "Historique des recherches";
+
+  const recentlyViewedTitle = "Récemmment consultés";
+
   return (
     <DefaultLayout navigation={navigation}>
       <View style={styles.container}>
         <View style={styles.header}>
           {header}
-          <SearchJobOffer setIsSearching={setIsSearching} />
-          <NavigatorButton
-            label="Créer une offre d'emploi"
-            leftIcon="plus"
-            navigate={() => navigation.push("EmploisAjouter")}
+          <SearchJobOffer
+            setIsSearching={setIsSearching}
+            setSearchHistory={setSearchHistory}
           />
+          {!isSearching && (
+            <NavigatorButton
+              label="Créer une offre d'emploi"
+              leftIcon="plus"
+              navigate={() => navigation.push("EmploisAjouter")}
+            />
+          )}
           <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
-            Les offres actuelles
+            {currentOffersTitle}
           </Typography>
         </View>
-        <FlatList
-          items={jobOffers}
-          type="horizontalList"
-          onPressedItem={(item) =>
-            navigation.navigate("EmploisDetails", { item })
-          }
-        />
+        {!isSearching ? (
+          <FlatList
+            items={jobOffers}
+            type="horizontalList"
+            onPressedItem={(item) =>
+              navigation.navigate("EmploisDetails", { item })
+            }
+          />
+        ) : (
+          searchHistory.length > 0 &&
+          searchHistory.map((item, index) => (
+            <View key={index} style={styles.tabContentTextContainer}>
+              <Typography type="l_medium">{item}</Typography>
+            </View>
+          ))
+        )}
+        {isSearching && (
+          <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
+            {recentlyViewedTitle}
+          </Typography>
+        )}
       </View>
     </DefaultLayout>
   );

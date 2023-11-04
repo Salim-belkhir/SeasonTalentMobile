@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import TextInput from "./TextInput";
 import { Formik } from "formik";
 import Button from "./Button";
 import Icon from "./Icon";
+import { useNavigation } from "@react-navigation/native";
 import { Colors } from "~/theme";
 
-const SearchJobOffer = ({ setIsSearching }) => {
+const SearchJobOffer = ({ setIsSearching, setSearchHistory }) => {
+  const navigation = useNavigation();
+  const handleSubmit = (values, { resetForm }) => {
+    setSearchHistory((history) => [values.search, ...history]);
+    resetForm({ values: { search: "" } });
+  };
+
   return (
-    <Formik
-      initialValues={{ search: "" }}
-      onSubmit={(values) => console.log(values)}
-    >
+    <Formik initialValues={{ search: "" }} onSubmit={handleSubmit}>
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
           <TextInput
@@ -19,9 +23,10 @@ const SearchJobOffer = ({ setIsSearching }) => {
             leftIcon="search1"
             onChangeText={handleChange("search")}
             onBlur={handleBlur("search")}
-            onFocus={() => setIsSearching(true)}
+            onFocus={() => navigation.navigate("EmploisRecherche")}
             value={values.search}
             inputStyle={styles.textInput}
+            onSubmitEditing={handleSubmit}
           />
           <Button hideIcon buttonStyle={styles.button}>
             <Icon name="filter" size={24} color={Colors.primary_color} />
