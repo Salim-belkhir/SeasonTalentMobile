@@ -41,24 +41,23 @@ export default SearchJobOffer;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    flexWrap: "wrap",
     marginTop: 16,
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    flexDirection: "row",
   },
   textInput: {
-    height: 48,
-    width: 300,
-    borderWidth: 1,
-    borderRadius: 12,
+    width: "85%",
     backgroundColor: Colors.medium_grey,
     borderColor: Colors.medium_grey,
+    height: 48,
+    borderRadius: 12,
   },
   button: {
-    width: 60,
     height: 48,
-    marginLeft: 8,
     borderRadius: 12,
     backgroundColor: Colors.medium_grey,
     borderColor: Colors.medium_grey,
+    width: "13%",
   },
 });

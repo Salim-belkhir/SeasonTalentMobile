@@ -61,7 +61,7 @@ const TextInput = ({
   };
 
   return (
-    <View>
+    <>
       <View
         style={
           // lets accept more styles from the outside
@@ -121,29 +121,32 @@ const TextInput = ({
           {error}
         </Typography>
       )}
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    alignItems: "center",
     borderWidth: 1,
     borderColor: Colors.main_grey,
     borderRadius: 9,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingVertical: 8,
     height: 52,
+    // hiden overflow
+    overflow: "hidden",
+    alignItems: "center",
   },
   focusedContainer: {
     borderColor: Colors.primary_color,
   },
   input: {
-    flex: 1,
-    marginLeft: 8,
     fontSize: 15,
     fontFamily: "Montserrat-medium",
+    height: "100%",
+    flex: 1,
+    marginRight: 8,
   },
   icon: {
     marginRight: 8,

@@ -31,6 +31,18 @@ const SearchHome = ({ navigation, route }) => {
     setSearchHistory([]);
   };
 
+  const renderSearchHistory = () => {
+    return searchHistory.map((item, index) => (
+      <View key={index} style={styles.tabContentTextContainer}>
+        <Icon name="sync" size={24} color={Colors.main_grey} />
+        <Typography type="l_medium" typographyStyle={styles.historyText}>
+          {item}
+        </Typography>
+        <Icon name="close" size={24} color={Colors.main_grey} />
+      </View>
+    ));
+  };
+
   return (
     <View style={styles.container}>
       <MainHeader.exitOnly
@@ -57,30 +69,11 @@ const SearchHome = ({ navigation, route }) => {
           label="Effacer"
           onPress={clear}
           hideIcon
-          buttonStyle={{
-            backgroundColor: "transparent",
-            borderColor: "transparent",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingHorizontal: 0,
-            paddingVertical: 0,
-          }}
-          labelTypographyStyle={{
-            color: Colors.error_color,
-            fontSize: 14,
-          }}
+          buttonStyle={styles.clearButton}
+          labelTypographyStyle={styles.clearButtonText}
         />
       </View>
-      {searchHistory.length > 0 &&
-        searchHistory.map((item, index) => (
-          <View key={index} style={styles.tabContentTextContainer}>
-            <Icon name="sync" size={24} color={Colors.main_grey} />
-            <Typography type="l_medium" typographyStyle={styles.historyText}>
-              {item}
-            </Typography>
-            <Icon name="close" size={24} color={Colors.main_grey} />
-          </View>
-        ))}
+      {searchHistory.length > 0 && renderSearchHistory()}
       <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
         Récemmment consultés
       </Typography>
@@ -128,5 +121,17 @@ const styles = StyleSheet.create({
   historyText: {
     color: Colors.main_grey,
     width: "80%",
+  },
+  clearButton: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+  },
+  clearButtonText: {
+    color: Colors.error_color,
+    fontSize: 14,
   },
 });
