@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import JobOffersNavigator from "./JobOffersNavigator";
-import { CandidatesScreen, CompaniesScreen, ProfileScreen } from "~/screens";
 import { Icon } from "~/components";
+import { CandidatesScreen, CompaniesScreen, ProfileScreen } from "~/screens";
 import { Colors } from "~/theme";
+import JobOffersNavigator from "./JobOffersNavigator";
 const BottomTab = createBottomTabNavigator();
 
 const MainBottomTabNavigator = () => {
@@ -20,6 +20,7 @@ const MainBottomTabNavigator = () => {
     // Use a switch case to handle different screen names
     switch (currentScreen) {
       case "EmploisRecherche":
+      case "SearchResults":
       case "EmploisDetails":
       case "EmploisAjouter":
         navigation.setOptions({

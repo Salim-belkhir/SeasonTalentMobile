@@ -1,16 +1,10 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import SearchResultsLayout from "../../components/SearchResultsLayout";
 
-const SearchResults = ({}) => {
-  return (
-    <View style={styles.container}>
-      <Text>SearchResults</Text>
-    </View>
-  );
+const SearchResults = ({ route }) => {
+  return <SearchResultsLayout searchResults={route.params} />;
 };
 
 export default SearchResults;
 
-const styles = StyleSheet.create({
-  container: {},
-});
+const styles = StyleSheet.create({});

@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
-import TextInput from "./TextInput";
+import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
+import { StyleSheet, View } from "react-native";
+import { Colors } from "~/theme";
 import Button from "./Button";
 import Icon from "./Icon";
-import { useNavigation } from "@react-navigation/native";
-import { Colors } from "~/theme";
+import TextInput from "./TextInput";
 
-const SearchJobOffer = ({ setSearchHistory, action, setSearch }) => {
+const SearchJobOffer = ({
+  setSearchHistory,
+  action,
+  setSearch,
+  searchResults,
+}) => {
   const navigation = useNavigation();
   const handleSubmit = (values, { resetForm }) => {
     if (values.search === "") {
@@ -15,6 +19,11 @@ const SearchJobOffer = ({ setSearchHistory, action, setSearch }) => {
     }
     setSearchHistory((history) => [values.search, ...history]);
     resetForm({ values: { search: "" } });
+    setSearch("");
+    navigation.navigate("SearchResults", {
+      searchValue: values.search,
+      results: searchResults ,
+    });
   };
 
   return (

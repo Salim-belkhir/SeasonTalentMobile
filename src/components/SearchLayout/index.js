@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import { Colors } from "~/theme";
-import SearchHeader from "./SeaarchHeader";
+import SearchHeader from "./SearchHeader";
 import SearchHistory from "./SearchHistory";
 import SearchSuggestion from "./SearchSuggestion";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const mapStateToProps = (state) => ({
   jobOffers: state.jobOffers.jobOffers,
@@ -46,6 +46,7 @@ const SearchLayout = ({ jobOffers }) => {
         setSearch={setSearch}
         setSuggestedJobOffers={setSuggestedJobOffers}
         jobOffers={jobOffers}
+        searchResults={suggestedJobOffers}
       />
       {suggestedJobOffers.length === 0 && search === "" ? (
         <SearchHistory

@@ -1,1 +1,3 @@
-export * from "./listUtils";
+import { renderItems } from "./listUtils";
+
+export { renderItems };

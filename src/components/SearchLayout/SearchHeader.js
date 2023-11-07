@@ -1,19 +1,23 @@
-import React from "react";
-import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import _ from "lodash";
+import { StyleSheet } from "react-native";
 import MainHeader from "../MainHeader";
 import SearchJobOffer from "../SearchJobOffer";
 import Typography from "../Typography";
-import _ from "lodash";
+// import LottieView from "lottie-react-native";
 
 const SearchHeader = ({
   setSearchHistory,
   setSearch,
   setSuggestedJobOffers,
   jobOffers,
+  searchResults,
 }) => {
   const navigation = useNavigation();
+  // const [showLottie, setShowLottie] = useState(false);
+
   const handleSearch = _.debounce((text) => {
+    // setShowLottie(true);
     setSearch(text);
     if (text) {
       const matchingJobOffers = jobOffers.filter((jobOffer) =>
@@ -26,6 +30,7 @@ const SearchHeader = ({
     } else {
       setSuggestedJobOffers([]);
     }
+    // setShowLottie(false);
   }, 500);
 
   return (
@@ -42,7 +47,16 @@ const SearchHeader = ({
       <SearchJobOffer
         setSearchHistory={setSearchHistory}
         setSearch={handleSearch}
+        searchResults={searchResults}
       />
+      {/* {showLottie && (
+        <LottieView
+          source={require("~/assets/lotties/loading-dots.json")}
+          autoPlay
+          loop
+          style={styles.lottie}
+        />
+      )} */}
     </>
   );
 };
@@ -60,4 +74,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: "center",
   },
+  // lottie: {
+  //   height: 100,
+  //   backgroundColor: "#fff",
+  // },
 });

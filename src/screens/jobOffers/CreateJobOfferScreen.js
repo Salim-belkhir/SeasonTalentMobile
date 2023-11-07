@@ -1,6 +1,5 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { MainHeader, Typography, DefaultLayout } from "~/components";
+import { StyleSheet, View } from "react-native";
+import { DefaultLayout, MainHeader } from "~/components";
 import { CreateJobOfferForm } from "~/components/JobOffersComponents";
 import { Colors } from "~/theme";
 

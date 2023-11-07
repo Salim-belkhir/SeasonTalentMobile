@@ -1,5 +1,4 @@
 import { StyleSheet, Text } from "react-native";
-import React from "react";
 import { Colors, Fonts } from "~/theme";
 
 /**
@@ -48,9 +47,11 @@ const styles = StyleSheet.create({
   s_regular: Fonts.small_body_regular,
   s_medium: Fonts.small_body_medium,
   s_bold: Fonts.small_body_bold,
+  s_semibold: Fonts.small_body_semibold,
   l_regular: Fonts.large_body_regular,
   l_medium: Fonts.large_body_medium,
   l_bold: Fonts.large_body_bold,
+  l_semibold: Fonts.large_body_semibold,
 
   disabled: {
     color: Colors.dark_grey,

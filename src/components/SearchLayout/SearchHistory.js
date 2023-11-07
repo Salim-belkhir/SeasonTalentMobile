@@ -1,9 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
-import { highlightSearchText, renderItems } from "~/utils";
+import { renderItems } from "~/utils";
 import Button from "../Button";
 import Icon from "../Icon";
 import Typography from "../Typography";
@@ -20,7 +18,7 @@ const searchHistory = ({ search, setSearchHistory, searchHistory }) => {
       <View key={index} style={styles.tabContentTextContainer}>
         <Icon name="sync" size={24} color={Colors.main_grey} />
         <Typography type="l_medium" typographyStyle={styles.historyText}>
-          {highlightSearchText(item, search)}
+          {item}
         </Typography>
         <Button
           hideIcon

@@ -2,10 +2,32 @@ import { useNavigation } from "@react-navigation/native";
 import { ScrollView, StyleSheet, View } from "react-native";
 import Typography from "../Typography";
 import { Colors } from "~/theme";
-import { highlightSearchText, renderItems } from "~/utils";
+import { renderItems } from "~/utils";
 
 const SearchSuggestion = ({ search, suggestedJobOffers }) => {
   const navigation = useNavigation();
+  const highlightSearchText = (text, search) => {
+    if (!search) {
+      return text;
+    }
+    const regex = new RegExp(`(${search})`, "gi");
+    return (
+      <>
+        {text.split(regex).map((part, i) =>
+          regex.test(part) ? (
+            <Typography key={i} type="l_bold">
+              {part}
+            </Typography>
+          ) : (
+            <Typography key={i} type="l_regular">
+              {part}
+            </Typography>
+          )
+        )}
+      </>
+    );
+  };
+
   const renderSuggestedJobOffers = () => {
     if (suggestedJobOffers.length > 0) {
       return (

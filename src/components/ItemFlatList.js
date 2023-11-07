@@ -1,7 +1,6 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
-import Typography from "./Typography";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Colors } from "~/theme";
+import Typography from "./Typography";
 
 const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
   const commonStyles = {
@@ -20,6 +19,7 @@ const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
     ...commonStyles.itemStyle,
     height: 38,
     paddingHorizontal: 15,
+    backgroundColor: Colors.pure_white,
   };
 
   const itemStyles = {
@@ -47,7 +47,7 @@ const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
             {item.label}
           </Typography>
         </View>
-      ) : (
+      ) : type === "horizontalList" ? (
         <View style={[itemStyles, itemStyle]}>
           <Image source={{ url: item.logo }} style={styles.logoPicture} />
           <Typography
@@ -69,6 +69,30 @@ const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
           </Typography>
           <Typography type="xs_medium">{item.location}</Typography>
         </View>
+      ) : (
+        <View style={styles.simpleDetailedItemContainer}>
+          <Image source={{ url: item.logo }} style={styles.logoPictureSimple} />
+          <View style={styles.titleAndSalaryContainer}>
+            <Typography type="s_semibold" typographyStyle={styles.title}>
+              {item.title}
+            </Typography>
+            <Typography type="s_regular">{item.salary} €/m</Typography>
+            <Typography type="s_regular" typographyStyle={styles.otherInfo}>
+              {item.location}
+            </Typography>
+            <Typography type="s_regular" typographyStyle={styles.otherInfo}>
+              {new Date(item.startDate).toLocaleDateString("fr-FR", {
+                day: "numeric",
+                month: "short",
+              }) +
+                " - " +
+                new Date(item.endDate).toLocaleDateString("fr-FR", {
+                  day: "numeric",
+                  month: "short",
+                })}
+            </Typography>
+          </View>
+        </View>
       )}
     </TouchableOpacity>
   );
@@ -82,5 +106,36 @@ const styles = StyleSheet.create({
     height: 60,
     resizeMode: "contain",
     marginBottom: 5,
+  },
+  logoPictureSimple: {
+    width: 53,
+    height: 43,
+    resizeMode: "contain",
+  },
+
+  simpleDetailedItemContainer: {
+    backgroundColor: Colors.pure_white,
+    borderRadius: 20,
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    alignItems: "center",
+    paddingVertical: 2,
+    width: "100%",
+    height: 74,
+  },
+  titleAndSalaryContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginLeft: 20,
+    width: "80%",
+    flexWrap: "wrap",
+  },
+  title: {
+    width: "70%",
+    height: 25,
+    overflow: "hidden",
+  },
+  otherInfo: {
+    color: Colors.dark_grey,
   },
 });
