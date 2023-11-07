@@ -7,9 +7,12 @@ import Icon from "./Icon";
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "~/theme";
 
-const SearchJobOffer = ({ setSearchHistory, action }) => {
+const SearchJobOffer = ({ setSearchHistory, action, setSearch }) => {
   const navigation = useNavigation();
   const handleSubmit = (values, { resetForm }) => {
+    if (values.search === "") {
+      return;
+    }
     setSearchHistory((history) => [values.search, ...history]);
     resetForm({ values: { search: "" } });
   };
@@ -21,7 +24,10 @@ const SearchJobOffer = ({ setSearchHistory, action }) => {
           <TextInput
             placeholder="Rechercher une offre"
             leftIcon="search1"
-            onChangeText={handleChange("search")}
+            onChangeText={(Text) => {
+              handleChange("search")(Text);
+              setSearch(Text);
+            }}
             onBlur={handleBlur("search")}
             onFocus={action}
             value={values.search}

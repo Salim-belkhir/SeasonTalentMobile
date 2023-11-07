@@ -11,6 +11,7 @@ import MainHeader from "./MainHeader";
 import FlatList from "./FlatList";
 import ItemFlatList from "./ItemFlatList";
 import DetailsLayout from "./DetailsLayout";
+import SearchLayout from "./SearchLayout";
 
 export {
   Button,
@@ -26,4 +27,5 @@ export {
   FlatList,
   ItemFlatList,
   DetailsLayout,
+  SearchLayout,
 };
