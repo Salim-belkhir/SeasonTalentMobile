@@ -1,12 +1,13 @@
-import React, { useCallback, useEffect } from "react";
-import { MainNavigator } from "~/navigation";
 import { useFonts } from "expo-font";
-import { Fonts, Colors } from "~/theme";
 import * as SplashScreen from "expo-splash-screen";
-import { View, StyleSheet, Platform } from "react-native";
-import store from "~/redux/store";
-import { Provider } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { Platform, StyleSheet, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
+import { Provider } from "react-redux";
+import { MainNavigator } from "~/navigation";
+import store from "~/redux/store";
+import { Colors, Fonts } from "~/theme";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,7 +32,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <View onLayout={onLayoutRootView} style={globalStyles.container}>
-        <MainNavigator />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <MainNavigator />
+        </GestureHandlerRootView>
       </View>
     </Provider>
   );

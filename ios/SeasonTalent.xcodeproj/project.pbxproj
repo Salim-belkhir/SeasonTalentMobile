@@ -368,7 +368,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.SeasonTalent;
-				PRODUCT_NAME = "SeasonTalent";
+				PRODUCT_NAME = SeasonTalent;
 				SWIFT_OBJC_BRIDGING_HEADER = "SeasonTalent/SeasonTalent-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -400,7 +400,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.SeasonTalent;
-				PRODUCT_NAME = "SeasonTalent";
+				PRODUCT_NAME = SeasonTalent;
 				SWIFT_OBJC_BRIDGING_HEADER = "SeasonTalent/SeasonTalent-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -471,6 +471,7 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
+					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -535,6 +536,7 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
+					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;

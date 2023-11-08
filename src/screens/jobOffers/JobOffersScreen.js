@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Keyboard, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import {
+  BottomSheetFilters,
   DefaultLayout,
   FlatList,
   MainHeader,
@@ -15,6 +17,7 @@ const mapStateToProps = (state) => ({
 });
 
 const JobOffersScreen = ({ navigation, jobOffers }) => {
+  const [showFilter, setShowFilter] = useState(false);
   const handleSearchJobOffer = () => {
     Keyboard.dismiss();
     navigation.push("EmploisRecherche");
@@ -33,7 +36,11 @@ const JobOffersScreen = ({ navigation, jobOffers }) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <MainHeader navigation={navigation} />
-          <SearchJobOffer action={handleSearchJobOffer} />
+          <SearchJobOffer
+            action={handleSearchJobOffer}
+            setShowFilter={setShowFilter}
+            showFilter={showFilter}
+          />
           <NavigatorButton
             label="Créer une offre d'emploi"
             leftIcon="plus"
@@ -43,13 +50,15 @@ const JobOffersScreen = ({ navigation, jobOffers }) => {
             Offres d'emploi actuelles
           </Typography>
         </View>
-
         <FlatList
           items={jobOffers}
           type="horizontalList"
           onPressedItem={handleNavigateToJobOfferDetails}
           listStyle={styles.jobOffersList}
         />
+        {showFilter && (
+          <BottomSheetFilters open={showFilter} setOpen={setShowFilter} />
+        )}
       </View>
     </DefaultLayout>
   );

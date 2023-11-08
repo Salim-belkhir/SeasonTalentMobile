@@ -16,6 +16,7 @@ const SearchJobOffer = ({
   searchResults,
   resultsReady,
   setSearchReady,
+  setShowFilter,
 }) => {
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState(false);
@@ -72,7 +73,11 @@ const SearchJobOffer = ({
             // disable the return key on the keyboard until the results are ready
             returnKeyType="search"
           />
-          <Button hideIcon buttonStyle={styles.button}>
+          <Button
+            hideIcon
+            buttonStyle={styles.button}
+            onPress={() => setShowFilter(true)}
+          >
             <Icon name="filter" size={24} color={Colors.primary_color} />
           </Button>
         </View>

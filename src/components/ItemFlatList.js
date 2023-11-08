@@ -102,10 +102,10 @@ export default ItemFlatList;
 
 const styles = StyleSheet.create({
   logoPicture: {
-    width: 60,
-    height: 60,
+    width: 63,
+    height: 43,
     resizeMode: "contain",
-    marginBottom: 5,
+    marginBottom: 8,
   },
   logoPictureSimple: {
     width: 53,
