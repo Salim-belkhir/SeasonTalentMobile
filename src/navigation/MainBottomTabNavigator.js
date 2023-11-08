@@ -21,6 +21,7 @@ const MainBottomTabNavigator = () => {
     switch (currentScreen) {
       case "EmploisRecherche":
       case "SearchResults":
+      case "SearchHome":
       case "EmploisDetails":
       case "EmploisAjouter":
         navigation.setOptions({

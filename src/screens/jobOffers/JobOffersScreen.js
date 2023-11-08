@@ -1,14 +1,13 @@
-import React from "react";
+import { Keyboard, StyleSheet, View } from "react-native";
+import { connect } from "react-redux";
 import {
   DefaultLayout,
   FlatList,
-  SearchJobOffer,
-  Typography,
   MainHeader,
   NavigatorButton,
+  SearchJobOffer,
+  Typography,
 } from "~/components";
-import { connect } from "react-redux";
-import { View, StyleSheet, Keyboard } from "react-native";
 import { Colors } from "~/theme";
 
 const mapStateToProps = (state) => ({
@@ -49,6 +48,7 @@ const JobOffersScreen = ({ navigation, jobOffers }) => {
           items={jobOffers}
           type="horizontalList"
           onPressedItem={handleNavigateToJobOfferDetails}
+          listStyle={styles.jobOffersList}
         />
       </View>
     </DefaultLayout>
@@ -60,13 +60,19 @@ export default connect(mapStateToProps)(JobOffersScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 23,
-    paddingRight: 23,
     backgroundColor: Colors.main_white,
   },
   currentOffersTitle: {
     marginTop: 19,
-    marginBottom: 21,
     fontSize: 16,
+  },
+  header: {
+    paddingHorizontal: 23,
+    paddingBottom: 15,
+    backgroundColor: Colors.pure_white,
+  },
+  jobOffersList: {
+    marginTop: 10,
+    paddingHorizontal: 19,
   },
 });

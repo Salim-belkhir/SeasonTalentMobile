@@ -42,6 +42,7 @@ const SearchLayout = ({ jobOffers }) => {
   return (
     <View style={styles.container}>
       <SearchHeader
+        searchHistory={searchHistory}
         setSearchHistory={setSearchHistory}
         setSearch={setSearch}
         setSuggestedJobOffers={setSuggestedJobOffers}

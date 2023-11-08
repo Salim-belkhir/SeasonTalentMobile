@@ -1,13 +1,11 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Colors } from "~/theme";
 import { renderItems } from "~/utils";
 import Typography from "../Typography";
 
-const SearchSuggestion = ({
-  search,
-  suggestedJobOffers,
-}) => {
+const SearchSuggestion = ({ search, suggestedJobOffers }) => {
   const navigation = useNavigation();
   const highlightSearchText = (text, search) => {
     if (!search) {
@@ -39,11 +37,35 @@ const SearchSuggestion = ({
           showsVerticalScrollIndicator={false}
         >
           {renderItems(suggestedJobOffers, (jobOffer) => (
-            <View key={jobOffer.id} style={styles.suggestedOffer}>
+            <TouchableOpacity
+              key={jobOffer.id}
+              style={styles.suggestedOffer}
+              onPress={() => {
+                navigation.navigate("EmploisDetails", { item: jobOffer });
+                AsyncStorage.getItem("consultedOffers").then((offers) => {
+                  if (offers) {
+                    const consultedOffers = JSON.parse(offers);
+                    if (
+                      !consultedOffers.find((offer) => offer.id === jobOffer.id)
+                    ) {
+                      AsyncStorage.setItem(
+                        "consultedOffers",
+                        JSON.stringify([...consultedOffers, jobOffer])
+                      );
+                    }
+                  } else {
+                    AsyncStorage.setItem(
+                      "consultedOffers",
+                      JSON.stringify([jobOffer])
+                    );
+                  }
+                });
+              }}
+            >
               <Typography type="l_medium">
                 {highlightSearchText(jobOffer.title, search)}
               </Typography>
-            </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       );

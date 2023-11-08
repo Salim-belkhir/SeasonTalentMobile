@@ -9,6 +9,7 @@ import AlertModal from "./Modal";
 import TextInput from "./TextInput";
 
 const SearchJobOffer = ({
+  searchHistory,
   setSearchHistory,
   action,
   setSearch,
@@ -25,11 +26,18 @@ const SearchJobOffer = ({
     resetForm({ values: { search: "" } });
     setSearch("");
     if (resultsReady) {
-      setSearchHistory((history) => [values.search, ...history]);
+      //check before if the search is already in the history
+      if (!searchHistory.includes(values.search)) {
+        setSearchHistory((history) => [values.search, ...history]);
+      } else {
+        setSearchHistory((history) => [
+          values.search,
+          ...history.filter((historyItem) => historyItem !== values.search),
+        ]);
+      }
       navigation.navigate("SearchResults", {
         searchValue: values.search,
         results: searchResults,
-
       });
     } else {
       setShowModal(true);

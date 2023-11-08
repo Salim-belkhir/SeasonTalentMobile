@@ -13,6 +13,7 @@ const SearchHeader = ({
   setSuggestedJobOffers,
   jobOffers,
   searchResults,
+  searchHistory,
 }) => {
   const navigation = useNavigation();
   const [showLottie, setShowLottie] = useState(false);
@@ -51,6 +52,7 @@ const SearchHeader = ({
         </Typography>
       </MainHeader.exitOnly>
       <SearchJobOffer
+        searchHistory={searchHistory}
         setSearchHistory={setSearchHistory}
         setSearch={handleSearch}
         searchResults={searchResults}

@@ -4,7 +4,7 @@ import Typography from "./Typography";
 
 const commonStyles = {
   itemStyle: {
-    borderRadius: 8,
+    borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -24,8 +24,9 @@ const simpleItemStyles = {
 const itemStyles = {
   ...commonStyles.itemStyle,
   backgroundColor: `${Colors.primary_color}33`,
-  width: "95%",
   height: 170,
+  marginLeft: 5,
+  marginRight: 5,
 };
 
 const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {

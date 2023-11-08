@@ -1,11 +1,9 @@
-import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SearchHome, SearchResults } from "~/screens";
 
 const SearchStack = createNativeStackNavigator();
 
 const SearchNavigator = ({ route }) => {
-  console.log(route.params.type);
   return (
     <SearchStack.Navigator
       initialRouteName="SearchHome"
@@ -19,10 +17,7 @@ const SearchNavigator = ({ route }) => {
         component={SearchHome}
         initialParams={{ type: route.params.type }}
       />
-      <SearchStack.Screen
-        name="SearchResults"
-        component={SearchResults}
-      />
+      <SearchStack.Screen name="SearchResults" component={SearchResults} />
     </SearchStack.Navigator>
   );
 };
