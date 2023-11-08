@@ -1,9 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
 import Button from "./Button";
 import Icon from "./Icon";
+import AlertModal from "./Modal";
 import TextInput from "./TextInput";
 
 const SearchJobOffer = ({
@@ -11,37 +13,56 @@ const SearchJobOffer = ({
   action,
   setSearch,
   searchResults,
+  resultsReady,
+  setSearchReady,
 }) => {
   const navigation = useNavigation();
+  const [showModal, setShowModal] = useState(false);
   const handleSubmit = (values, { resetForm }) => {
     if (values.search === "") {
       return;
     }
-    setSearchHistory((history) => [values.search, ...history]);
     resetForm({ values: { search: "" } });
     setSearch("");
-    navigation.navigate("SearchResults", {
-      searchValue: values.search,
-      results: searchResults ,
-    });
+    if (resultsReady) {
+      setSearchHistory((history) => [values.search, ...history]);
+      navigation.navigate("SearchResults", {
+        searchValue: values.search,
+        results: searchResults,
+
+      });
+    } else {
+      setShowModal(true);
+    }
   };
 
   return (
     <Formik initialValues={{ search: "" }} onSubmit={handleSubmit}>
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
+          {showModal && (
+            <AlertModal
+              title="Aucun résultat"
+              message="Attention, il faut attendre que les résultats soient prêts avant de valider la recherche."
+              onClose={() => setShowModal(false)}
+              type="warning"
+            />
+          )}
           <TextInput
             placeholder="Rechercher une offre"
             leftIcon="search1"
             onChangeText={(Text) => {
               handleChange("search")(Text);
               setSearch(Text);
+              setSearchReady(false);
             }}
             onBlur={handleBlur("search")}
             onFocus={action}
             value={values.search}
             inputStyle={styles.textInput}
             onSubmitEditing={handleSubmit}
+            // disable the return key on the keyboard until the results are ready
+            returnKeyType="search"
           />
           <Button hideIcon buttonStyle={styles.button}>
             <Icon name="filter" size={24} color={Colors.primary_color} />

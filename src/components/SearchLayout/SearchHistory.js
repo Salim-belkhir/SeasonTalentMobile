@@ -3,37 +3,62 @@ import { StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
 import { renderItems } from "~/utils";
 import Button from "../Button";
+import FlatList from "../FlatList";
 import Icon from "../Icon";
 import Typography from "../Typography";
 
-const searchHistory = ({ search, setSearchHistory, searchHistory }) => {
+const SearchHistory = ({
+  search,
+  setSearchHistory,
+  searchHistory,
+  setConsultedOffers,
+  consultedOffers,
+}) => {
   const navigation = useNavigation();
 
   const clear = () => {
     setSearchHistory([]);
   };
 
-  const renderSearchHistory = () => {
-    return renderItems(searchHistory.slice(0, 3), (item, index) => (
-      <View key={index} style={styles.tabContentTextContainer}>
-        <Icon name="sync" size={24} color={Colors.main_grey} />
-        <Typography type="l_medium" typographyStyle={styles.historyText}>
-          {item}
-        </Typography>
-        <Button
-          hideIcon
-          buttonStyle={styles.clearButton}
-          onPress={() => {
-            setSearchHistory((history) =>
-              history.filter((historyItem) => historyItem !== item)
-            );
-          }}
-        >
-          <Icon name="close" size={24} color={Colors.main_grey} />
-        </Button>
-      </View>
-    ));
+  const clearCurrentOffers = () => {
+    setConsultedOffers([]);
   };
+
+  const handleNavigateToJobOfferDetails = (item) => {
+    navigation.navigate("EmploisDetails", { item });
+  };
+
+  const renderSearchHistoryItem = (item, index) => (
+    <View key={index} style={styles.tabContentTextContainer}>
+      <Icon name="sync" size={24} color={Colors.main_grey} />
+      <Typography type="l_medium" typographyStyle={styles.historyText}>
+        {item}
+      </Typography>
+      <Button
+        hideIcon
+        buttonStyle={styles.clearButton}
+        onPress={() => {
+          setSearchHistory((history) =>
+            history.filter((historyItem) => historyItem !== item)
+          );
+        }}
+      >
+        <Icon name="close" size={24} color={Colors.main_grey} />
+      </Button>
+    </View>
+  );
+
+  const renderSearchHistory = () => {
+    return renderItems(searchHistory.slice(0, 3), renderSearchHistoryItem);
+  };
+
+  const renderConsultedOffers = () => (
+    <FlatList
+      items={consultedOffers}
+      onPressedItem={handleNavigateToJobOfferDetails}
+      listStyle={styles.consultedOffersList}
+    />
+  );
 
   return (
     <>
@@ -49,17 +74,38 @@ const searchHistory = ({ search, setSearchHistory, searchHistory }) => {
           labelTypographyStyle={styles.clearButtonText}
         />
       </View>
-      {searchHistory.length > 0 && renderSearchHistory()}
-      <View style={styles.consultedContainer}>
+      {searchHistory.length > 0 ? (
+        renderSearchHistory()
+      ) : (
+        <Typography type="l_medium" typographyStyle={styles.noHistoryText}>
+          Vous n'avez pas encore effectué de recherche
+        </Typography>
+      )}
+
+      <View style={styles.historyContainer}>
         <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
           Récemmment consultés
         </Typography>
+        <Button
+          label="Effacer"
+          onPress={clearCurrentOffers}
+          hideIcon
+          buttonStyle={styles.clearButton}
+          labelTypographyStyle={styles.clearButtonText}
+        />
       </View>
+      {consultedOffers.length > 0 ? (
+        renderConsultedOffers()
+      ) : (
+        <Typography type="l_medium" typographyStyle={styles.noHistoryText}>
+          Vous n'avez pas encore consulté d'offres
+        </Typography>
+      )}
     </>
   );
 };
 
-export default searchHistory;
+export default SearchHistory;
 
 const styles = StyleSheet.create({
   historyContainer: {
@@ -103,5 +149,11 @@ const styles = StyleSheet.create({
 
   consultedContainer: {
     marginTop: 16,
+  },
+  consultedOffersList: {
+    marginTop: 16,
+  },
+  noHistoryText: {
+    color: Colors.main_grey,
   },
 });

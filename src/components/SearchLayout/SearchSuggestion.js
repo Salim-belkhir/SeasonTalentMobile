@@ -1,10 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, StyleSheet, View } from "react-native";
-import Typography from "../Typography";
 import { Colors } from "~/theme";
 import { renderItems } from "~/utils";
+import Typography from "../Typography";
 
-const SearchSuggestion = ({ search, suggestedJobOffers }) => {
+const SearchSuggestion = ({
+  search,
+  suggestedJobOffers,
+}) => {
   const navigation = useNavigation();
   const highlightSearchText = (text, search) => {
     if (!search) {

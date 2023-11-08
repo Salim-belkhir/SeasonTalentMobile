@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  View,
+  Keyboard,
   TextInput as RNTextInput,
   StyleSheet,
-  Keyboard,
+  View,
 } from "react-native";
 import { Colors } from "~/theme";
-import Typography from "./Typography";
-import Icon from "./Icon";
-import TextArea from "./TextArea";
 import Button from "./Button";
+import Icon from "./Icon";
+import Typography from "./Typography";
 
 /**
  * A custom TextInput component that accepts various props to customize its appearance and behavior.

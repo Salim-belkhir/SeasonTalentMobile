@@ -2,34 +2,33 @@ import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Colors } from "~/theme";
 import Typography from "./Typography";
 
+const commonStyles = {
+  itemStyle: {
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  typographyStyle: {
+    textAlign: "center",
+  },
+};
+
+const simpleItemStyles = {
+  ...commonStyles.itemStyle,
+  height: 38,
+  paddingHorizontal: 15,
+  backgroundColor: Colors.pure_white,
+  marginRight: 8,
+};
+
+const itemStyles = {
+  ...commonStyles.itemStyle,
+  backgroundColor: `${Colors.primary_color}33`,
+  width: "95%",
+  height: 170,
+};
+
 const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
-  const commonStyles = {
-    itemStyle: {
-      marginRight: type === "simpleItems" ? 8 : 26,
-      borderRadius: type === "simpleItems" ? 8 : 24,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    typographyStyle: {
-      textAlign: "center",
-    },
-  };
-
-  const simpleItemStyles = {
-    ...commonStyles.itemStyle,
-    height: 38,
-    paddingHorizontal: 15,
-    backgroundColor: Colors.pure_white,
-  };
-
-  const itemStyles = {
-    ...commonStyles.itemStyle,
-    backgroundColor: `${Colors.primary_color}33`,
-    // width: 170,
-    width: "95%",
-    height: 170,
-  };
-
   return (
     <TouchableOpacity
       onPress={() => onPress(item)}

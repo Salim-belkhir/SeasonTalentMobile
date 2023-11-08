@@ -1,9 +1,8 @@
-import React from "react";
-import { Modal, View, StyleSheet } from "react-native";
+import { Modal, StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
-import Typography from "./Typography";
 import Button from "./Button";
 import Icon from "./Icon";
+import Typography from "./Typography";
 
 // This modal may upgrade depending on the useCase !!
 
@@ -109,8 +108,9 @@ const AlertModal = ({
                     borderWidth: 0,
                     paddingHorizontal: 10,
                   }}
-                  labelTypographyStyle={{ color: mainColor }}
+                  labelTypographyStyle={{ color: Colors.pure_white }}
                   onPress={onClose}
+                  hideIcon
                 />
               </View>
             )

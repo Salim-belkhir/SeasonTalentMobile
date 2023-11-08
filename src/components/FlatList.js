@@ -1,4 +1,3 @@
-import React from "react";
 import { FlatList as Fl, StyleSheet, View } from "react-native";
 import ItemFlatList from "./ItemFlatList";
 

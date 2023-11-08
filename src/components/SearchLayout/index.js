@@ -53,6 +53,8 @@ const SearchLayout = ({ jobOffers }) => {
           setSearchHistory={setSearchHistory}
           searchHistory={searchHistory}
           setSearch={setSearch}
+          consultedOffers={consultedOffers}
+          setConsultedOffers={setConsultedOffers}
         />
       ) : (
         <SearchSuggestion

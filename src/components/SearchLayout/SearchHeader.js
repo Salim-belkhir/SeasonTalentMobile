@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
+import LottieView from "lottie-react-native";
+import { useState } from "react";
 import { StyleSheet } from "react-native";
 import MainHeader from "../MainHeader";
 import SearchJobOffer from "../SearchJobOffer";
 import Typography from "../Typography";
-// import LottieView from "lottie-react-native";
 
 const SearchHeader = ({
   setSearchHistory,
@@ -14,25 +15,30 @@ const SearchHeader = ({
   searchResults,
 }) => {
   const navigation = useNavigation();
-  // const [showLottie, setShowLottie] = useState(false);
+  const [showLottie, setShowLottie] = useState(false);
+  const [resultsReady, setResultsReady] = useState(false);
 
   const handleSearch = _.debounce((text) => {
-    // setShowLottie(true);
     setSearch(text);
     if (text) {
+      setShowLottie(true);
       const matchingJobOffers = jobOffers.filter((jobOffer) =>
         jobOffer.title.toLowerCase().includes(text.toLowerCase())
       );
       const sortedJobOffers = matchingJobOffers
         .sort((a, b) => b.title.length - a.title.length)
         .slice(0, 5);
-      setSuggestedJobOffers(sortedJobOffers);
+      // use a timeout to show the lottie animation
+      setTimeout(() => {
+        setShowLottie(false);
+        setSuggestedJobOffers(sortedJobOffers);
+        setResultsReady(true);
+      }, 500);
     } else {
       setSuggestedJobOffers([]);
+      setResultsReady(false);
     }
-    // setShowLottie(false);
   }, 500);
-
   return (
     <>
       <MainHeader.exitOnly
@@ -48,15 +54,18 @@ const SearchHeader = ({
         setSearchHistory={setSearchHistory}
         setSearch={handleSearch}
         searchResults={searchResults}
+        resultsReady={resultsReady}
+        setSearchReady={setResultsReady}
       />
-      {/* {showLottie && (
+      {showLottie && (
         <LottieView
           source={require("~/assets/lotties/loading-dots.json")}
           autoPlay
           loop
           style={styles.lottie}
+          resizeMode="cover"
         />
-      )} */}
+      )}
     </>
   );
 };
@@ -74,8 +83,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: "center",
   },
-  // lottie: {
-  //   height: 100,
-  //   backgroundColor: "#fff",
-  // },
+  lottie: {
+    width: 100,
+    height: 50,
+    alignSelf: "center",
+    resizeMode: "cover",
+  },
 });
