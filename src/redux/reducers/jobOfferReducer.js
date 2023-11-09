@@ -391,6 +391,9 @@ const initialState = {
   loading: false,
   error: null,
   selectedJobOffer: null,
+  searchedJobOffers: [],
+  recentlyConsultedJobOffers: [],
+  lastSearchesHistory: [],
 };
 
 // Define the reducer function
@@ -431,6 +434,16 @@ const jobOfferReducer = (state = initialState, action) => {
         ...state,
         jobOffers: state.jobOffers.filter(
           (jobOffer) => jobOffer.id !== action.payload
+        ),
+        loading: false,
+        error: null,
+      };
+    case jobOfferActions.SEARCH_JOB_OFFER:
+      return {
+        ...state,
+        // Search job offers by title from the jobOffers array
+        searchedJobOffers: state.jobOffers.filter((jobOffer) =>
+          jobOffer.title.toLowerCase().includes(action.payload.toLowerCase())
         ),
         loading: false,
         error: null,

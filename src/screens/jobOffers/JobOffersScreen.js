@@ -55,6 +55,7 @@ const JobOffersScreen = ({ navigation, jobOffers }) => {
           type="horizontalList"
           onPressedItem={handleNavigateToJobOfferDetails}
           listStyle={styles.jobOffersList}
+          itemsStyle={styles.jobOfferItem}
         />
         {showFilter && (
           <BottomSheetFilters open={showFilter} setOpen={setShowFilter} />
@@ -81,7 +82,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.pure_white,
   },
   jobOffersList: {
-    marginTop: 10,
+    paddingTop: 20,
+    paddingBottom: 10,
     paddingHorizontal: 19,
+  },
+  jobOfferItem: {
+    borderRadius: 34,
   },
 });

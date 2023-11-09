@@ -35,9 +35,7 @@ const SearchLayout = ({ jobOffers }) => {
     AsyncStorage.setItem("searchHistory", JSON.stringify(searchHistory));
   }, [searchHistory]);
 
-  useEffect(() => {
-    AsyncStorage.setItem("consultedOffers", JSON.stringify(consultedOffers));
-  }, [consultedOffers]);
+
 
   return (
     <View style={styles.container}>

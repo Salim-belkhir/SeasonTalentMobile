@@ -28,7 +28,6 @@ const SearchHeader = ({
       );
       const sortedJobOffers = matchingJobOffers
         .sort((a, b) => b.title.length - a.title.length)
-        .slice(0, 5);
       // use a timeout to show the lottie animation
       setTimeout(() => {
         setShowLottie(false);

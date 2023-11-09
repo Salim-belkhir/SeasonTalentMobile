@@ -1,5 +1,9 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { connect } from "react-redux";
+import { jobOfferActions } from "~/redux/actions";
 import { Colors } from "~/theme";
 import { renderItems } from "~/utils";
 import Button from "../Button";
@@ -7,14 +11,35 @@ import FlatList from "../FlatList";
 import Icon from "../Icon";
 import Typography from "../Typography";
 
+const mapDispatchToProps = {
+  searchJobOffer: jobOfferActions.searchJobOffer,
+};
+
+const mapStateToProps = (state) => ({
+  searchedJobOffers: state.jobOffers.searchedJobOffers,
+});
+
 const SearchHistory = ({
-  search,
   setSearchHistory,
   searchHistory,
-  setConsultedOffers,
-  consultedOffers,
+  searchJobOffer,
+  searchedJobOffers,
 }) => {
   const navigation = useNavigation();
+  const [historyToSearch, setHistoryToSearch] = useState("");
+  const [consultedOffers, setConsultedOffers] = useState([]);
+
+  useEffect(() => {
+    AsyncStorage.getItem("consultedOffers").then((offers) => {
+      if (offers) {
+        setConsultedOffers(JSON.parse(offers));
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    AsyncStorage.setItem("consultedOffers", JSON.stringify(consultedOffers));
+  }, [consultedOffers]);
 
   const clear = () => {
     setSearchHistory([]);
@@ -28,8 +53,31 @@ const SearchHistory = ({
     navigation.navigate("EmploisDetails", { item });
   };
 
+  useEffect(() => {
+    if (searchedJobOffers.length > 0 && historyToSearch !== "") {
+      navigation.navigate("SearchResults", {
+        searchValue: historyToSearch,
+        results: searchedJobOffers,
+      });
+    }
+  }, [searchedJobOffers, historyToSearch]);
+
+  const handleHistoryItemPress = (item) => {
+    setSearchHistory((history) =>
+      !history.includes(item)
+        ? [item, ...history]
+        : [item, ...history.filter((historyItem) => historyItem !== item)]
+    );
+    setHistoryToSearch(item);
+    searchJobOffer(item);
+  };
+
   const renderSearchHistoryItem = (item, index) => (
-    <View key={index} style={styles.tabContentTextContainer}>
+    <TouchableOpacity
+      key={index}
+      style={styles.tabContentTextContainer}
+      onPress={() => handleHistoryItemPress(item)}
+    >
       <Icon name="sync" size={24} color={Colors.main_grey} />
       <Typography type="l_medium" typographyStyle={styles.historyText}>
         {item}
@@ -45,12 +93,11 @@ const SearchHistory = ({
       >
         <Icon name="close" size={24} color={Colors.main_grey} />
       </Button>
-    </View>
+    </TouchableOpacity>
   );
 
-  const renderSearchHistory = () => {
-    return renderItems(searchHistory.slice(0, 3), renderSearchHistoryItem);
-  };
+  const renderSearchHistory = () =>
+    renderItems(searchHistory.slice(0, 3), renderSearchHistoryItem);
 
   const renderConsultedOffers = () => (
     <FlatList
@@ -60,52 +107,42 @@ const SearchHistory = ({
     />
   );
 
+  const renderNoHistoryText = (text) => (
+    <Typography type="l_medium" typographyStyle={styles.noHistoryText}>
+      {text}
+    </Typography>
+  );
+
+  const renderHistoryContainer = (title, onPress) => (
+    <View style={styles.historyContainer}>
+      <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
+        {title}
+      </Typography>
+      <Button
+        label="Effacer"
+        onPress={onPress}
+        hideIcon
+        buttonStyle={styles.clearButton}
+        labelTypographyStyle={styles.clearButtonText}
+      />
+    </View>
+  );
+
   return (
     <>
-      <View style={styles.historyContainer}>
-        <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
-          Historique des recherche
-        </Typography>
-        <Button
-          label="Effacer"
-          onPress={clear}
-          hideIcon
-          buttonStyle={styles.clearButton}
-          labelTypographyStyle={styles.clearButtonText}
-        />
-      </View>
-      {searchHistory.length > 0 ? (
-        renderSearchHistory()
-      ) : (
-        <Typography type="l_medium" typographyStyle={styles.noHistoryText}>
-          Vous n'avez pas encore effectué de recherche
-        </Typography>
-      )}
-
-      <View style={styles.historyContainer}>
-        <Typography type="l_bold" typographyStyle={styles.currentOffersTitle}>
-          Récemmment consultés
-        </Typography>
-        <Button
-          label="Effacer"
-          onPress={clearCurrentOffers}
-          hideIcon
-          buttonStyle={styles.clearButton}
-          labelTypographyStyle={styles.clearButtonText}
-        />
-      </View>
-      {consultedOffers.length > 0 ? (
-        renderConsultedOffers()
-      ) : (
-        <Typography type="l_medium" typographyStyle={styles.noHistoryText}>
-          Vous n'avez pas encore consulté d'offres
-        </Typography>
-      )}
+      {renderHistoryContainer("Historique des recherche", clear)}
+      {searchHistory.length > 0
+        ? renderSearchHistory()
+        : renderNoHistoryText("Vous n'avez pas encore effectué de recherche")}
+      {renderHistoryContainer("Récemmment consultés", clearCurrentOffers)}
+      {consultedOffers.length > 0
+        ? renderConsultedOffers()
+        : renderNoHistoryText("Vous n'avez pas encore consulté d'offres")}
     </>
   );
 };
 
-export default SearchHistory;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchHistory);
 
 const styles = StyleSheet.create({
   historyContainer: {
@@ -148,10 +185,11 @@ const styles = StyleSheet.create({
   },
 
   consultedContainer: {
-    marginTop: 16,
+    flex: 1,
   },
   consultedOffersList: {
-    marginTop: 16,
+    paddingBottom: 20,
+    paddingTop: 10,
   },
   noHistoryText: {
     color: Colors.main_grey,

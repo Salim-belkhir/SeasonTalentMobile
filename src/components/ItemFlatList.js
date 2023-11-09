@@ -1,10 +1,11 @@
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Colors } from "~/theme";
+import Icon from "./Icon";
 import Typography from "./Typography";
 
 const commonStyles = {
   itemStyle: {
-    borderRadius: 24,
+    borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -15,6 +16,7 @@ const commonStyles = {
 
 const simpleItemStyles = {
   ...commonStyles.itemStyle,
+  flexDirection: "row",
   height: 38,
   paddingHorizontal: 15,
   backgroundColor: Colors.pure_white,
@@ -40,6 +42,12 @@ const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
     >
       {type === "simpleItems" ? (
         <View style={[simpleItemStyles, itemStyle]}>
+          <Icon
+            name="close"
+            size={14}
+            color={Colors.primary_color}
+            style={{ marginRight: 5 }}
+          />
           <Typography
             type="l_medium"
             typographyStyle={commonStyles.typographyStyle}

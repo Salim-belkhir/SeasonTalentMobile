@@ -26,6 +26,7 @@ const SearchResultsContent = ({ results }) => {
     <View style={styles.container}>
       <FlatList
         items={results}
+        listStyle={styles.list}
         onPressedItem={handleNavigateToJobOfferDetails}
       />
     </View>
@@ -36,8 +37,10 @@ export default SearchResultsContent;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 23,
-    paddingVertical: 23,
-    height: "100%",
+  },
+  list: {
+    paddingVertical: 20,
   },
 });

@@ -4,6 +4,7 @@ const FETCH_JOB_OFFER_BY_ID = "FETCH_JOB_OFFER_BY_ID";
 const CREATE_JOB_OFFER = "CREATE_JOB_OFFER";
 const UPDATE_JOB_OFFER = "UPDATE_JOB_OFFER";
 const DELETE_JOB_OFFER = "DELETE_JOB_OFFER";
+const SEARCH_JOB_OFFER = "SEARCH_JOB_OFFER";
 
 // Define the action creators
 
@@ -32,15 +33,22 @@ const deleteJobOffer = (jobOfferId) => ({
   payload: jobOfferId,
 });
 
+const searchJobOffer = (jobOffer) => ({
+  type: SEARCH_JOB_OFFER,
+  payload: jobOffer,
+});
+
 export {
+  CREATE_JOB_OFFER,
+  DELETE_JOB_OFFER,
   FETCH_JOB_OFFERS,
   FETCH_JOB_OFFER_BY_ID,
-  CREATE_JOB_OFFER,
+  SEARCH_JOB_OFFER,
   UPDATE_JOB_OFFER,
-  DELETE_JOB_OFFER,
-  fetchJobOffers,
-  fetchJobOfferById,
   createJobOffer,
-  updateJobOffer,
   deleteJobOffer,
+  fetchJobOfferById,
+  fetchJobOffers,
+  searchJobOffer,
+  updateJobOffer,
 };
