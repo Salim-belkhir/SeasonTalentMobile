@@ -8,7 +8,7 @@ const initialState = {
       title: "Développeur Fullstack JS",
       company: "Google",
       location: "Mountain View",
-      startDate: "2023-11-10T20:42:57.752Z",
+      startDate: "2023-11-6T20:42:57.752Z",
       endDate: "2023-12-23T20:42:57.752Z",
       salary: "1500",
       logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
@@ -393,7 +393,6 @@ const initialState = {
   selectedJobOffer: null,
   searchedJobOffers: [],
   recentlyConsultedJobOffers: [],
-  lastSearchesHistory: [],
 };
 
 // Define the reducer function
@@ -445,6 +444,13 @@ const jobOfferReducer = (state = initialState, action) => {
         searchedJobOffers: state.jobOffers.filter((jobOffer) =>
           jobOffer.title.toLowerCase().includes(action.payload.toLowerCase())
         ),
+        loading: false,
+        error: null,
+      };
+    case jobOfferActions.LOAD_RECENTLY_CONSULTERD_JOB_OFFER:
+      return {
+        ...state,
+        recentlyConsultedJobOffers: action.payload,
         loading: false,
         error: null,
       };

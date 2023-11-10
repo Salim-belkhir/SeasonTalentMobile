@@ -16,7 +16,6 @@ const SearchLayout = ({ jobOffers }) => {
   const [search, setSearch] = useState("");
   const [suggestedJobOffers, setSuggestedJobOffers] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
-  const [consultedOffers, setConsultedOffers] = useState([]);
 
   useEffect(() => {
     AsyncStorage.getItem("searchHistory").then((history) => {
@@ -24,18 +23,11 @@ const SearchLayout = ({ jobOffers }) => {
         setSearchHistory(JSON.parse(history));
       }
     });
-    AsyncStorage.getItem("consultedOffers").then((offers) => {
-      if (offers) {
-        setConsultedOffers(JSON.parse(offers));
-      }
-    });
   }, []);
 
   useEffect(() => {
     AsyncStorage.setItem("searchHistory", JSON.stringify(searchHistory));
   }, [searchHistory]);
-
-
 
   return (
     <View style={styles.container}>
@@ -52,8 +44,6 @@ const SearchLayout = ({ jobOffers }) => {
           setSearchHistory={setSearchHistory}
           searchHistory={searchHistory}
           setSearch={setSearch}
-          consultedOffers={consultedOffers}
-          setConsultedOffers={setConsultedOffers}
         />
       ) : (
         <SearchSuggestion

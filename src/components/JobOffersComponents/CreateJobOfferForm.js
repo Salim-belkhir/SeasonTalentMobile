@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { View, StyleSheet, Platform } from "react-native";
-import { Typography, TextInput, FlatList, Button } from "~/components";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import Icon from "~/components/Icon";
-import { Colors } from "~/theme";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import SelectDropdown from "react-native-select-dropdown";
+import { useNavigation } from "@react-navigation/native";
+import { Formik } from "formik";
+import React, { useEffect } from "react";
+import { Platform, StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import SelectDropdown from "react-native-select-dropdown";
 import { connect } from "react-redux";
+import * as Yup from "yup";
+import { Button, FlatList, TextInput, Typography } from "~/components";
+import Icon from "~/components/Icon";
 import { jobOfferActions } from "~/redux/actions";
+import { Colors } from "~/theme";
 
 // Define mapDispatchToProps to connect createJobOffer action to the component
 const mapDispatchToProps = {
@@ -217,6 +217,7 @@ const CreateJobOfferForm = ({
                   textColor={Colors.primary_color}
                   accentColor={Colors.primary_color}
                   locale="fr-FR"
+                  minimumDate={new Date()}
                 />
               </View>
 
@@ -261,6 +262,7 @@ const CreateJobOfferForm = ({
                   textColor={Colors.primary_color}
                   accentColor={Colors.primary_color}
                   locale="fr-FR"
+                  minimumDate={new Date()}
                 />
               </View>
             </View>

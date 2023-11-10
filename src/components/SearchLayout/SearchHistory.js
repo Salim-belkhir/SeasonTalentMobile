@@ -13,10 +13,13 @@ import Typography from "../Typography";
 
 const mapDispatchToProps = {
   searchJobOffer: jobOfferActions.searchJobOffer,
+  loadRecentlyConsultedJobOffers:
+    jobOfferActions.loadRecentlyConsultedJobOffers,
 };
 
 const mapStateToProps = (state) => ({
   searchedJobOffers: state.jobOffers.searchedJobOffers,
+  consultedOffers: state.jobOffers.recentlyConsultedJobOffers,
 });
 
 const SearchHistory = ({
@@ -24,15 +27,16 @@ const SearchHistory = ({
   searchHistory,
   searchJobOffer,
   searchedJobOffers,
+  consultedOffers,
+  loadRecentlyConsultedJobOffers,
 }) => {
   const navigation = useNavigation();
   const [historyToSearch, setHistoryToSearch] = useState("");
-  const [consultedOffers, setConsultedOffers] = useState([]);
 
   useEffect(() => {
     AsyncStorage.getItem("consultedOffers").then((offers) => {
       if (offers) {
-        setConsultedOffers(JSON.parse(offers));
+        loadRecentlyConsultedJobOffers(JSON.parse(offers));
       }
     });
   }, []);
@@ -46,7 +50,7 @@ const SearchHistory = ({
   };
 
   const clearCurrentOffers = () => {
-    setConsultedOffers([]);
+    loadRecentlyConsultedJobOffers([]);
   };
 
   const handleNavigateToJobOfferDetails = (item) => {
@@ -54,7 +58,7 @@ const SearchHistory = ({
   };
 
   useEffect(() => {
-    if (searchedJobOffers.length > 0 && historyToSearch !== "") {
+    if (historyToSearch !== "") {
       navigation.navigate("SearchResults", {
         searchValue: historyToSearch,
         results: searchedJobOffers,

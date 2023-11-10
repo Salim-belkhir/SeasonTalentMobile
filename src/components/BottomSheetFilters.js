@@ -129,6 +129,7 @@ const DateTimePickers = ({ values }) => {
           style={styles.dateTimePicker}
           textColor={Colors.primary_color}
           accentColor={Colors.primary_color}
+          minimumDate={new Date()}
           locale="fr-FR"
         />
         <Typography
@@ -153,6 +154,7 @@ const DateTimePickers = ({ values }) => {
           style={styles.dateTimePicker}
           textColor={Colors.primary_color}
           accentColor={Colors.primary_color}
+          minimumDate={new Date()}
           locale="fr-FR"
         />
       </View>
