@@ -192,7 +192,7 @@ const Backdrop = ({
             height: "100%",
             width: "100%",
             position: "absolute",
-            backgroundColor: `${Colors.main_black}70`,
+            backgroundColor: `${Colors.main_black}80`,
           }}
         />
         {enableBlur && (
@@ -215,7 +215,8 @@ const Backdrop = ({
 
 const styles = StyleSheet.create({
   bottomSheetBackground: {
-    shadowColor: "#000",
+    backgroundColor: Colors.main_white,
+    shadowColor: Colors.primary_color,
     shadowOffset: {
       width: 0,
       height: 3,

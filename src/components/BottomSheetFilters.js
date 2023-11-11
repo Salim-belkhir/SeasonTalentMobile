@@ -1,15 +1,17 @@
 import RangeSlider from "@jesster2k10/react-native-range-slider";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import {
   Keyboard,
   StyleSheet,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { Colors } from "~/theme";
 import BottomSheet from "./BottomSheet";
 import Button from "./Button";
+import CalendarPicker from "./CalendarPicker";
 import FlatList from "./FlatList";
 import Icon from "./Icon";
 import TextInput from "./TextInput";
@@ -92,72 +94,51 @@ const SearchKeywords = ({ values, setValues }) => {
           });
         }}
       />
+      {/* add a button to clear all the items */}
+      {values.searchWords.length > 0 && (
+        <Button
+          label="Effacer"
+          buttonStyle={styles.clearButtonStyle}
+          labelTypographyStyle={styles.clearButtonLabel}
+          onPress={() => {
+            setValues({ ...values, searchWords: [] });
+          }}
+          hideIcon
+        />
+      )}
     </View>
   );
 };
 
-const DateTimePickers = ({ values }) => {
+const DateTimePickers = ({ values, handleOpenDatePicker }) => {
   return (
-    <View style={styles.dateTimePickersContainer}>
-      <View
-        style={[
-          styles.dateTimePickerContainer,
-          values.startDate && {
-            borderColor: Colors.primary_color,
-          },
-        ]}
-      >
-        <Icon
-          name="calendar"
-          size={20}
-          color={values.startDate ? Colors.primary_color : Colors.main_grey}
-        />
+    <View style={styles.datePickerContainer}>
+      <View style={styles.datePickerTitle}>
+        <Icon name="calendar" size={20} color={Colors.main_grey} />
         <Typography
           type="l_regular"
-          typographyStyle={[
-            styles.dateTimePickerLabel,
-            values.startDate && {
-              color: Colors.primary_color,
-            },
-          ]}
+          typographyStyle={styles.dateTimePickerLabel}
         >
           Date :
         </Typography>
-        <RNDateTimePicker
-          value={values.startDate ? new Date(values.startDate) : new Date()}
-          onChange={(event, selectedDate) => {}}
-          style={styles.dateTimePicker}
-          textColor={Colors.primary_color}
-          accentColor={Colors.primary_color}
-          minimumDate={new Date()}
-          locale="fr-FR"
-        />
-        <Typography
-          type="l_regular"
-          typographyStyle={[
-            styles.dateTimePickerLabel,
-            values.startDate && {
-              color: Colors.primary_color,
-            },
-          ]}
-        >
-          -
-        </Typography>
-        <RNDateTimePicker
-          value={
-            // if value is null, set the current date of one year after t
-            values.endDate
-              ? new Date(values.endDate)
-              : new Date(new Date().setFullYear(new Date().getFullYear() + 1))
-          }
-          onChange={(event, selectedDate) => {}}
-          style={styles.dateTimePicker}
-          textColor={Colors.primary_color}
-          accentColor={Colors.primary_color}
-          minimumDate={new Date()}
-          locale="fr-FR"
-        />
       </View>
+
+      <TouchableOpacity
+        style={styles.datesButton}
+        onPress={handleOpenDatePicker}
+      >
+        <Typography type="l_regular" typographyStyle={styles.datesButtonLabels}>
+          {values.startDate
+            ? moment(values.startDate).format("DD MMM YYYY")
+            : "Début"}
+        </Typography>
+        <Icon name="arrowright" size={20} color={Colors.primary_color} />
+        <Typography type="l_regular" typographyStyle={styles.datesButtonLabels}>
+          {values.endDate
+            ? moment(values.endDate).format("DD MMM YYYY")
+            : "Fin"}
+        </Typography>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -223,6 +204,11 @@ const Salary = ({ values, onChange }) => {
 
 const BottomSheetFilters = ({ onClose = () => {}, open, setOpen }) => {
   const [snapToIndex, setSnapToIndex] = useState(-1);
+  const [onShowDatePicker, setOnShowDatePicker] = useState(false);
+
+  const handleOpenDatePicker = useCallback(() => {
+    setOnShowDatePicker(!onShowDatePicker);
+  }, [onShowDatePicker]);
 
   useEffect(() => {
     if (open) {
@@ -242,8 +228,9 @@ const BottomSheetFilters = ({ onClose = () => {}, open, setOpen }) => {
       id: "",
     },
     searchWords: [],
-    startDate: null,
-    endDate: null,
+    startDate: moment().format("YYYY-MM-DD"), // set the date of today
+    // set the date of one year after the current date
+    endDate: moment().add(3, "days").format("YYYY-MM-DD"),
     location: "",
     salary: 2500,
     minSalary: 0,
@@ -266,15 +253,52 @@ const BottomSheetFilters = ({ onClose = () => {}, open, setOpen }) => {
       snapPoints={["85%"]}
       snapToIndex={snapToIndex}
       enableModalWrapper
+      
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+          // check if the the calendar is open or not
+          if (onShowDatePicker) {
+            setOnShowDatePicker(false);
+          }
+        }}
+      >
         <View style={styles.container}>
           <Header title="Filtres" onClose={handleClose} onApply={handleClose} />
+
+          {onShowDatePicker && (
+            <View style={styles.showCalendar}>
+              <CalendarPicker
+                initialDates={{
+                  startDate: values.startDate,
+                  endDate: values.endDate,
+                }}
+                onUpdateCompleted={(date) => {
+                  setValues({
+                    ...values,
+                    startDate: date.startDate,
+                    endDate: date.endDate,
+                  });
+                }}
+                onDateSelectChange={(date) => {
+                  setValues({
+                    ...values,
+                    startDate: date.startDate,
+                    endDate: date.endDate,
+                  });
+                }}
+              />
+            </View>
+          )}
 
           <SearchKeywords values={values} setValues={setValues} />
 
           <View style={styles.filterInputsContainer}>
-            <DateTimePickers values={values} />
+            <DateTimePickers
+              values={values}
+              handleOpenDatePicker={handleOpenDatePicker}
+            />
             <Location values={values} setValues={setValues} />
           </View>
 
@@ -291,6 +315,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 23,
     height: "100%",
+    backgroundColor: Colors.main_white,
   },
   header: {
     flexDirection: "row",
@@ -309,11 +334,13 @@ const styles = StyleSheet.create({
   },
   searchKeywordsContainer: {
     marginTop: 24,
+    paddingBottom: 12,
   },
   searchKeywordsInput: {
     paddingHorizontal: 20,
     height: 52,
     borderRadius: 12,
+    backgroundColor: Colors.input_gray,
   },
   searchKeywordsInputTypography: {
     fontSize: 13,
@@ -324,35 +351,51 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   filterInputsContainer: {
-    marginTop: 24,
+    // marginTop: 20,
   },
-  dateTimePickersContainer: {
+  datePickerContainer: {
+    paddingVertical: 16,
     flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "space-between",
-    borderTopColor: Colors.input_gray,
-    borderTopWidth: 1,
+    borderTopColor: Colors.medium_grey,
+    borderTopWidth: 2,
   },
-  dateTimePickerContainer: {
+
+  datePickerTitle: {
     flexDirection: "row",
     alignItems: "center",
+    flex: 1,
     justifyContent: "space-between",
-    borderWidth: 0,
-    paddingVertical: 16,
-    marginTop: 10,
-    width: "100%",
+    paddingRight: 18,
   },
   dateTimePickerLabel: {
     color: Colors.main_grey,
   },
-  dateTimePicker: {},
+
+  datesButton: {
+    backgroundColor: Colors.input_gray,
+    borderRadius: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    width: "65%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+
+  datesButtonLabels: {
+    color: Colors.dark_grey,
+    fontSize: 14,
+  },
+
   locationContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     borderTopColor: Colors.medium_grey,
-    borderTopWidth: 1,
+    borderTopWidth: 2,
     paddingVertical: 16,
-    marginTop: 10,
     width: "100%",
   },
   locationInput: {
@@ -370,7 +413,7 @@ const styles = StyleSheet.create({
   },
   salaryContainer: {
     borderTopColor: Colors.input_gray,
-    borderTopWidth: 1,
+    borderTopWidth: 2,
   },
   salaryLabelContainer: {
     marginTop: 24,
@@ -384,5 +427,24 @@ const styles = StyleSheet.create({
   },
   salaryRangeContainer: {
     marginTop: 25,
+  },
+  showCalendar: {
+    position: "absolute",
+    zIndex: 1,
+    backgroundColor: `${Colors.primary_color}33`,
+    alignSelf: "center",
+    padding: 5,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    bottom: 200,
+  },
+  clearButtonStyle: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    alignSelf: "flex-end",
+  },
+  clearButtonLabel: {
+    color: Colors.error_color,
   },
 });
