@@ -18,6 +18,7 @@ const mapStateToProps = (state) => ({
 
 const JobOffersScreen = ({ navigation, jobOffers }) => {
   const [showFilter, setShowFilter] = useState(false);
+
   const handleSearchJobOffer = () => {
     Keyboard.dismiss();
     navigation.push("EmploisRecherche");
@@ -29,6 +30,10 @@ const JobOffersScreen = ({ navigation, jobOffers }) => {
 
   const handleNavigateToJobOfferDetails = (item) => {
     navigation.navigate("EmploisDetails", { item });
+  };
+
+  const closeFilter = () => {
+    setShowFilter(false);
   };
 
   return (
@@ -58,7 +63,12 @@ const JobOffersScreen = ({ navigation, jobOffers }) => {
           itemsStyle={styles.jobOfferItem}
         />
         {showFilter && (
-          <BottomSheetFilters open={showFilter} setOpen={setShowFilter} />
+          <BottomSheetFilters
+            open={showFilter}
+            onClose={closeFilter}
+            onApplyFilter={closeFilter}
+            onTotalFilterAppliedChange={() => {}}
+          />
         )}
       </View>
     </DefaultLayout>

@@ -1,6 +1,6 @@
 import RangeSlider from "@jesster2k10/react-native-range-slider";
 import moment from "moment";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Keyboard,
   StyleSheet,
@@ -44,26 +44,7 @@ const Header = ({ title, onClose, onApply }) => {
   );
 };
 
-const SearchKeywords = ({ values, setValues }) => {
-  const handleAddSearchWord = () => {
-    if (values.searchWord.label !== "") {
-      setValues({
-        ...values,
-        searchWords: [
-          ...values.searchWords,
-          {
-            label: values.searchWord,
-            id: values.searchWords.length + 1,
-          },
-        ],
-        searchWord: {
-          label: "",
-          id: "",
-        },
-      });
-    }
-  };
-
+const SearchKeywords = ({ values, onChange, onAdd, onRemove, clearAll }) => {
   return (
     <View style={styles.searchKeywordsContainer}>
       <TextInput
@@ -72,11 +53,13 @@ const SearchKeywords = ({ values, setValues }) => {
         inputStyle={styles.searchKeywordsInput}
         inputTypographyStyle={styles.searchKeywordsInputTypography}
         onChangeText={(value) => {
-          setValues({ ...values, searchWord: value });
+          onChange(value);
         }}
         value={values.searchWord.label}
+        onSubmitEditing={() => {
+          onAdd(values.searchWord);
+        }}
         returnKeyType="next"
-        onSubmitEditing={handleAddSearchWord}
       />
       <FlatList
         items={values.searchWords}
@@ -85,14 +68,7 @@ const SearchKeywords = ({ values, setValues }) => {
         itemsStyle={styles.searchKeywordsItems}
         horizontal
         showsHorizontalScrollIndicator={false}
-        onPressedItem={(item) => {
-          setValues({
-            ...values,
-            searchWords: values.searchWords.filter(
-              (searchWord) => searchWord.id !== item.id
-            ),
-          });
-        }}
+        onPressedItem={onRemove}
       />
       {/* add a button to clear all the items */}
       {values.searchWords.length > 0 && (
@@ -100,9 +76,7 @@ const SearchKeywords = ({ values, setValues }) => {
           label="Effacer"
           buttonStyle={styles.clearButtonStyle}
           labelTypographyStyle={styles.clearButtonLabel}
-          onPress={() => {
-            setValues({ ...values, searchWords: [] });
-          }}
+          onPress={clearAll}
           hideIcon
         />
       )}
@@ -110,7 +84,7 @@ const SearchKeywords = ({ values, setValues }) => {
   );
 };
 
-const DateTimePickers = ({ values, handleOpenDatePicker }) => {
+const DateTimePickers = ({ dates, handleOpenDatePicker }) => {
   return (
     <View style={styles.datePickerContainer}>
       <View style={styles.datePickerTitle}>
@@ -123,27 +97,24 @@ const DateTimePickers = ({ values, handleOpenDatePicker }) => {
         </Typography>
       </View>
 
-      <TouchableOpacity
-        style={styles.datesButton}
-        onPress={handleOpenDatePicker}
-      >
+      <TouchableOpacity style={styles.datesButton}>
         <Typography type="l_regular" typographyStyle={styles.datesButtonLabels}>
-          {values.startDate
-            ? moment(values.startDate).format("DD MMM YYYY")
+          {dates.startDate
+            ? moment(dates.startDate).format("DD MMM YYYY")
             : "Début"}
         </Typography>
         <Icon name="arrowright" size={20} color={Colors.primary_color} />
         <Typography type="l_regular" typographyStyle={styles.datesButtonLabels}>
-          {values.endDate
-            ? moment(values.endDate).format("DD MMM YYYY")
-            : "Fin"}
+          {dates.endDate
+            ? moment(dates.endDate).format("DD MMM YYYY")
+            : "Indéfini"}
         </Typography>
       </TouchableOpacity>
     </View>
   );
 };
 
-const Location = ({ values, setValues }) => {
+const Location = ({ location, onChange }) => {
   return (
     <View style={styles.locationContainer}>
       <Icon name="enviromento" size={20} color={Colors.main_grey} />
@@ -154,18 +125,18 @@ const Location = ({ values, setValues }) => {
         placeholder="Ajouter une localisation"
         inputStyle={styles.locationInput}
         inputTypographyStyle={styles.locationInputTypography}
-        onChangeText={(value) => {
-          setValues({ ...values, location: value });
-        }}
-        value={values.location}
+        onChangeText={onChange}
+        value={location}
         returnKeyType="next"
-        onSubmitEditing={() => {}}
       />
     </View>
   );
 };
 
-const Salary = ({ values, onChange }) => {
+const Salary = ({ salaryRange, onChange }) => {
+  const [minSalary, setMinSalary] = useState(salaryRange.minSalary);
+  const [maxSalary, setMaxSalary] = useState(salaryRange.maxSalary);
+
   return (
     <View style={styles.salaryContainer}>
       <View style={styles.salaryLabelContainer}>
@@ -175,7 +146,7 @@ const Salary = ({ values, onChange }) => {
         <Typography type="l_regular" typographyStyle={styles.salaryText}>
           le salaire moyen est de : {""}
           <Typography type="l_bold">
-            {values.salary ? values.salary : "0"} €/mois
+            {minSalary} € - {maxSalary} €
           </Typography>
         </Typography>
       </View>
@@ -184,13 +155,15 @@ const Salary = ({ values, onChange }) => {
           type="range" // ios only
           min={0}
           max={2500}
-          selectedMinimum={750} // ios only
-          selectedMaximum={1700} // ios only
+          selectedMinimum={minSalary} // ios only
+          selectedMaximum={maxSalary} // ios only
           tintColor={Colors.input_gray}
           handleColor={Colors.primary_color}
           handlePressedColor={Colors.primary_color}
           tintColorBetweenHandles={Colors.primary_color}
-          onChange={onChange}
+          onChange={(min, max) => {
+            onChange(min, max);
+          }}
           minLabelColor={Colors.main_black}
           maxLabelColor={Colors.main_black}
           lineHeight={4}
@@ -202,13 +175,40 @@ const Salary = ({ values, onChange }) => {
   );
 };
 
-const BottomSheetFilters = ({ onClose = () => {}, open, setOpen }) => {
+const DEFAULT_FILTERS = {
+  searchWord: {
+    label: "",
+    id: "",
+  },
+  searchWords: [],
+  startDate: moment().format("YYYY-MM-DD"), // set the date of today
+  // set the date of one year after the current date
+  endDate: moment().add(1, "years").format("YYYY-MM-DD"),
+  location: "",
+  minSalary: 700,
+  maxSalary: 1750,
+};
+
+const BottomSheetFilters = ({
+  open,
+  onClose = () => {},
+  onApplyFilter = () => {},
+  onTotalFilterAppliedChange = () => {},
+}) => {
   const [snapToIndex, setSnapToIndex] = useState(-1);
+  const [filterBy, setFilterBy] = useState(DEFAULT_FILTERS);
   const [onShowDatePicker, setOnShowDatePicker] = useState(false);
 
-  const handleOpenDatePicker = useCallback(() => {
-    setOnShowDatePicker(!onShowDatePicker);
-  }, [onShowDatePicker]);
+  const updateFilterBy = (value) => {
+    setFilterBy({
+      ...filterBy,
+      ...value,
+    });
+  };
+
+  // useEffect(() => {
+  //   console.log("new filterBy", filterBy);
+  // }, [filterBy]);
 
   useEffect(() => {
     if (open) {
@@ -218,33 +218,134 @@ const BottomSheetFilters = ({ onClose = () => {}, open, setOpen }) => {
     }
   }, [open]);
 
+  const handleOpenDatePicker = useCallback(() => {
+    setOnShowDatePicker(!onShowDatePicker);
+  }, [onShowDatePicker]);
+
   const handleClose = useCallback(() => {
-    setOpen(false);
+    setSnapToIndex(-1);
+    onClose();
   }, [onClose]);
 
-  const [values, setValues] = useState({
-    searchWord: {
-      label: "",
-      id: "",
-    },
-    searchWords: [],
-    startDate: moment().format("YYYY-MM-DD"), // set the date of today
-    // set the date of one year after the current date
-    endDate: moment().add(3, "days").format("YYYY-MM-DD"),
-    location: "",
-    salary: 2500,
-    minSalary: 0,
-    maxSalary: 5000,
-  });
+  const isReadyToSubmit = useMemo(() => {
+    return (
+      filterBy.searchWords.length > 0 ||
+      filterBy.startDate !== DEFAULT_FILTERS.startDate ||
+      filterBy.endDate !== DEFAULT_FILTERS.endDate ||
+      filterBy.location !== DEFAULT_FILTERS.location ||
+      filterBy.minSalary !== DEFAULT_FILTERS.minSalary ||
+      filterBy.maxSalary !== DEFAULT_FILTERS.maxSalary
+    );
+  }, [filterBy]);
 
-  const handleSalaryChange = (min, max) => {
-    setValues({
-      ...values,
+  const handleSubmit = useCallback(() => {
+    onApplyFilter(filterBy);
+    const { totalApplied, filterTrack } = Object.entries(
+      DEFAULT_FILTERS
+    ).reduce(
+      (result, [key, defaultValue]) => {
+        if (filterBy[key] !== defaultValue) {
+          const updatedFilterTrack = { ...result.filterTrack };
+          if (key === "minSalary" || key === "maxSalary") {
+            updatedFilterTrack.salaryRange = `${filterBy.minSalary} - ${filterBy.maxSalary}`;
+          } else if (key === "startDate" || key === "endDate") {
+            updatedFilterTrack.dateRange = `${moment(filterBy.startDate).format(
+              "DD MMM YYYY"
+            )} - ${moment(filterBy.endDate).format("DD MMM YYYY")}`;
+          } else {
+            updatedFilterTrack[key] = filterBy[key];
+          }
+          return {
+            totalApplied: result.totalApplied + 1,
+            filterTrack: updatedFilterTrack,
+          };
+        }
+        return result;
+      },
+      { totalApplied: 0, filterTrack: {} }
+    );
+    onTotalFilterAppliedChange(totalApplied);
+    handleClose();
+  }, [filterBy, onApplyFilter, onTotalFilterAppliedChange, handleClose]);
+
+  const handleSearchWordChange = useCallback(
+    (value) => {
+      // console.log("value", value);
+      updateFilterBy({
+        searchWord: value,
+      });
+    },
+    [filterBy]
+  );
+
+  const handleSearchWordAdd = useCallback(() => {
+    if (filterBy.searchWord !== "") {
+      updateFilterBy({
+        searchWords: [
+          ...filterBy.searchWords,
+          {
+            label: filterBy.searchWord,
+            id: filterBy.searchWords.length + 1,
+          },
+        ],
+        searchWord: {
+          label: "",
+          id: "",
+        },
+      });
+    }
+  }, [filterBy]);
+
+  const handleSearchWordRemove = useCallback(
+    (item) => {
+      updateFilterBy({
+        searchWords: filterBy.searchWords.filter(
+          (searchWord) => searchWord.id !== item.id
+        ),
+      });
+    },
+    [filterBy]
+  );
+
+  const handleSearchWordsClear = useCallback(() => {
+    updateFilterBy({
+      searchWords: [],
+      searchWord: {
+        label: "",
+        id: "",
+      },
+    });
+  }, [filterBy]);
+
+  const handleClear = useCallback(() => {
+    setFilterBy(DEFAULT_FILTERS);
+  }, []);
+
+  const handleSalaryChange = useCallback((min, max) => {
+    updateFilterBy({
       minSalary: min,
       maxSalary: max,
-      salary: (min + max) / 2,
     });
-  };
+  }, []);
+  const handleLocationChange = useCallback((value) => {
+    updateFilterBy({
+      location: value,
+    });
+  }, []);
+
+  const handleDateChange = useCallback((date) => {
+    updateFilterBy({
+      startDate: date.startDate,
+      endDate: date.endDate,
+    });
+  }, []);
+
+  const handleDateSelectChange = useCallback((date) => {
+    updateFilterBy({
+      startDate: date.startDate,
+      endDate: date.endDate,
+    });
+  }, []);
 
   return (
     <BottomSheet
@@ -253,7 +354,6 @@ const BottomSheetFilters = ({ onClose = () => {}, open, setOpen }) => {
       snapPoints={["85%"]}
       snapToIndex={snapToIndex}
       enableModalWrapper
-      
     >
       <TouchableWithoutFeedback
         onPress={() => {
@@ -265,44 +365,53 @@ const BottomSheetFilters = ({ onClose = () => {}, open, setOpen }) => {
         }}
       >
         <View style={styles.container}>
-          <Header title="Filtres" onClose={handleClose} onApply={handleClose} />
+          <Header
+            title="Filtres"
+            onClose={handleClose}
+            onApply={handleSubmit}
+          />
+
+          <SearchKeywords
+            values={filterBy}
+            onChange={handleSearchWordChange}
+            onAdd={handleSearchWordAdd}
+            onRemove={handleSearchWordRemove}
+            clearAll={handleSearchWordsClear}
+          />
 
           {onShowDatePicker && (
             <View style={styles.showCalendar}>
               <CalendarPicker
                 initialDates={{
-                  startDate: values.startDate,
-                  endDate: values.endDate,
+                  startDate: filterBy.startDate,
+                  endDate: filterBy.endDate,
                 }}
-                onUpdateCompleted={(date) => {
-                  setValues({
-                    ...values,
-                    startDate: date.startDate,
-                    endDate: date.endDate,
-                  });
-                }}
-                onDateSelectChange={(date) => {
-                  setValues({
-                    ...values,
-                    startDate: date.startDate,
-                    endDate: date.endDate,
-                  });
-                }}
+                onUpdateCompleted={handleDateChange}
+                onDateSelectChange={handleDateSelectChange}
               />
             </View>
           )}
 
-          <SearchKeywords values={values} setValues={setValues} />
+          <DateTimePickers
+            dates={{
+              startDate: filterBy.startDate,
+              endDate: filterBy.endDate,
+            }}
+            handleOpenDatePicker={handleOpenDatePicker}
+          />
 
-          <View style={styles.filterInputsContainer}>
-            <DateTimePickers
-              values={values}
-              handleOpenDatePicker={handleOpenDatePicker}
-            />
-            <Location values={values} setValues={setValues} />
-          </View>
+          <Location
+            location={filterBy.location}
+            onChange={handleLocationChange}
+          />
 
-          <Salary values={values} onChange={handleSalaryChange} />
+          <Salary
+            salaryRange={{
+              minSalary: filterBy.minSalary,
+              maxSalary: filterBy.maxSalary,
+            }}
+            onChange={handleSalaryChange}
+          />
         </View>
       </TouchableWithoutFeedback>
     </BottomSheet>
@@ -446,5 +555,24 @@ const styles = StyleSheet.create({
   },
   clearButtonLabel: {
     color: Colors.error_color,
+  },
+  buttonsContainer: {
+    marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  clearButton: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+  },
+  clearButtonLabel: {
+    color: Colors.error_color,
+  },
+  applyButton: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+  },
+  applyButtonLabel: {
+    color: Colors.primary_color,
   },
 });
