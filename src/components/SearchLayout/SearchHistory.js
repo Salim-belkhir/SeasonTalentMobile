@@ -29,6 +29,7 @@ const SearchHistory = ({
   searchedJobOffers,
   consultedOffers,
   loadRecentlyConsultedJobOffers,
+  setSearch,
 }) => {
   const navigation = useNavigation();
   const [historyToSearch, setHistoryToSearch] = useState("");
@@ -57,23 +58,17 @@ const SearchHistory = ({
     navigation.navigate("EmploisDetails", { item });
   };
 
-  useEffect(() => {
-    if (historyToSearch !== "") {
-      navigation.navigate("SearchResults", {
-        searchValue: historyToSearch,
-        results: searchedJobOffers,
-      });
-    }
-  }, [searchedJobOffers, historyToSearch]);
-
   const handleHistoryItemPress = (item) => {
     setSearchHistory((history) =>
       !history.includes(item)
         ? [item, ...history]
         : [item, ...history.filter((historyItem) => historyItem !== item)]
     );
-    setHistoryToSearch(item);
+    setSearch(item);
     searchJobOffer(item);
+    navigation.navigate("SearchResults", {
+      searchValue: item,
+    });
   };
 
   const renderSearchHistoryItem = (item, index) => (

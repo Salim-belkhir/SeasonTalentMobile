@@ -237,7 +237,6 @@ const CalendarPicker = ({
       <Calendar
         style={styles.calendar}
         current={initialDates?.startDate}
-        minDate={moment().format("YYYY-MM-DD")}
         onDayPress={handleDayPress}
         markingType="period"
         markedDates={markedDays}
@@ -340,7 +339,7 @@ const styles = StyleSheet.create({
   },
 
   today: {
-    backgroundColor: Colors.primary_color,
+    backgroundColor: `${Colors.main_grey}43`,
     borderRadius: 8,
   },
 

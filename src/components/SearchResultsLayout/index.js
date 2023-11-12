@@ -1,21 +1,37 @@
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { connect } from "react-redux";
 import { Colors } from "~/theme";
 import SearchResultsContent from "./SearchResultsContent";
 import SearchResultsHeader from "./SearchResultsHeader";
 
-const SearchResultsLayout = ({ searchResults }) => {
+const mapStateToProps = (state) => ({
+  searchedJobOffers: state.jobOffers.searchedJobOffers,
+});
+
+const SearchResultsLayout = ({ searchResults, searchedJobOffers }) => {
+  const [showFilter, setShowFilter] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [filterBy, setFilterBy] = useState();
+  const [totalAppliedFilter, setTotalAppliedFilter] = useState(0);
+
+  const closeFilter = () => {
+    setShowFilter(false);
+  };
+
   return (
     <View style={styles.container}>
       <SearchResultsHeader
         searchTitle={searchResults.searchValue}
-        nbResults={searchResults.results.length}
+        nbResults={searchedJobOffers.length}
+        setShowFilter={setShowFilter}
       />
-      <SearchResultsContent results={searchResults.results} />
+      <SearchResultsContent results={searchedJobOffers} />
     </View>
   );
 };
 
-export default SearchResultsLayout;
+export default connect(mapStateToProps)(SearchResultsLayout);
 
 const styles = StyleSheet.create({
   container: {

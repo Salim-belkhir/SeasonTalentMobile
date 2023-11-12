@@ -2,19 +2,23 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
+import { jobOfferActions } from "~/redux/actions";
 import { Colors } from "~/theme";
 import SearchHeader from "./SearchHeader";
 import SearchHistory from "./SearchHistory";
 import SearchSuggestion from "./SearchSuggestion";
 
 const mapStateToProps = (state) => ({
-  jobOffers: state.jobOffers.jobOffers,
+  searchedJobOffers: state.jobOffers.searchedJobOffers,
 });
 
-const SearchLayout = ({ jobOffers }) => {
+const mapDispatchToProps = {
+  searchJobOffer: jobOfferActions.searchJobOffer,
+};
+
+const SearchLayout = ({ searchedJobOffers, searchJobOffer }) => {
   // get the initial param
   const [search, setSearch] = useState("");
-  const [suggestedJobOffers, setSuggestedJobOffers] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
 
   useEffect(() => {
@@ -29,17 +33,22 @@ const SearchLayout = ({ jobOffers }) => {
     AsyncStorage.setItem("searchHistory", JSON.stringify(searchHistory));
   }, [searchHistory]);
 
+  useEffect(() => {
+    if (search === "") {
+      searchJobOffer(search);
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
       <SearchHeader
         searchHistory={searchHistory}
         setSearchHistory={setSearchHistory}
         setSearch={setSearch}
-        setSuggestedJobOffers={setSuggestedJobOffers}
-        jobOffers={jobOffers}
-        searchResults={suggestedJobOffers}
+        search={search}
+        setSuggestedJobOffers={searchJobOffer}
       />
-      {suggestedJobOffers.length === 0 && search === "" ? (
+      {searchedJobOffers.length === 0 && search === "" ? (
         <SearchHistory
           setSearchHistory={setSearchHistory}
           searchHistory={searchHistory}
@@ -48,14 +57,14 @@ const SearchLayout = ({ jobOffers }) => {
       ) : (
         <SearchSuggestion
           search={search}
-          suggestedJobOffers={suggestedJobOffers}
+          suggestedJobOffers={searchedJobOffers}
         />
       )}
     </View>
   );
 };
 
-export default connect(mapStateToProps)(SearchLayout);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchLayout);
 
 const styles = StyleSheet.create({
   container: {

@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
-import LottieView from "lottie-react-native";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
+import { searchJobOffer } from "~/redux/actions/jobOfferActions";
+import Loading from "../Loading";
 import MainHeader from "../MainHeader";
 import SearchJobOffer from "../SearchJobOffer";
 import Typography from "../Typography";
@@ -11,34 +12,30 @@ const SearchHeader = ({
   setSearchHistory,
   setSearch,
   setSuggestedJobOffers,
-  jobOffers,
-  searchResults,
   searchHistory,
+  search,
 }) => {
   const navigation = useNavigation();
   const [showLottie, setShowLottie] = useState(false);
   const [resultsReady, setResultsReady] = useState(false);
 
   const handleSearch = _.debounce((text) => {
+    setResultsReady(false);
+    setSuggestedJobOffers("");
     setSearch(text);
     if (text) {
       setShowLottie(true);
-      const matchingJobOffers = jobOffers.filter((jobOffer) =>
-        jobOffer.title.toLowerCase().includes(text.toLowerCase())
-      );
-      const sortedJobOffers = matchingJobOffers
-        .sort((a, b) => b.title.length - a.title.length)
-      // use a timeout to show the lottie animation
       setTimeout(() => {
         setShowLottie(false);
-        setSuggestedJobOffers(sortedJobOffers);
+        setSuggestedJobOffers(text);
         setResultsReady(true);
-      }, 500);
+      }, 600);
     } else {
-      setSuggestedJobOffers([]);
+      searchJobOffer("");
       setResultsReady(false);
     }
   }, 500);
+
   return (
     <>
       <MainHeader.exitOnly
@@ -54,17 +51,17 @@ const SearchHeader = ({
         searchHistory={searchHistory}
         setSearchHistory={setSearchHistory}
         setSearch={handleSearch}
-        searchResults={searchResults}
+        search={search}
         resultsReady={resultsReady}
         setSearchReady={setResultsReady}
+        showFilterButton={false}
       />
       {showLottie && (
-        <LottieView
-          source={require("~/assets/lotties/loading-dots.json")}
-          autoPlay
-          loop
-          style={styles.lottie}
-          resizeMode="cover"
+        <Loading
+          height={100}
+          width={100}
+          show={showLottie}
+          lottieStyle={styles.lottie}
         />
       )}
     </>
@@ -85,9 +82,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   lottie: {
-    width: 100,
-    height: 50,
-    alignSelf: "center",
-    resizeMode: "cover",
+    justifyContent: "flex-start",
+    paddingTop: 26,
   },
 });

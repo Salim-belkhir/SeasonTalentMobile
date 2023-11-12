@@ -17,7 +17,7 @@ import Icon from "./Icon";
 import TextInput from "./TextInput";
 import Typography from "./Typography";
 
-const Header = ({ title, onClose, onApply }) => {
+const Header = ({ title, onClose, onApply, readyForApply }) => {
   return (
     <View style={styles.header}>
       <Button
@@ -35,10 +35,15 @@ const Header = ({ title, onClose, onApply }) => {
       <Button
         hideIcon
         label="Appliquer"
-        buttonStyle={styles.closeButton}
+        buttonStyle={styles.applyButton}
         onPress={onApply}
+        disabled={!readyForApply}
       >
-        <Icon name="check" size={26} color={Colors.primary_color} />
+        <Icon
+          name="check"
+          size={26}
+          color={!readyForApply ? Colors.main_grey : Colors.primary_color}
+        />
       </Button>
     </View>
   );
@@ -97,7 +102,10 @@ const DateTimePickers = ({ dates, handleOpenDatePicker }) => {
         </Typography>
       </View>
 
-      <TouchableOpacity style={styles.datesButton}>
+      <TouchableOpacity
+        style={styles.datesButton}
+        onPress={handleOpenDatePicker}
+      >
         <Typography type="l_regular" typographyStyle={styles.datesButtonLabels}>
           {dates.startDate
             ? moment(dates.startDate).format("DD MMM YYYY")
@@ -134,9 +142,6 @@ const Location = ({ location, onChange }) => {
 };
 
 const Salary = ({ salaryRange, onChange }) => {
-  const [minSalary, setMinSalary] = useState(salaryRange.minSalary);
-  const [maxSalary, setMaxSalary] = useState(salaryRange.maxSalary);
-
   return (
     <View style={styles.salaryContainer}>
       <View style={styles.salaryLabelContainer}>
@@ -146,7 +151,9 @@ const Salary = ({ salaryRange, onChange }) => {
         <Typography type="l_regular" typographyStyle={styles.salaryText}>
           le salaire moyen est de : {""}
           <Typography type="l_bold">
-            {minSalary} € - {maxSalary} €
+            {salaryRange.minSalary +
+              (salaryRange.maxSalary - salaryRange.minSalary) / 2}{" "}
+            €
           </Typography>
         </Typography>
       </View>
@@ -155,15 +162,13 @@ const Salary = ({ salaryRange, onChange }) => {
           type="range" // ios only
           min={0}
           max={2500}
-          selectedMinimum={minSalary} // ios only
-          selectedMaximum={maxSalary} // ios only
+          selectedMinimum={750} // ios only
+          selectedMaximum={1750} // ios only
           tintColor={Colors.input_gray}
           handleColor={Colors.primary_color}
           handlePressedColor={Colors.primary_color}
           tintColorBetweenHandles={Colors.primary_color}
-          onChange={(min, max) => {
-            onChange(min, max);
-          }}
+          onChange={onChange}
           minLabelColor={Colors.main_black}
           maxLabelColor={Colors.main_black}
           lineHeight={4}
@@ -185,7 +190,7 @@ const DEFAULT_FILTERS = {
   // set the date of one year after the current date
   endDate: moment().add(1, "years").format("YYYY-MM-DD"),
   location: "",
-  minSalary: 700,
+  minSalary: 750,
   maxSalary: 1750,
 };
 
@@ -205,10 +210,6 @@ const BottomSheetFilters = ({
       ...value,
     });
   };
-
-  // useEffect(() => {
-  //   console.log("new filterBy", filterBy);
-  // }, [filterBy]);
 
   useEffect(() => {
     if (open) {
@@ -321,31 +322,44 @@ const BottomSheetFilters = ({
     setFilterBy(DEFAULT_FILTERS);
   }, []);
 
-  const handleSalaryChange = useCallback((min, max) => {
-    updateFilterBy({
-      minSalary: min,
-      maxSalary: max,
-    });
-  }, []);
-  const handleLocationChange = useCallback((value) => {
-    updateFilterBy({
-      location: value,
-    });
-  }, []);
+  const handleLocationChange = useCallback(
+    (value) => {
+      updateFilterBy({
+        location: value,
+      });
+    },
+    [filterBy]
+  );
 
-  const handleDateChange = useCallback((date) => {
-    updateFilterBy({
-      startDate: date.startDate,
-      endDate: date.endDate,
-    });
-  }, []);
+  const handleDateChange = useCallback(
+    (date) => {
+      updateFilterBy({
+        startDate: date.startDate,
+        endDate: date.endDate,
+      });
+    },
+    [filterBy]
+  );
 
-  const handleDateSelectChange = useCallback((date) => {
-    updateFilterBy({
-      startDate: date.startDate,
-      endDate: date.endDate,
-    });
-  }, []);
+  const handleDateSelectChange = useCallback(
+    (date) => {
+      updateFilterBy({
+        startDate: date.startDate,
+        endDate: date.endDate,
+      });
+    },
+    [filterBy]
+  );
+
+  const handleSalaryChange = useCallback(
+    (min, max) => {
+      updateFilterBy({
+        minSalary: min,
+        maxSalary: max,
+      });
+    },
+    [filterBy]
+  );
 
   return (
     <BottomSheet
@@ -369,6 +383,7 @@ const BottomSheetFilters = ({
             title="Filtres"
             onClose={handleClose}
             onApply={handleSubmit}
+            readyForApply={isReadyToSubmit}
           />
 
           <SearchKeywords
@@ -542,7 +557,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     backgroundColor: `${Colors.primary_color}33`,
     alignSelf: "center",
-    padding: 5,
+    padding: 7,
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",

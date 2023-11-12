@@ -13,19 +13,19 @@ const SearchJobOffer = ({
   setSearchHistory,
   action,
   setSearch,
-  searchResults,
   resultsReady,
-  setSearchReady,
   setShowFilter,
+  showFilterButton,
+  search,
 }) => {
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState(false);
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = (values) => {
     if (values.search === "") {
       return;
     }
-    resetForm({ values: { search: "" } });
-    setSearch("");
+    // resetForm({ values: { search: "" } });
+    // // setSearch("");
     if (resultsReady) {
       //check before if the search is already in the history
       if (!searchHistory.includes(values.search)) {
@@ -38,7 +38,6 @@ const SearchJobOffer = ({
       }
       navigation.navigate("SearchResults", {
         searchValue: values.search,
-        results: searchResults,
       });
     } else {
       setShowModal(true);
@@ -46,7 +45,7 @@ const SearchJobOffer = ({
   };
 
   return (
-    <Formik initialValues={{ search: "" }} onSubmit={handleSubmit}>
+    <Formik initialValues={{ search }} onSubmit={handleSubmit}>
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
           {showModal && (
@@ -63,7 +62,6 @@ const SearchJobOffer = ({
             onChangeText={(Text) => {
               handleChange("search")(Text);
               setSearch(Text);
-              setSearchReady(false);
             }}
             onBlur={handleBlur("search")}
             onFocus={action}
@@ -73,13 +71,15 @@ const SearchJobOffer = ({
             // disable the return key on the keyboard until the results are ready
             returnKeyType="search"
           />
-          <Button
-            hideIcon
-            buttonStyle={styles.button}
-            onPress={() => setShowFilter(true)}
-          >
-            <Icon name="filter" size={24} color={Colors.primary_color} />
-          </Button>
+          {showFilterButton && (
+            <Button
+              hideIcon
+              buttonStyle={styles.button}
+              onPress={() => setShowFilter(true)}
+            >
+              <Icon name="filter" size={24} color={Colors.primary_color} />
+            </Button>
+          )}
         </View>
       )}
     </Formik>
@@ -91,22 +91,22 @@ export default SearchJobOffer;
 const styles = StyleSheet.create({
   container: {
     marginTop: 16,
-    justifyContent: "space-between",
     flexWrap: "wrap",
     flexDirection: "row",
   },
   textInput: {
-    width: "85%",
+    flex: 1,
     backgroundColor: Colors.medium_grey,
     borderColor: Colors.medium_grey,
     height: 48,
     borderRadius: 12,
   },
   button: {
+    marginLeft: 10,
+    width: 48,
     height: 48,
     borderRadius: 12,
     backgroundColor: Colors.medium_grey,
     borderColor: Colors.medium_grey,
-    width: "13%",
   },
 });

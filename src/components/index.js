@@ -5,6 +5,7 @@ import DetailsLayout from "./DetailsLayout";
 import FlatList from "./FlatList";
 import Icon from "./Icon";
 import ItemFlatList from "./ItemFlatList";
+import Loading from "./Loading";
 import LoginLayout from "./LoginLayout";
 import MainHeader from "./MainHeader";
 import AlertModal from "./Modal";
@@ -22,6 +23,7 @@ export {
   FlatList,
   Icon,
   ItemFlatList,
+  Loading,
   LoginLayout,
   MainHeader,
   NavigatorButton,
