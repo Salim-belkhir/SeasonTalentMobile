@@ -20,6 +20,7 @@ const mapDispatchToProps = {
 };
 const mapStateToProps = (state) => ({
   filteredJobOffers: state.jobOffers.filteredJobOffers,
+  jobOffers: state.jobOffers.jobOffers,
 });
 
 const DEFAULT_FILTERS = {
@@ -34,6 +35,7 @@ const JobOffersScreen = ({
   navigation,
   filteredJobOffers,
   filterJobOffers,
+  jobOffers,
 }) => {
   const [showFilter, setShowFilter] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -76,6 +78,14 @@ const JobOffersScreen = ({
     setIsInitialLoading(true);
   };
 
+  useEffect(() => {
+    setIsInitialLoading(true);
+    filterJobOffers(DEFAULT_FILTERS);
+    setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 1500);
+  }, [jobOffers]);
+  
   return (
     <DefaultLayout navigation={navigation}>
       <View style={styles.container}>
@@ -142,11 +152,11 @@ const styles = StyleSheet.create({
   },
   jobOffersList: {
     paddingTop: 20,
-    paddingBottom: 10,
+    paddingBottom: 20,
     paddingHorizontal: 19,
   },
   jobOfferItem: {
-    borderRadius: 34,
+    borderRadius: 12,
   },
   loadingContainer: {
     justifyContent: "center",

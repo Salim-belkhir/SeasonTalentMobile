@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Colors } from "~/theme";
 import Icon from "./Icon";
@@ -32,6 +33,10 @@ const itemStyles = {
 };
 
 const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
+  const start = moment(item.startDate).format("DD MMM");
+
+  const end = moment(item.endDate).format("DD MMM");
+
   return (
     <TouchableOpacity
       onPress={() => onPress(item)}
@@ -65,15 +70,7 @@ const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
             {item.title}
           </Typography>
           <Typography type="xs_regular">
-            {new Date(item.startDate).toLocaleDateString("fr-FR", {
-              day: "numeric",
-              month: "short",
-            }) +
-              " - " +
-              new Date(item.endDate).toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "short",
-              })}
+            {start} - {end}
           </Typography>
           <Typography type="xs_medium">{item.location}</Typography>
         </View>

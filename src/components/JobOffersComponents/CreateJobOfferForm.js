@@ -1,8 +1,8 @@
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import React, { useEffect } from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import moment from "moment";
+import { useCallback, useEffect, useState } from "react";
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import SelectDropdown from "react-native-select-dropdown";
 import { connect } from "react-redux";
@@ -11,6 +11,7 @@ import { Button, FlatList, TextInput, Typography } from "~/components";
 import Icon from "~/components/Icon";
 import { jobOfferActions } from "~/redux/actions";
 import { Colors } from "~/theme";
+import CalendarPicker from "../CalendarPicker";
 
 // Define mapDispatchToProps to connect createJobOffer action to the component
 const mapDispatchToProps = {
@@ -32,8 +33,9 @@ const validationSchema = Yup.object().shape({
 // Define the initial values for the form fields
 const initialValues = {
   title: "",
-  startDate: "",
-  endDate: "",
+  startDate: moment().format("YYYY-MM-DD"), // set the date of today
+  // set the date of one year after the current date
+  endDate: moment().add(1, "month").format("YYYY-MM-DD"),
   company: "",
   salary: "",
   description: "",
@@ -65,6 +67,39 @@ const etablissementList = [
   },
 ];
 
+const DateTimePicker = ({ dates, handleOpenDatePicker }) => {
+  return (
+    <View style={styles.datePickerContainer}>
+      <View style={styles.datePickerTitle}>
+        <Icon name="calendar" size={20} color={Colors.main_grey} />
+        <Typography
+          type="l_regular"
+          typographyStyle={styles.dateTimePickerLabel}
+        >
+          Date :
+        </Typography>
+      </View>
+
+      <TouchableOpacity
+        style={styles.datesButton}
+        onPress={handleOpenDatePicker}
+      >
+        <Typography type="l_regular" typographyStyle={styles.datesButtonLabels}>
+          {dates.startDate
+            ? moment(dates.startDate).format("DD MMM YYYY")
+            : "Début"}
+        </Typography>
+        <Icon name="arrowright" size={20} color={Colors.primary_color} />
+        <Typography type="l_regular" typographyStyle={styles.datesButtonLabels}>
+          {dates.endDate
+            ? moment(dates.endDate).format("DD MMM YYYY")
+            : "Indéfini"}
+        </Typography>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 /**
  * The CreateJobOfferForm component.
  *
@@ -88,11 +123,18 @@ const CreateJobOfferForm = ({
     dataToUpdate.skill = { label: "", id: "" };
   }
 
+  if (dataToUpdate) {
+    dataToUpdate.startDate = moment(dataToUpdate.startDate).format(
+      "YYYY-MM-DD"
+    );
+    dataToUpdate.endDate = moment(dataToUpdate.endDate).format("YYYY-MM-DD");
+  }
+
   // Define the initial values for the form fields, checking for the presence of dataToUpdate
   const initialFormValues = dataToUpdate ? { ...dataToUpdate } : initialValues;
 
   // If there is dataToUpdate, set the initial form values to update an existing job offer
-  const [formValues, setFormValues] = React.useState(initialFormValues);
+  const [formValues, setFormValues] = useState(initialFormValues);
 
   // Handle setting initial values when dataToUpdate changes
   useEffect(() => {
@@ -110,14 +152,14 @@ const CreateJobOfferForm = ({
     const jobOfferData = {
       ...values,
       id: dataToUpdate ? dataToUpdate.id : Math.random().toString(),
-      logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-      location: dataToUpdate
-        ? dataToUpdate.location
-        : etablissementList.find(
-            (etablissement) => etablissement.value === values.company
-          ).location,
-      startDate: values.startDate.toISOString(),
-      endDate: values.endDate.toISOString(),
+      logo: dataToUpdate
+        ? dataToUpdate.logo
+        : "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+      location: etablissementList.find(
+        (etablissement) => etablissement.value === values.company
+      ).location,
+      startDate: moment(formValues.startDate).format("YYYY-MM-DD"),
+      endDate: moment(formValues.endDate).format("YYYY-MM-DD"),
     };
 
     if (dataToUpdate) {
@@ -133,6 +175,34 @@ const CreateJobOfferForm = ({
 
     navigation.navigate("EmploisHome");
   };
+
+  const [onShowDatePicker, setOnShowDatePicker] = useState(false);
+
+  const handleOpenDatePicker = useCallback(() => {
+    setOnShowDatePicker(!onShowDatePicker);
+  }, [onShowDatePicker]);
+
+  const handleDateChange = useCallback(
+    (date) => {
+      setFormValues({
+        ...formValues,
+        startDate: date.startDate,
+        endDate: date.endDate,
+      });
+    },
+    [formValues]
+  );
+
+  const handleDateSelectChange = useCallback(
+    (date) => {
+      setFormValues({
+        ...formValues,
+        startDate: date.startDate,
+        endDate: date.endDate,
+      });
+    },
+    [formValues]
+  );
 
   // Define the props for the Formik component
   const formikProps = {
@@ -160,7 +230,7 @@ const CreateJobOfferForm = ({
           </Typography>
           <KeyboardAwareScrollView
             contentContainerStyle={styles.scrollContent}
-            extraScrollHeight={Platform.OS === "ios" ? 200 : 0}
+            extraScrollHeight={Platform.OS === "ios" ? 130 : 0}
           >
             {/* Render the title input field */}
             <TextInput
@@ -174,98 +244,26 @@ const CreateJobOfferForm = ({
               returnKeyType="next"
             />
 
-            {/* Render the date pickers */}
-            <View style={styles.dateTimePickersContainer}>
-              <View
-                style={[
-                  styles.dateTimePickerContainer,
-                  values.startDate && {
-                    borderColor: Colors.primary_color,
-                  },
-                ]}
-              >
-                <Icon
-                  name="calendar"
-                  size={20}
-                  color={
-                    values.startDate ? Colors.primary_color : Colors.main_grey
-                  }
-                />
-                <Typography
-                  type="l_regular"
-                  typographyStyle={[
-                    styles.dateTimePickerLabel,
-                    values.startDate && {
-                      color: Colors.primary_color,
-                    },
-                  ]}
-                >
-                  Du :
-                </Typography>
-                <RNDateTimePicker
-                  value={
-                    dataToUpdate
-                      ? new Date(dataToUpdate.startDate)
-                      : values.startDate
-                      ? new Date(values.startDate)
-                      : new Date()
-                  }
-                  onChange={(event, selectedDate) => {
-                    setFieldValue("startDate", selectedDate);
+            {onShowDatePicker && (
+              <View style={styles.showCalendar}>
+                <CalendarPicker
+                  initialDates={{
+                    startDate: formValues.startDate,
+                    endDate: formValues.endDate,
                   }}
-                  style={styles.dateTimePicker}
-                  textColor={Colors.primary_color}
-                  accentColor={Colors.primary_color}
-                  locale="fr-FR"
-                  minimumDate={new Date()}
+                  onUpdateCompleted={handleDateChange}
+                  onDateSelectChange={handleDateSelectChange}
                 />
               </View>
+            )}
 
-              <View
-                style={[
-                  styles.dateTimePickerContainer,
-                  values.endDate && {
-                    borderColor: Colors.primary_color,
-                  },
-                ]}
-              >
-                <Icon
-                  name="calendar"
-                  size={20}
-                  color={
-                    values.endDate ? Colors.primary_color : Colors.main_grey
-                  }
-                />
-                <Typography
-                  type="l_regular"
-                  typographyStyle={[
-                    styles.dateTimePickerLabel,
-                    values.endDate && {
-                      color: Colors.primary_color,
-                    },
-                  ]}
-                >
-                  Au :
-                </Typography>
-                <RNDateTimePicker
-                  value={
-                    dataToUpdate
-                      ? new Date(dataToUpdate.endDate)
-                      : values.endDate
-                      ? new Date(values.endDate)
-                      : new Date()
-                  }
-                  onChange={(event, selectedDate) => {
-                    setFieldValue("endDate", selectedDate);
-                  }}
-                  style={styles.dateTimePicker}
-                  textColor={Colors.primary_color}
-                  accentColor={Colors.primary_color}
-                  locale="fr-FR"
-                  minimumDate={new Date()}
-                />
-              </View>
-            </View>
+            <DateTimePicker
+              dates={{
+                startDate: formValues.startDate,
+                endDate: formValues.endDate,
+              }}
+              handleOpenDatePicker={handleOpenDatePicker}
+            />
 
             <SelectDropdown
               data={etablissementList}
@@ -305,7 +303,9 @@ const CreateJobOfferForm = ({
               searchPlaceHolder="Rechercher un établissement"
               buttonStyle={[
                 styles.selectButton,
-                values.company && { borderBottomColor: Colors.primary_color },
+                values.company && {
+                  borderBottomColor: Colors.primary_color,
+                },
               ]}
               buttonTextStyle={[
                 styles.selectButtonText,
@@ -549,4 +549,52 @@ const styles = StyleSheet.create({
     marginLeft: 21,
   },
   scrollContent: {},
+  datePickerContainer: {
+    paddingVertical: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    borderBottomColor: Colors.main_grey,
+    borderBottomWidth: 1,
+    borderTopColor: Colors.main_grey,
+    borderTopWidth: 1,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+
+  datePickerTitle: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "space-between",
+    paddingHorizontal: 13,
+  },
+  dateTimePickerLabel: {
+    color: Colors.main_grey,
+    fontFamily: "Montserrat-medium",
+  },
+
+  datesButton: {
+    backgroundColor: Colors.input_gray,
+    borderRadius: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    width: "65%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+
+  datesButtonLabels: {
+    color: Colors.dark_grey,
+    fontSize: 14,
+  },
+  showCalendar: {
+    backgroundColor: `${Colors.primary_color}73`,
+    padding: 7,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 15,
+  },
 });

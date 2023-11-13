@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, Modal } from "react-native";
-import MainHeader from "../MainHeader";
-import { Colors } from "~/theme";
-import Button from "../Button";
-import Typography from "../Typography";
-import Icon from "../Icon";
 import { useNavigation } from "@react-navigation/native";
-import AlertModal from "../Modal";
+import moment from "moment";
+import { useState } from "react";
+import { Image, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import { jobOfferActions } from "~/redux/actions";
+import { Colors } from "~/theme";
+import Button from "../Button";
+import Icon from "../Icon";
+import MainHeader from "../MainHeader";
+import AlertModal from "../Modal";
+import Typography from "../Typography";
 
 // Define mapDispatchToProps to connect createJobOffer action to the component
 const mapDispatchToProps = {
@@ -26,15 +27,9 @@ const DetailsHeader = ({ data, deleteJobOffer }) => {
   };
   const cancelDelete = () => setShowModal(false);
 
-  const start = new Date(data.startDate).toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "short",
-  });
+  const start = moment(data.startDate).format("DD MMM");
 
-  const end = new Date(data.endDate).toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "short",
-  });
+  const end = moment(data.endDate).format("DD MMM");
 
   return (
     <MainHeader.goBackOnly
@@ -62,7 +57,7 @@ const DetailsHeader = ({ data, deleteJobOffer }) => {
 
         <View style={styles.otherInfosContainer}>
           {[
-            { name: "enviroment", text: data.company },
+            { name: "enviroment", text: data.location },
             {
               name: "calendar",
               text: start + " - " + end,
@@ -147,11 +142,14 @@ const styles = StyleSheet.create({
   info: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     justifyContent: "space-between",
     backgroundColor: `${Colors.main_white}70`,
     borderRadius: 50,
     paddingHorizontal: 8,
-    margin: 12,
+    margin: 6,
+    overflow: "hidden",
+    maxWidth: 140,
   },
   infoText: {
     fontSize: 14,
