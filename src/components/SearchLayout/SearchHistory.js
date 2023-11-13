@@ -18,7 +18,6 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state) => ({
-  searchedJobOffers: state.jobOffers.searchedJobOffers,
   consultedOffers: state.jobOffers.recentlyConsultedJobOffers,
 });
 
@@ -26,13 +25,11 @@ const SearchHistory = ({
   setSearchHistory,
   searchHistory,
   searchJobOffer,
-  searchedJobOffers,
   consultedOffers,
   loadRecentlyConsultedJobOffers,
   setSearch,
 }) => {
   const navigation = useNavigation();
-  const [historyToSearch, setHistoryToSearch] = useState("");
 
   useEffect(() => {
     AsyncStorage.getItem("consultedOffers").then((offers) => {

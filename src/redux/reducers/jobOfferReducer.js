@@ -440,9 +440,11 @@ const initialState = {
   loading: false,
   error: null,
   selectedJobOffer: null,
-  searchedJobOffers: [],
   recentlyConsultedJobOffers: [],
   filteredJobOffers: [],
+
+  searchedJobOffers: [],
+  filteredSearchedJobOffers: [],
 };
 
 // Define the reducer function
@@ -511,81 +513,71 @@ const jobOfferReducer = (state = initialState, action) => {
       };
 
     case jobOfferActions.FILTER_JOB_OFFERS:
-      const {
-        searchWords,
-        startDate,
-        endDate,
-        minSalary,
-        maxSalary,
-        location,
-      } = action.payload;
-
-      const filteredJobOffers = state.jobOffers.filter((jobOffer) => {
-        // Filter by searchWords
-        const searchWordsMatch = searchWords.every((word) => {
-          const lowerCaseWord = word.toLowerCase();
-          return (
-            jobOffer.title.toLowerCase().includes(lowerCaseWord) ||
-            jobOffer.skills.some((skill) =>
-              skill.label.toLowerCase().includes(lowerCaseWord)
-            ) ||
-            jobOffer.advantages.some((advantage) =>
-              advantage.label.toLowerCase().includes(lowerCaseWord)
-            )
-          );
-        });
-
-        // Filter by date
-        const startDateMatch =
-          !startDate ||
-          moment(jobOffer.startDate).isSameOrAfter(startDate, "day");
-        const endDateMatch =
-          !endDate || moment(jobOffer.endDate).isSameOrBefore(endDate, "day");
-
-        // Filter by salary
-        const salaryMatch =
-          (!minSalary || jobOffer.salary >= minSalary) &&
-          (!maxSalary || jobOffer.salary <= maxSalary);
-
-        // Filter by location
-        // if the location is not specified, we don't filter by location
-        const locationMatch =
-          !location ||
-          jobOffer.location.toLowerCase() === location.toLowerCase();
-
-        const isMatch =
-          searchWordsMatch &&
-          startDateMatch &&
-          endDateMatch &&
-          salaryMatch &&
-          locationMatch;
-
-        // console.log("====================================");
-        // console.log("jobOffer", jobOffer);
-        // console.log("isMatch", isMatch);
-        // console.log("searchWordsMatch", searchWordsMatch);
-        // console.log("startDateMatch", startDateMatch);
-        // console.log("endDateMatch", endDateMatch);
-        // console.log("salaryMatch", salaryMatch);
-        // console.log("locationMatch", locationMatch);
-        // console.log("====================================");
-        return isMatch;
-      });
-
-      // console.log("====================================");
-      // console.log("filteredJobOffers", filteredJobOffers);
-      // console.log("====================================");
-
       return {
         ...state,
-        filteredJobOffers: filteredJobOffers,
+        filteredJobOffers: filterJobOffers(state.jobOffers, action.payload),
         loading: false,
         error: null,
       };
-
+    case jobOfferActions.FILTER_RESULTS_JOB_OFFERS:
+      return {
+        ...state,
+        filteredSearchedJobOffers: filterJobOffers(
+          state.searchedJobOffers,
+          action.payload
+        ),
+        loading: false,
+        error: null,
+      };
     default:
       return state;
   }
 };
 
 export default jobOfferReducer;
+
+const filterJobOffers = (jobOffers, filters) => {
+  const { searchWords, startDate, endDate, minSalary, maxSalary, location } =
+    filters;
+
+  return jobOffers.filter((jobOffer) => {
+    // Filter by searchWords
+    const searchWordsMatch = searchWords.every((word) => {
+      const lowerCaseWord = word.label.toLowerCase();
+      return (
+        jobOffer.title.toLowerCase().includes(lowerCaseWord) ||
+        jobOffer.skills.some((skill) =>
+          skill.label.toLowerCase().includes(lowerCaseWord)
+        ) ||
+        jobOffer.advantages.some((advantage) =>
+          advantage.label.toLowerCase().includes(lowerCaseWord)
+        )
+      );
+    });
+
+    // Filter by date
+    const startDateMatch =
+      !startDate || moment(jobOffer.startDate).isSameOrAfter(startDate, "day");
+    const endDateMatch =
+      !endDate || moment(jobOffer.endDate).isSameOrBefore(endDate, "day");
+
+    // Filter by salary
+    const salaryMatch =
+      (!minSalary || jobOffer.salary >= minSalary) &&
+      (!maxSalary || jobOffer.salary <= maxSalary);
+
+    // Filter by location
+    // if the location is not specified, we don't filter by location
+    const locationMatch =
+      !location || jobOffer.location.toLowerCase() === location.toLowerCase();
+
+    const isMatch =
+      searchWordsMatch &&
+      startDateMatch &&
+      endDateMatch &&
+      salaryMatch &&
+      locationMatch;
+
+    return isMatch;
+  });
+};

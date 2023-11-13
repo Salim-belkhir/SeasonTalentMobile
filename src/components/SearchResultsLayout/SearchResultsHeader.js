@@ -5,7 +5,7 @@ import Button from "../Button";
 import Icon from "../Icon";
 import Typography from "../Typography";
 
-const SearchResultsHeader = ({ searchTitle, nbResults }) => {
+const SearchResultsHeader = ({ searchTitle, nbResults, setShowFilter }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -25,7 +25,11 @@ const SearchResultsHeader = ({ searchTitle, nbResults }) => {
         <Typography type="l_medium" typographyStyle={styles.nbResults}>
           {nbResults} {nbResults > 1 ? "Offres trouvées" : "Offre trouvée"}
         </Typography>
-        <Button hideIcon buttonStyle={styles.button}>
+        <Button
+          hideIcon
+          buttonStyle={styles.button}
+          onPress={() => setShowFilter(true)}
+        >
           <Icon name="filter" size={28} color={Colors.primary_color} />
         </Button>
       </View>

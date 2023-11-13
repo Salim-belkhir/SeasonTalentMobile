@@ -7,6 +7,7 @@ const DELETE_JOB_OFFER = "DELETE_JOB_OFFER";
 const SEARCH_JOB_OFFER = "SEARCH_JOB_OFFER";
 const LOAD_RECENTLY_CONSULTERD_JOB_OFFER = "LOAD_RECENTLY_CONSULTERD_JOB_OFFER";
 const FILTER_JOB_OFFERS = "FILTER_JOB_OFFERS";
+const FILTER_RESULTS_JOB_OFFERS = "FILTER_RESULTS_JOB_OFFERS";
 
 // Define the action creators
 
@@ -50,12 +51,18 @@ const filterJobOffers = (filters) => ({
   payload: filters,
 });
 
+const filterResultsJobOffers = (filters) => ({
+  type: FILTER_RESULTS_JOB_OFFERS,
+  payload: filters,
+});
+
 export {
   CREATE_JOB_OFFER,
   DELETE_JOB_OFFER,
   FETCH_JOB_OFFERS,
   FETCH_JOB_OFFER_BY_ID,
   FILTER_JOB_OFFERS,
+  FILTER_RESULTS_JOB_OFFERS,
   LOAD_RECENTLY_CONSULTERD_JOB_OFFER,
   SEARCH_JOB_OFFER,
   UPDATE_JOB_OFFER,
@@ -64,6 +71,7 @@ export {
   fetchJobOfferById,
   fetchJobOffers,
   filterJobOffers,
+  filterResultsJobOffers,
   loadRecentlyConsultedJobOffers,
   searchJobOffer,
   updateJobOffer,

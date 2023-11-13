@@ -1,15 +1,35 @@
-import { useState } from "react";
+import moment from "moment";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
+import { jobOfferActions } from "~/redux/actions";
 import { Colors } from "~/theme";
+import BottomSheetFilters from "../BottomSheetFilters";
+import Loading from "../Loading";
 import SearchResultsContent from "./SearchResultsContent";
 import SearchResultsHeader from "./SearchResultsHeader";
 
 const mapStateToProps = (state) => ({
-  searchedJobOffers: state.jobOffers.searchedJobOffers,
+  filteredJobOffers: state.jobOffers.filteredSearchedJobOffers,
 });
 
-const SearchResultsLayout = ({ searchResults, searchedJobOffers }) => {
+const mapDispatchToProps = {
+  filterResultsJobOffers: jobOfferActions.filterResultsJobOffers,
+};
+
+const DEFAULT_FILTERS = {
+  searchWords: [],
+  startDate: moment().add(-1, "years").format("YYYY-MM-DD"),
+  endDate: moment().add(1, "years").format("YYYY-MM-DD"),
+  minSalary: 750,
+  maxSalary: 1750,
+};
+
+const SearchResultsLayout = ({
+  searchResults,
+  filteredJobOffers,
+  filterResultsJobOffers,
+}) => {
   const [showFilter, setShowFilter] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [filterBy, setFilterBy] = useState();
@@ -19,23 +39,63 @@ const SearchResultsLayout = ({ searchResults, searchedJobOffers }) => {
     setShowFilter(false);
   };
 
+  const refetchWithFilter = useCallback(() => {
+    // we need to set up a default filter because when the first time that the job offers screen is rendered,
+    // the filterBy state is not yet set
+    const filters = filterBy || DEFAULT_FILTERS;
+    filterResultsJobOffers(filters);
+  }, [filterBy]);
+
+  useEffect(() => {
+    refetchWithFilter();
+    setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 1500);
+  }, [refetchWithFilter]);
+
+  const handleFilterChange = (filter) => {
+    setFilterBy(filter);
+    setIsInitialLoading(false);
+  };
+
   return (
     <View style={styles.container}>
       <SearchResultsHeader
         searchTitle={searchResults.searchValue}
-        nbResults={searchedJobOffers.length}
+        nbResults={filteredJobOffers.length}
         setShowFilter={setShowFilter}
       />
-      <SearchResultsContent results={searchedJobOffers} />
+      {isInitialLoading ? (
+        <Loading
+          height={200}
+          width={200}
+          show={isInitialLoading}
+          lottieStyle={styles.loadingContainer}
+        />
+      ) : (
+        <SearchResultsContent results={filteredJobOffers} />
+      )}
+      <BottomSheetFilters
+        open={showFilter}
+        onClose={closeFilter}
+        onApplyFilter={handleFilterChange}
+        onTotalFilterAppliedChange={(total) => {
+          setTotalAppliedFilter(total);
+        }}
+      />
     </View>
   );
 };
 
-export default connect(mapStateToProps)(SearchResultsLayout);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchResultsLayout);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.main_white,
   },
+  loadingContainer: {},
 });

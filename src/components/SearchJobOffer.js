@@ -1,12 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
 import Button from "./Button";
 import Icon from "./Icon";
 import AlertModal from "./Modal";
 import TextInput from "./TextInput";
+
+const initialValues = {
+  search: "",
+};
 
 const SearchJobOffer = ({
   searchHistory,
@@ -44,8 +48,20 @@ const SearchJobOffer = ({
     }
   };
 
+  const initialFormValues = search !== "" ? { search: search } : initialValues;
+
+  // If there is dataToUpdate, set the initial form values to update an existing job offer
+  const [formValues, setFormValues] = useState(initialFormValues);
+
+  // Handle setting initial values when dataToUpdate changes
+  useEffect(() => {
+    if (search !== "") {
+      setFormValues({ search: search });
+    }
+  }, [search]);
+
   return (
-    <Formik initialValues={{ search }} onSubmit={handleSubmit}>
+    <Formik initialValues={formValues} onSubmit={handleSubmit}>
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
           {showModal && (
@@ -65,7 +81,11 @@ const SearchJobOffer = ({
             }}
             onBlur={handleBlur("search")}
             onFocus={action}
-            value={values.search}
+            value={
+              values.search !== "" && values.search !== undefined
+                ? values.search
+                : ""
+            }
             inputStyle={styles.textInput}
             onSubmitEditing={handleSubmit}
             // disable the return key on the keyboard until the results are ready

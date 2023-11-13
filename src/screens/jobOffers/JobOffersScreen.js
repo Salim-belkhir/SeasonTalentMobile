@@ -19,7 +19,6 @@ const mapDispatchToProps = {
   filterJobOffers: jobOfferActions.filterJobOffers,
 };
 const mapStateToProps = (state) => ({
-  jobOffers: state.jobOffers.jobOffers,
   filteredJobOffers: state.jobOffers.filteredJobOffers,
 });
 
