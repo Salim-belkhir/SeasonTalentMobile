@@ -1,3 +1,4 @@
 export * from "./authActions";
-export * from "./logInAction";
+export * as companiesActions from "./companiesActions";
 export * as jobOfferActions from "./jobOfferActions";
+export * from "./logInAction";
