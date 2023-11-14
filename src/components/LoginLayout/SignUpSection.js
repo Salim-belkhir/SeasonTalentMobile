@@ -32,7 +32,7 @@ const initialValues = {
  * @param {Object} navigation - The navigation object used to navigate between screens.
  * @returns {JSX.Element} - A JSX element that displays the sign-up form.
  */
-const SignInSection = ({ navigation }) => {
+const SignUpSection = ({ navigation }) => {
   /**
    * A function that handles sign-up logic.
    * @param {Object} values - An object containing the form values.
@@ -83,7 +83,7 @@ const SignInSection = ({ navigation }) => {
             value={values.email}
             error={touched.email && errors.email}
             autoCapitalize="none"
-            InputStyle={styles.input}
+            inputStyle={styles.input}
             returnKeyType="next"
           />
           {/* Password input */}
@@ -97,7 +97,7 @@ const SignInSection = ({ navigation }) => {
             value={values.password}
             error={touched.password && errors.password}
             secureTextEntry
-            InputStyle={styles.input}
+            inputStyle={styles.input}
             returnKeyType="next"
             autoCapitalize="none"
           />
@@ -112,7 +112,7 @@ const SignInSection = ({ navigation }) => {
             value={values.confirmPassword}
             error={touched.confirmPassword && errors.confirmPassword}
             secureTextEntry
-            InputStyle={styles.input}
+            inputStyle={styles.input}
             returnKeyType="done"
             autoCapitalize="none"
             editable={values.password ? true : false}
@@ -143,7 +143,7 @@ const SignInSection = ({ navigation }) => {
   );
 };
 
-export default SignInSection;
+export default SignUpSection;
 
 const styles = StyleSheet.create({
   input: {

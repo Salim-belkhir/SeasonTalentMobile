@@ -3,7 +3,7 @@ import { Colors } from "~/theme";
 import { connect } from "react-redux";
 import React from "react";
 import LogInSection from "./SignInSection";
-import SignInSection from "./SignUpSection";
+import SignUpSection from "./SignUpSection";
 
 // this is the state from redux store
 //to check if the user is trying to subscribe or login
@@ -24,7 +24,7 @@ const LogInputSection = ({ navigation, logState }) => {
       {logState ? (
         <LogInSection navigation={navigation} />
       ) : (
-        <SignInSection navigation={navigation} />
+        <SignUpSection navigation={navigation} />
       )}
     </View>
   );

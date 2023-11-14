@@ -1,9 +1,8 @@
-import React from "react";
-import { Modal, View, StyleSheet } from "react-native";
+import { Modal, StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
-import Typography from "./Typography";
 import Button from "./Button";
 import Icon from "./Icon";
+import Typography from "./Typography";
 
 // This modal may upgrade depending on the useCase !!
 
@@ -13,7 +12,8 @@ import Icon from "./Icon";
  * @param {boolean} props.visible - Determines whether the modal is visible or not.
  * @param {string} props.title - The title of the modal.
  * @param {string} props.message - The message to display in the modal.
- * @param {function} props.onClose - The function to call when the "Ok" button is pressed.
+ * @param {function} props.onClose - The function to call when the "Ok" or "Annuler" button is pressed.
+ * @param {function} props.action - The function to call when the "Supprimer" button is pressed.
  * @param {string} props.type - The type of the modal (error, success, warning or primary).
  * @returns {JSX.Element} - The AlertModal component.
  */
@@ -25,13 +25,14 @@ const AlertModal = ({
   title,
   message,
   onClose,
+  action,
   type,
   ...otherProps
 }) => {
   let icon = null;
   switch (type) {
     case "error":
-      icon = "error";
+      icon = "questioncircleo";
       mainColor = Colors.error_color;
       break;
     case "success":
@@ -69,9 +70,51 @@ const AlertModal = ({
             </Typography>
           </View>
 
-          <View style={styles.modalContentButtons}>
-            <Button label="Ok" type="secondary" hideIcon onPress={onClose} />
-          </View>
+          {
+            // two buttons if the modal is an error modal
+            type === "error" ? (
+              <View style={styles.modalContentButtons}>
+                <Button
+                  label="Annuler"
+                  buttonStyle={{
+                    marginRight: 10,
+                    backgroundColor: `${Colors.primary_color}70`,
+                    borderWidth: 0,
+                    paddingHorizontal: 10,
+                  }}
+                  labelTypographyStyle={{ color: Colors.primary_color }}
+                  onPress={onClose}
+                  hideIcon
+                />
+                <Button
+                  label="Supprimer"
+                  buttonStyle={{
+                    backgroundColor: `${mainColor}70`,
+                    borderWidth: 0,
+                    paddingHorizontal: 10,
+                  }}
+                  labelTypographyStyle={{ color: mainColor }}
+                  onPress={action}
+                  hideIcon
+                />
+              </View>
+            ) : (
+              // one button if the modal is a success, warning or primary modal
+              <View style={styles.modalContentButtons}>
+                <Button
+                  label="Ok"
+                  buttonStyle={{
+                    backgroundColor: `${mainColor}70`,
+                    borderWidth: 0,
+                    paddingHorizontal: 10,
+                  }}
+                  labelTypographyStyle={{ color: Colors.pure_white }}
+                  onPress={onClose}
+                  hideIcon
+                />
+              </View>
+            )
+          }
         </View>
       </View>
     </Modal>
@@ -94,7 +137,8 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   modalContentButtons: {
-    alignItems: "flex-end",
+    flexDirection: "row",
+    justifyContent: "flex-end",
     marginTop: 20,
   },
   titleContainer: {

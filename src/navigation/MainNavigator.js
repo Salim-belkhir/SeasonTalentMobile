@@ -1,8 +1,10 @@
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeScreen, Login } from "~/screens";
-import React from "react";
+import { Login } from "~/screens";
+import MainBottomTabNavigator from "./MainBottomTabNavigator";
 import { connect } from "react-redux";
+
 const mapStateToProps = (state) => ({
   isAuthenticated: state.googleAuth.isAuthenticated,
   userInfo: state.googleAuth.userInfo,
@@ -20,18 +22,21 @@ const MainNavigator = ({ isAuthenticated }) => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-      // screenOptions={{
-      //   headerShown: false,
-      //   headerBackTitleVisible: false,
-      //   headerStyle: styles.headerStyle,
-      //   headerBackTitleStyle: styles.headerBackTitleStyle,
-      //   headerLeftContainerStyle: styles.headerLeftContainerStyle,
-      //   headerRightContainerStyle: styles.headerRightContainerStyle,
-      //   headerBackImage: HeaderBackImage,
-      // }}
-      // check if the user is authenticated
+        // screenOptions={{
+        //   headerShown: false,
+        //   headerBackTitleVisible: false,
+        //   headerStyle: styles.headerStyle,
+        //   headerBackTitleStyle: styles.headerBackTitleStyle,
+        //   headerLeftContainerStyle: styles.headerLeftContainerStyle,
+        //   headerRightContainerStyle: styles.headerRightContainerStyle,
+        //   headerBackImage: HeaderBackImage,
+        // }}
+        // check if the user is authenticated
+        screenOptions={{
+          headerShown: false,
+        }}
       >
-        {!isAuthenticated && (
+        {!isAuthenticated ? (
           <Stack.Screen
             name="Login"
             component={Login}
@@ -40,14 +45,12 @@ const MainNavigator = ({ isAuthenticated }) => {
               headerShown: false,
             }}
           />
+        ) : (
+          <Stack.Screen
+            name="MainBottomTabNavigator"
+            component={MainBottomTabNavigator}
+          />
         )}
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            headerTitle: "Home",
-          }}
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );

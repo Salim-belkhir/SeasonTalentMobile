@@ -27,7 +27,10 @@ const FooterSection = ({ logState, signUp, signIn, promptAsync }) => {
 
       {/* {loading && <ActivityIndicator sizew="large" />} */}
 
-      <TouchableOpacity onPress={() => promptAsync()}>
+      <TouchableOpacity
+        onPress={() => promptAsync()}
+        style={styles.socialAuthContainer}
+      >
         <Image
           source={require("~/assets/icons/google.png")}
           style={styles.socialIcon}
@@ -80,10 +83,14 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: Colors.main_grey,
   },
-  socialIcon: {
+  socialAuthContainer: {
     width: 120,
     height: 120,
     alignSelf: "center",
+  },
+  socialIcon: {
+    width: 120,
+    height: 120,
     resizeMode: "contain",
   },
   logSwitchParent: {

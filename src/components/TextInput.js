@@ -1,8 +1,14 @@
-import React, { useState } from "react";
-import { View, TextInput as RNTextInput, StyleSheet } from "react-native";
+import { useState } from "react";
+import {
+  Keyboard,
+  TextInput as RNTextInput,
+  StyleSheet,
+  View,
+} from "react-native";
 import { Colors } from "~/theme";
-import Typography from "./Typography";
+import Button from "./Button";
 import Icon from "./Icon";
+import Typography from "./Typography";
 
 /**
  * A custom TextInput component that accepts various props to customize its appearance and behavior.
@@ -19,6 +25,9 @@ const TextInput = ({
   rightIcon,
   secureTextEntry,
   error,
+  inputStyle,
+  inputTypographyStyle,
+  textArea,
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -46,14 +55,18 @@ const TextInput = ({
     setShowPassword(!showPassword);
   };
 
+  onPress = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <View>
+    <>
       <View
         style={
           // lets accept more styles from the outside
           [
             styles.container,
-            rest.InputStyle,
+            inputStyle,
             isFocused || value ? styles.focusedContainer : null,
             error ? styles.errorContainer : null,
           ]
@@ -72,7 +85,7 @@ const TextInput = ({
           />
         )}
         <RNTextInput
-          style={[styles.input]}
+          style={[styles.input, inputTypographyStyle]}
           keyboardType="default"
           returnKeyType="done"
           selectionColor={Colors.primary_color}
@@ -92,35 +105,47 @@ const TextInput = ({
             onPress={toggleShowPassword}
           />
         )}
+        {textArea && (
+          <Button
+            label="Terminer"
+            buttonStyle={styles.textAreaButton}
+            labelTypographyStyle={styles.textAreaButtonLabel}
+            hideIcon
+            onPress={onPress}
+          />
+        )}
       </View>
       {error && (
         <Typography type="s_medium" typographyStyle={styles.error}>
           {error}
         </Typography>
       )}
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    alignItems: "center",
     borderWidth: 1,
     borderColor: Colors.main_grey,
     borderRadius: 9,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingVertical: 8,
     height: 52,
+    // hiden overflow
+    overflow: "hidden",
+    alignItems: "center",
   },
   focusedContainer: {
     borderColor: Colors.primary_color,
   },
   input: {
-    flex: 1,
-    marginLeft: 8,
     fontSize: 15,
     fontFamily: "Montserrat-medium",
+    height: "100%",
+    flex: 1,
+    marginRight: 8,
   },
   icon: {
     marginRight: 8,
@@ -139,6 +164,17 @@ const styles = StyleSheet.create({
   },
   errorIcon: {
     color: Colors.red,
+  },
+
+  textAreaButton: {
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    position: "absolute",
+    right: 15,
+    bottom: -5,
+  },
+  textAreaButtonLabel: {
+    color: Colors.primary_color,
   },
 });
 

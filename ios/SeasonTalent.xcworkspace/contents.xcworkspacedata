@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SeasonTalent.xcodeproj">
+      location = "absolute:SeasonTalent.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:SeasonTalent.xcodeproj">
    </FileRef>
 </Workspace>
