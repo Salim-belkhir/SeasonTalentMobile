@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "~/components";
-import { CandidatesScreen, CompaniesScreen, ProfileScreen } from "~/screens";
+import { CandidatesScreen, ProfileScreen } from "~/screens";
 import { Colors } from "~/theme";
+import CompaniesNavigator from "./CompaniesNavigator";
 import JobOffersNavigator from "./JobOffersNavigator";
 const BottomTab = createBottomTabNavigator();
 
@@ -72,7 +73,7 @@ const MainBottomTabNavigator = () => {
       />
       <BottomTab.Screen
         name="Établissements"
-        component={CompaniesScreen}
+        component={CompaniesNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" size={size} color={color} />

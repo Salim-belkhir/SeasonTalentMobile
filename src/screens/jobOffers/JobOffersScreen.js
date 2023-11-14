@@ -85,9 +85,9 @@ const JobOffersScreen = ({
       setIsInitialLoading(false);
     }, 1500);
   }, [jobOffers]);
-  
+
   return (
-    <DefaultLayout navigation={navigation}>
+    <DefaultLayout>
       <View style={styles.container}>
         <View style={styles.header}>
           <MainHeader navigation={navigation} />

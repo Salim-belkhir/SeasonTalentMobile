@@ -36,6 +36,7 @@ const SearchResultsContent = ({
     <View style={styles.container}>
       <FlatList
         items={results}
+        type="default"
         listStyle={styles.list}
         onPressedItem={handleNavigateToJobOfferDetails}
       />
