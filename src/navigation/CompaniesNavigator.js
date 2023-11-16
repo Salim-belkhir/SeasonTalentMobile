@@ -1,5 +1,9 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CompaniesScreen, CreateJobOffer, DetailsJobOffer } from "~/screens";
+import {
+  CompaniesScreen,
+  CreateCompanyScreen,
+  DetailsJobOffer,
+} from "~/screens";
 import SearchNavigator from "./SearchNavigator";
 
 const Stack = createNativeStackNavigator();
@@ -13,7 +17,7 @@ const CompaniesNavigator = () => {
       }}
     >
       <Stack.Screen name="CompaniesHome" component={CompaniesScreen} />
-      <Stack.Screen name="CompaniesAjouter" component={CreateJobOffer} />
+      <Stack.Screen name="CompaniesAjouter" component={CreateCompanyScreen} />
       <Stack.Screen
         name="CompaniesRecherche"
         component={SearchNavigator}

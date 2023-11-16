@@ -1,5 +1,6 @@
 import BottomSheetFilters from "./BottomSheetFilters";
 import Button from "./Button";
+import CreateCompanieLayout from "./CreateCompanieLayout";
 import DefaultLayout from "./DefaultLayout";
 import DetailsLayout from "./DetailsLayout";
 import FlatList from "./FlatList";
@@ -14,10 +15,12 @@ import SearchJobOffer from "./SearchJobOffer";
 import SearchLayout from "./SearchLayout";
 import TextInput from "./TextInput";
 import Typography from "./Typography";
+
 export {
   AlertModal,
   BottomSheetFilters,
   Button,
+  CreateCompanieLayout,
   DefaultLayout,
   DetailsLayout,
   FlatList,
