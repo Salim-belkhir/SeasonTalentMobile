@@ -3,12 +3,6 @@ import { companiesActions } from "../actions";
 const initialState = {
   companies: [
     {
-      id: 1,
-      name: "Airbnb",
-      address: "888 Brannan St, San Francisco, CA 94103",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/1200px-Airbnb_Logo_B%C3%A9lo.svg.png",
-    },
-    {
       id: 3,
       name: "Google",
       address: "1600 Amphitheatre Pkwy, Mountain View, CA 94043",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -13,27 +13,35 @@ import {
 import { companiesActions } from "~/redux/actions";
 import { Colors } from "~/theme";
 
+// Define mapDispatchToProps function to map Redux actions to component props
 const mapDispatchToProps = {
   getCompanies: companiesActions.fetchCompanies,
 };
 
+// Define mapStateToProps function to map Redux state to component props
 const mapStateToProps = (state) => ({
   companies: state.companies.companies,
   principalCompany: state.companies.principalCompany,
 });
 
+// Define CompaniesScreen component
 const CompaniesScreen = ({ navigation, companies, principalCompany }) => {
+  // Define state variables
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [data, setData] = useState([]);
   const [principalCompanyData, setPrincipalCompanyData] = useState(null);
+
+  // Define function to handle navigation to Add Company screen
   const handleNavigateToAddCompany = () => {
-    navigation.navigate("CreateCompany");
+    navigation.navigate("CompaniesAjouter");
   };
 
+  // Define function to handle navigation to Company Details screen
   const handleNavigateToCompanyDetails = (item) => {
-    navigation.navigate("CompanyDetails", { item });
+    navigation.navigate("CompaniesDetails", { data: item })
   };
 
+  // Define useEffect hook to set state variables after 1 second
   useEffect(() => {
     setTimeout(() => {
       setData(companies);
@@ -42,53 +50,33 @@ const CompaniesScreen = ({ navigation, companies, principalCompany }) => {
     }, 1000);
   }, []);
 
+  // Define useCallback hook to swap principal company with another company
+  const swapPrincipalCompany = useCallback(
+    (item) => {
+      const index = data.findIndex((i) => i.id === item.id);
+      const principalCompanyIndex = data.findIndex(
+        (i) => i.id === principalCompanyData.id
+      );
+      const newData = [...data];
+      newData[index] = principalCompanyData;
+      newData[principalCompanyIndex] = item;
+      setData(newData);
+      setPrincipalCompanyData(item);
+    },
+    [data, principalCompanyData]
+  );
+
+  // Render component
   return (
     <DefaultLayout>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <MainHeader />
-          <NavigatorButton
-            label="Créer un établissement"
-            leftIcon="plus"
-            navigate={handleNavigateToAddCompany}
-          />
-          <Typography
-            type="l_bold"
-            typographyStyle={styles.currentCompanyTitle}
-          >
-            Votre Établissement Principal
-          </Typography>
-          <View style={styles.principalCompanyContainer}>
-            <Image
-              source={{ uri: principalCompanyData?.logo }}
-              style={styles.principalCompanyLogo}
-            />
-            <View style={styles.principalCompanyDetails}>
-              <Typography type="l_medium" typographyStyle={styles.companyName}>
-                {principalCompanyData?.name}
-              </Typography>
-              <Typography
-                type="s_medium"
-                typographyStyle={styles.companyAddress}
-              >
-                <Icon
-                  name="enviroment"
-                  size={14}
-                  color={Colors.primary_color}
-                />{" "}
-                {principalCompanyData?.address}
-              </Typography>
-            </View>
-          </View>
+      <>
+        {/* Render header */}
+        <Header
+          handleNavigateToAddCompany={handleNavigateToAddCompany}
+          principalCompanyData={principalCompanyData}
+        />
 
-          <Typography
-            type="l_bold"
-            typographyStyle={styles.currentCompanyTitle}
-          >
-            Autres Établissements
-          </Typography>
-        </View>
-
+        {/* Render loading animation or company list */}
         {isInitialLoading ? (
           <Loading
             height={200}
@@ -97,21 +85,96 @@ const CompaniesScreen = ({ navigation, companies, principalCompany }) => {
             lottieStyle={styles.loadingContainer}
           />
         ) : (
-          <FlatList
-            items={data}
-            type="companyItems"
-            onPressedItem={handleNavigateToCompanyDetails}
-            listStyle={styles.companiesList}
-            itemsStyle={styles.companyItem}
+          <CompanyList
+            data={data}
+            swapPrincipalCompany={swapPrincipalCompany}
+            handleNavigateToCompanyDetails={handleNavigateToCompanyDetails}
           />
         )}
-      </View>
+      </>
     </DefaultLayout>
   );
 };
 
+// Define Header component
+const Header = ({ handleNavigateToAddCompany, principalCompanyData }) => {
+  return (
+    <View style={styles.header}>
+      {/* Render main header */}
+      <MainHeader />
+
+      {/* Render button to navigate to Add Company screen */}
+      <NavigatorButton
+        label="Créer un établissement"
+        leftIcon="plus"
+        navigate={handleNavigateToAddCompany}
+      />
+
+      {/* Render title for principal company */}
+      <Typography type="l_bold" typographyStyle={styles.currentCompanyTitle}>
+        Votre Établissement Principal
+      </Typography>
+
+      {/* Render principal company details */}
+      <PrincipalCompany principalCompanyData={principalCompanyData} />
+
+      {/* Render title for other companies */}
+      <Typography type="l_bold" typographyStyle={styles.currentCompanyTitle}>
+        Autres Établissements
+      </Typography>
+    </View>
+  );
+};
+
+// Define PrincipalCompany component
+const PrincipalCompany = ({ principalCompanyData }) => {
+  return (
+    <View style={styles.principalCompanyContainer}>
+      {/* Render principal company logo */}
+      <Image
+        source={{ uri: principalCompanyData?.logo }}
+        style={styles.principalCompanyLogo}
+      />
+
+      {/* Render principal company details */}
+      <View style={styles.principalCompanyDetails}>
+        <Typography type="l_bold" typographyStyle={styles.companyName}>
+          {principalCompanyData?.name}
+        </Typography>
+        <Typography type="s_medium" typographyStyle={styles.companyAddress}>
+          <Icon name="enviroment" size={14} color={Colors.primary_color} />{" "}
+          {principalCompanyData?.address}
+        </Typography>
+      </View>
+    </View>
+  );
+};
+
+// Define CompanyList component
+const CompanyList = ({
+  data,
+  swapPrincipalCompany,
+  handleNavigateToCompanyDetails,
+}) => {
+  return (
+    <View style={styles.container}>
+      {/* Render FlatList of companies */}
+      <FlatList
+        items={data}
+        swapItem={swapPrincipalCompany}
+        type="companyItems"
+        onPressedItem={handleNavigateToCompanyDetails}
+        listStyle={styles.companiesList}
+        itemsStyle={styles.companyItem}
+      />
+    </View>
+  );
+};
+
+// Connect CompaniesScreen component to Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CompaniesScreen);
 
+// Define styles for components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -142,6 +205,7 @@ const styles = StyleSheet.create({
   },
   principalCompanyDetails: {
     marginLeft: 20,
+    width: "80%",
   },
   companyName: {},
   companyAddress: {

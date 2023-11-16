@@ -1,6 +1,7 @@
 import moment from "moment";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Colors } from "~/theme";
+import Button from "./Button";
 import Icon from "./Icon";
 import Typography from "./Typography";
 
@@ -132,6 +133,9 @@ ItemFlatList.simpleItems = function ({ item, itemsStyle, onPress, ...props }) {
 ItemFlatList.companyItem = function ({ item, itemsStyle, onPress, ...props }) {
   const { logo, name, address } = item;
 
+  // get the function swapItem from the props
+  const { swapItem } = props;
+
   return (
     <TouchableOpacity
       onPress={() => onPress(item)}
@@ -143,13 +147,26 @@ ItemFlatList.companyItem = function ({ item, itemsStyle, onPress, ...props }) {
       <View style={styles.simpleDetailedItemContainer}>
         <Image source={{ url: logo }} style={styles.logoPictureSimple} />
         <View style={styles.companyDetails}>
-          <Typography type="s_semibold" typographyStyle={styles.title}>
-            {name}
-          </Typography>
-          <Typography type="s_regular" typographyStyle={styles.companyAddress}>
-            <Icon name="enviroment" size={14} color={Colors.primary_color} />{" "}
-            {address}
-          </Typography>
+          <View style={styles.titleAndPositionContainer}>
+            <Typography type="s_semibold" typographyStyle={styles.title}>
+              {name}
+            </Typography>
+            <Typography
+              type="s_regular"
+              typographyStyle={styles.companyAddress}
+            >
+              <Icon name="enviroment" size={14} color={Colors.primary_color} />{" "}
+              {address}
+            </Typography>
+          </View>
+          {/* button to swap the item */}
+          <Button
+            hideIcon
+            onPress={() => swapItem(item)}
+            buttonStyle={styles.swapButton}
+          >
+            <Icon name="swap" size={20} color={Colors.primary_color} />
+          </Button>
         </View>
       </View>
     </TouchableOpacity>
@@ -170,17 +187,6 @@ const styles = StyleSheet.create({
     height: 43,
     resizeMode: "contain",
   },
-
-  simpleDetailedItemContainer: {
-    backgroundColor: Colors.pure_white,
-    borderRadius: 20,
-    flexDirection: "row",
-    paddingHorizontal: 20,
-    alignItems: "center",
-    paddingVertical: 2,
-    width: "100%",
-    height: 74,
-  },
   titleAndSalaryContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -196,21 +202,33 @@ const styles = StyleSheet.create({
   otherInfo: {
     color: Colors.dark_grey,
   },
-  companyItemContainer: {
+  simpleDetailedItemContainer: {
+    backgroundColor: Colors.pure_white,
+    borderRadius: 20,
     flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: `${Colors.primary_color}33`,
-    borderRadius: 8,
-    marginTop: 20,
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    alignItems: "center",
+    paddingVertical: 2,
+    width: "100%",
+    height: 74,
   },
   companyDetails: {
     marginLeft: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  titleAndPositionContainer: {
+    width: "80%",
   },
   companyName: {},
   companyAddress: {
-    marginTop: 5,
     color: Colors.primary_color,
+  },
+  swapButton: {
+    backgroundColor: Colors.main_white,
+    borderColor: "transparent",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 40,
   },
 });

@@ -20,6 +20,8 @@ const MainBottomTabNavigator = () => {
 
     // Use a switch case to handle different screen names
     switch (currentScreen) {
+      case "CompaniesAjouter":
+      case "CompaniesDetails":
       case "EmploisRecherche":
       case "SearchResults":
       case "SearchHome":

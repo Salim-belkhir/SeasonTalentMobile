@@ -17,6 +17,7 @@ const FlatList = ({
           item={item}
           itemStyle={itemsStyle}
           onPress={onPressedItem}
+          {...otherProps}
         />
       ),
       simpleItems: (
