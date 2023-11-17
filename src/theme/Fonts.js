@@ -58,6 +58,12 @@ const TYPOGRAPHY = {
     lineHeight: getLineHeight(12),
     textAlignVertical: "center",
   },
+  small_body_semibold: {
+    ...getFontFamily("semiBold"),
+    fontSize: 12,
+    lineHeight: getLineHeight(12),
+    textAlignVertical: "center",
+  },
   large_body_regular: {
     ...getFontFamily("regular"),
     fontSize: 14,
@@ -72,6 +78,12 @@ const TYPOGRAPHY = {
   },
   large_body_bold: {
     ...getFontFamily("bold"),
+    fontSize: 14,
+    lineHeight: getLineHeight(14),
+    textAlignVertical: "center",
+  },
+  large_body_semibold: {
+    ...getFontFamily("semiBold"),
     fontSize: 14,
     lineHeight: getLineHeight(14),
     textAlignVertical: "center",

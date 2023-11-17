@@ -1,9 +1,20 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import { Colors } from "~/theme";
 import Typography from "../Typography";
+import { signIn, signUp } from "~/redux/actions";
+import { connect } from "react-redux";
 
-const FooterSection = ({ navigation, logIn = true }) => {
+const mapStateToProps = (state) => ({
+  logState: state.logSignIn.logState,
+});
+
+const mapDispatchToProps = {
+  signUp,
+  signIn,
+};
+
+const FooterSection = ({ logState, signUp, signIn, promptAsync }) => {
   return (
     <View>
       <View style={[styles.continueParent, styles.buttonParentLayout]}>
@@ -14,35 +25,46 @@ const FooterSection = ({ navigation, logIn = true }) => {
         <View style={[styles.lineView, styles.lineViewLayout]} />
       </View>
 
-      <Image
-        source={require("~/assets/icons/google.png")}
-        style={styles.socialIcon}
-      />
+      {/* {loading && <ActivityIndicator sizew="large" />} */}
+
+      <TouchableOpacity
+        onPress={() => promptAsync()}
+        style={styles.socialAuthContainer}
+      >
+        <Image
+          source={require("~/assets/icons/google.png")}
+          style={styles.socialIcon}
+        />
+      </TouchableOpacity>
 
       <View style={styles.logSwitchParent}>
         <Typography type="l_medium" typographyStyle={styles.logSwitch}>
-          Vous n'avez pas de compte ?
+          {logState
+            ? "Vous n'avez pas de compte ?"
+            : "Vous avez déjà un compte ?"}
         </Typography>
         <Typography
           type="l_bold"
           typographyStyle={styles.switch}
-          onPress={() => navigation.push("Details")}
+          onPress={() => {
+            logState ? signUp() : signIn();
+          }}
         >
-          Inscrivez-vous
+          {logState ? "Inscrivez-vous" : "Connectez-vous"}
         </Typography>
       </View>
     </View>
   );
 };
 
-export default FooterSection;
+export default connect(mapStateToProps, mapDispatchToProps)(FooterSection);
 
 const styles = StyleSheet.create({
   continueParent: {
-    marginTop: 70,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
+    marginTop: 20,
   },
   continueText: {
     color: Colors.main_grey,
@@ -61,17 +83,20 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: Colors.main_grey,
   },
-  socialIcon: {
+  socialAuthContainer: {
     width: 120,
     height: 120,
     alignSelf: "center",
-    marginTop: 52,
+  },
+  socialIcon: {
+    width: 120,
+    height: 120,
+    resizeMode: "contain",
   },
   logSwitchParent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 30,
   },
   logSwitch: {
     color: Colors.main_grey,

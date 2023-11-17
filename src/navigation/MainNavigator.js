@@ -1,60 +1,59 @@
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeScreen, Login } from "~/screens";
-import React from "react";
-import { View, Text } from "react-native";
+import { Login } from "~/screens";
+import MainBottomTabNavigator from "./MainBottomTabNavigator";
+import { connect } from "react-redux";
 
-
-const DetailsScreen = () => {
-    return (
-        <View >
-        <Text>Details!</Text>
-        </View>
-    );
-    }
-
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.googleAuth.isAuthenticated,
+  userInfo: state.googleAuth.userInfo,
+});
 
 const Stack = createNativeStackNavigator();
 
-const MainNavigator = () => {
+/**
+ * Main navigation component for the app.
+ * @param {Object} props - Component props.
+ * @param {boolean} props.isAuthenticated - Flag indicating if the user is authenticated.
+ * @returns {JSX.Element} - Rendered component.
+ */
+const MainNavigator = ({ isAuthenticated }) => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-      // screenOptions={{
-      //   headerShown: false,
-      //   headerBackTitleVisible: false,
-      //   headerStyle: styles.headerStyle,
-      //   headerBackTitleStyle: styles.headerBackTitleStyle,
-      //   headerLeftContainerStyle: styles.headerLeftContainerStyle,
-      //   headerRightContainerStyle: styles.headerRightContainerStyle,
-      //   headerBackImage: HeaderBackImage,
-      // }}
+        // screenOptions={{
+        //   headerShown: false,
+        //   headerBackTitleVisible: false,
+        //   headerStyle: styles.headerStyle,
+        //   headerBackTitleStyle: styles.headerBackTitleStyle,
+        //   headerLeftContainerStyle: styles.headerLeftContainerStyle,
+        //   headerRightContainerStyle: styles.headerRightContainerStyle,
+        //   headerBackImage: HeaderBackImage,
+        // }}
+        // check if the user is authenticated
+        screenOptions={{
+          headerShown: false,
+        }}
       >
-        <Stack.Screen
+        {!isAuthenticated ? (
+          <Stack.Screen
             name="Login"
             component={Login}
             options={{
-                headerTitle: "Login",
-                headerShown: false,
+              headerTitle: "Login",
+              headerShown: false,
             }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            headerTitle: "Home",
-          }}
-        />
-         <Stack.Screen
-          name="Details"
-          component={DetailsScreen}
-          options={{
-            headerTitle: "Details",
-          }}
-        />
+          />
+        ) : (
+          <Stack.Screen
+            name="MainBottomTabNavigator"
+            component={MainBottomTabNavigator}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-export default MainNavigator;
+export default connect(mapStateToProps)(MainNavigator);

@@ -1,16 +1,23 @@
-import React from "react";
-import { MainNavigator } from "~/navigation";
 import { useFonts } from "expo-font";
-import { Fonts } from "~/theme";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback } from "react";
-import { View, StyleSheet } from "react-native";
-import { Colors } from "~/theme";
+import { useCallback, useEffect } from "react";
+import { Platform, StyleSheet, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { enableScreens } from "react-native-screens";
+import { Provider } from "react-redux";
+import { MainNavigator } from "~/navigation";
+import store from "~/redux/store";
+import { Colors, Fonts } from "~/theme";
 
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const [fontsLoaded] = useFonts(Fonts.CUSTOM_FONTS);
+  useEffect(() => {
+    if (Platform.OS === "ios") {
+      enableScreens(false);
+    }
+  }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -23,9 +30,13 @@ const App = () => {
   }
 
   return (
-    <View onLayout={onLayoutRootView} style={globalStyles.container}>
-      <MainNavigator />
-    </View>
+    <Provider store={store}>
+      <View onLayout={onLayoutRootView} style={globalStyles.container}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <MainNavigator />
+        </GestureHandlerRootView>
+      </View>
+    </Provider>
   );
 };
 

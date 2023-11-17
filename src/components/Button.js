@@ -43,6 +43,7 @@ const Button = ({
     secondary: "l_bold",
     tertiary: "s_bold",
     delete: "l_bold",
+    disabled: "l_bold",
   };
 
   return (
@@ -100,8 +101,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 48,
-    paddingHorizontal: 10,
-    minWidth: 68,
   },
 
   buttonIcon: {
@@ -151,6 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.medium_grey,
     borderColor: Colors.medium_grey,
   },
+  
 
   delete_disabled: {
     backgroundColor: Colors.medium_grey,
