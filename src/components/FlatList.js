@@ -34,6 +34,13 @@ const FlatList = ({
           onPress={onPressedItem}
         />
       ),
+      files: (
+        <ItemFlatList.files
+          item={item}
+          itemStyle={itemsStyle}
+          onPress={onPressedItem}
+        />
+      ),
       default: (
         <ItemFlatList
           item={item}
