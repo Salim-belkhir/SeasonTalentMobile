@@ -173,6 +173,27 @@ ItemFlatList.companyItem = function ({ item, itemsStyle, onPress, ...props }) {
   );
 };
 
+ItemFlatList.files = function ({ item, itemStyle, onPress, ...props }) {
+  return (
+    <TouchableOpacity
+      onPress={() => onPress(item)}
+      {...props}
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={[simpleItemStyles, itemStyle]}>
+        <Typography type="l_regular" typographyStyle={styles.fileTitle}>
+          {item.name}
+        </Typography>
+        <TouchableOpacity onPress={() => onPress(item)}>
+          <Icon name="close" size={18} color={Colors.main_black} />
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 export default ItemFlatList;
 
 const styles = StyleSheet.create({
@@ -230,5 +251,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: 40,
+  },
+  fileTitle: {
+    color: Colors.dark_grey,
   },
 });

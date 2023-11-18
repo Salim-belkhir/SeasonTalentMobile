@@ -5,7 +5,9 @@ import MainHeader from "../MainHeader";
 import CreateInputFields from "./CreateInputFields";
 import LoadFiles from "./loadFiles";
 
+
 const CreateCompanieLayout = () => {
+  
   return (
     <View>
       <MainHeader.basicHeader />
