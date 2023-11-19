@@ -1,35 +1,20 @@
 import { StyleSheet, View } from "react-native";
-import { Colors } from "~/theme";
-import Button from "../Button";
+import { connect } from "react-redux";
+import { companiesActions } from "~/redux/actions";
 import MainHeader from "../MainHeader";
 import CreateInputFields from "./CreateInputFields";
-import LoadFiles from "./loadFiles";
 
-
-const CreateCompanieLayout = () => {
-  
+const CreateCompanieLayout = ({
+  dataToUpdate,
+}) => {
   return (
     <View>
       <MainHeader.basicHeader />
-      <CreateInputFields />
-      <LoadFiles />
-      <Button
-        label="Créer un établissement"
-        hideIcon
-        buttonStyle={styles.buttonStyle}
-        labelTypographyStyle={styles.labelTypographyStyle}
-      />
+      <CreateInputFields dataToUpdate={dataToUpdate} />
     </View>
   );
 };
 
 export default CreateCompanieLayout;
 
-const styles = StyleSheet.create({
-  buttonStyle: {
-    marginTop: 20,
-  },
-  labelTypographyStyle: {
-    color: Colors.main_white,
-  },
-});
+const styles = StyleSheet.create({});

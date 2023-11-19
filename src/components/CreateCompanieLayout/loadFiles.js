@@ -34,9 +34,7 @@ const formatFileResult = (result) => {
 
 const maxFiles = 3;
 
-const LoadFiles = ({}) => {
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [logo, setLogo] = useState(null);
+const LoadFiles = ({ logo, setLogo, uploadedFiles, setUploadedFiles }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [messageOfError, setMessageOfError] = useState("");
   const [typeOfError, setTypeOfError] = useState("");
@@ -157,6 +155,7 @@ const LoadFiles = ({}) => {
         buttonStyle={styles.loadFileButton}
         labelTypographyStyle={styles.loadFileButtonLabel}
         onPress={() => (logo ? pickOtherFiles() : pickLogo())}
+        disabled={uploadedFiles.length === maxFiles}
       />
       <View style={styles.filesContainer}>
         {!logo ? (
