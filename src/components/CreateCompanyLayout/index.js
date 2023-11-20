@@ -1,12 +1,8 @@
 import { StyleSheet, View } from "react-native";
-import { connect } from "react-redux";
-import { companiesActions } from "~/redux/actions";
 import MainHeader from "../MainHeader";
 import CreateInputFields from "./CreateInputFields";
 
-const CreateCompanieLayout = ({
-  dataToUpdate,
-}) => {
+const CreateCompanieLayout = ({ dataToUpdate }) => {
   return (
     <View>
       <MainHeader.basicHeader />

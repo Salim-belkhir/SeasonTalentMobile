@@ -53,7 +53,7 @@ const initialState = {
       ],
     },
     {
-      id: 3,
+      id: 2,
       title: "Designer UX/UI",
       company: "Apple",
       location: "Cupertino",
@@ -101,7 +101,7 @@ const initialState = {
       ],
     },
     {
-      id: 5,
+      id: 3,
       title: "Développeur iOS",
       company: "Facebook",
       location: "Menlo Park",
@@ -149,7 +149,7 @@ const initialState = {
       ],
     },
     {
-      id: 6,
+      id: 4,
       title: "Développeur Java",
       company: "Microsoft",
       location: "Redmond",
@@ -197,7 +197,7 @@ const initialState = {
       ],
     },
     {
-      id: 7,
+      id: 5,
       title: "Développeur Python",
       company: "Netflix",
       location: "Los Gatos",
@@ -245,7 +245,7 @@ const initialState = {
       ],
     },
     {
-      id: 9,
+      id: 6,
       title: "Développeur Ruby",
       company: "Airbnb",
       salary: "1500",
@@ -293,7 +293,7 @@ const initialState = {
       ],
     },
     {
-      id: 10,
+      id: 7,
       title: "Développeur C++",
       company: "Amazon",
       location: "Seattle",
@@ -341,7 +341,7 @@ const initialState = {
       ],
     },
     {
-      id: 12,
+      id: 8,
       title: "Développeur Go",
       company: "Spotify",
       location: "Stockholm",
@@ -389,7 +389,7 @@ const initialState = {
       ],
     },
     {
-      id: 13,
+      id: 9,
       title: "Développeur PHP",
       company: "Uber",
       location: "Cupertino",
