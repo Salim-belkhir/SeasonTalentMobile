@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import * as Yup from "yup";
+import { returnFileImage } from "~/constants";
 import { companiesActions } from "~/redux/actions";
 import { Colors } from "~/theme";
 import Button from "../Button";
@@ -48,6 +49,13 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
     if (dataToUpdate) {
       setFormValues({ ...dataToUpdate });
       setLogo(dataToUpdate.logo);
+      // add the  logo: returnFileImage(file.mimeType), to the uploadedFiles array
+      setUploadedFiles([
+        ...dataToUpdate.proofs.map((file) => ({
+          ...file,
+          logo: returnFileImage(file.mimeType),
+        })),
+      ]);
     }
   }, [dataToUpdate]);
 
@@ -71,7 +79,7 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
     navigation.navigate("CompaniesHome");
   };
 
-  const checkIfCanCreateOrUpdateCompany = useCallback(
+  const checkIfCanCreateCompany = useCallback(
     (values, errors) => {
       // Checking if the form is filled and if there is an error
       const isErrorsEmpty = Object.values(errors).every(
@@ -92,6 +100,39 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
     },
     [formValues, logo, uploadedFiles]
   );
+
+  const checkIfCanUpdateCompany = useCallback(
+    (values, errors) => {
+      // Checking if there are any errors
+      const isErrorsEmpty = Object.values(errors).every(
+        (error) => error === ""
+      );
+
+      // Checking if the form is filled
+      const isFormFilled = Object.values(values).every((value) => value !== "");
+
+      // Checking if the form data is different from the dataToUpdate
+      const isFormDifferent = Object.keys(values).some(
+        (key) => values[key] !== dataToUpdate[key]
+      );
+
+      // Checking if the logo is filled and different from the dataToUpdate
+      const isLogoChanged = logo !== null && logo !== dataToUpdate.logo;
+
+      // Checking if the proofs are filled and different from the dataToUpdate
+      const isProofsChanged =
+        uploadedFiles.length > 0 &&
+        uploadedFiles.length !== dataToUpdate.proofs.length;
+
+      // if can update we return true else we return false
+      return (
+        isErrorsEmpty &&
+        ((isFormFilled && isFormDifferent) || isLogoChanged || isProofsChanged)
+      );
+    },
+    [formValues, logo, uploadedFiles]
+  );
+
   const formikProps = {
     initialValues: formValues,
     validationSchema,
@@ -170,7 +211,11 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
               buttonStyle={styles.buttonStyle}
               labelTypographyStyle={styles.labelTypographyStyle}
               onPress={handleSubmit}
-              disabled={checkIfCanCreateOrUpdateCompany(values, errors)}
+              disabled={
+                dataToUpdate
+                  ? !checkIfCanUpdateCompany(values, errors)
+                  : checkIfCanCreateCompany(values, errors)
+              }
             />
           </>
         )}

@@ -243,10 +243,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   companyLogo: {
-    width: 50,
+    width: 40,
     height: "100%",
     borderRadius: 9,
-    resizeMode: "cover",
+    resizeMode: "contain",
+    marginLeft: 5,
   },
   companyLogoName: {
     color: Colors.dark_grey,
