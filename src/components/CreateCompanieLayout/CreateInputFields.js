@@ -1,8 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import { useCallback, useEffect, useState } from "react";
-import { Platform, StyleSheet, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import * as Yup from "yup";
 import { companiesActions } from "~/redux/actions";
@@ -54,20 +53,25 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
     }
   }, [dataToUpdate]);
 
-  const handleCompanyCreation = useCallback(() => {
-    // console.log(formValues);
+  const handleCompanyCreation = (values) => {
+    // If there is dataToUpdate, update the company
     if (dataToUpdate) {
-      updateCompany(formValues);
-    } else {
-      console.log("createCompany", formValues);
-      createCompany({
-        ...formValues,
-        logo,
-        uploadedFiles,
+      updateCompany({
+        ...values,
+        logo: logo,
+        proofs: uploadedFiles,
+        id: dataToUpdate.id,
       });
-      navigation.goBack();
+    } else {
+      // If there is no dataToUpdate, create a new company
+      createCompany({
+        ...values,
+        logo: logo,
+        proofs: uploadedFiles,
+      });
     }
-  }, []);
+    navigation.navigate("CompaniesHome");
+  };
 
   const checkIfCanCreateOrUpdateCompany = useCallback(
     (values, errors) => {
@@ -117,46 +121,42 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
                 ? "Modification d’un établissement"
                 : " Création d’un établissement"}
             </Typography>
-            <KeyboardAwareScrollView
-              contentContainerStyle={styles.scrollContent}
-              extraScrollHeight={Platform.OS === "ios" ? 130 : 0}
-            >
-              <TextInput
-                label="Titre de l'établissement"
-                leftIcon="carryout"
-                placeholder="Titre de l'établissement"
-                onChangeText={handleChange("title")}
-                onBlur={handleBlur("title")}
-                value={values.title}
-                error={touched.title && errors.title}
-                returnKeyType="next"
-              />
 
-              <TextInput
-                label="Adresse de l'établissement"
-                placeholder="Adresse de l'établissement"
-                leftIcon="enviromento"
-                onChangeText={handleChange("address")}
-                onBlur={handleBlur("address")}
-                value={values.address}
-                error={touched.address && errors.address}
-                returnKeyType="next"
-                inputStyle={styles.input}
-              />
+            <TextInput
+              label="Titre de l'établissement"
+              leftIcon="carryout"
+              placeholder="Titre de l'établissement"
+              onChangeText={handleChange("title")}
+              onBlur={handleBlur("title")}
+              value={values.title}
+              error={touched.title && errors.title}
+              returnKeyType="next"
+            />
 
-              <TextInput
-                label="Contact de l'établissement"
-                placeholder="Contact de l'établissement"
-                leftIcon="mail"
-                onChangeText={handleChange("contact")}
-                onBlur={handleBlur("contact")}
-                value={values.contact}
-                error={touched.contact && errors.contact}
-                returnKeyType="next"
-                inputStyle={styles.input}
-                keyboardType="email-address"
-              />
-            </KeyboardAwareScrollView>
+            <TextInput
+              label="Adresse de l'établissement"
+              placeholder="Adresse de l'établissement"
+              leftIcon="enviromento"
+              onChangeText={handleChange("address")}
+              onBlur={handleBlur("address")}
+              value={values.address}
+              error={touched.address && errors.address}
+              returnKeyType="next"
+              inputStyle={styles.input}
+            />
+
+            <TextInput
+              label="Contact de l'établissement"
+              placeholder="Contact de l'établissement"
+              leftIcon="mail"
+              onChangeText={handleChange("contact")}
+              onBlur={handleBlur("contact")}
+              value={values.contact}
+              error={touched.contact && errors.contact}
+              returnKeyType="next"
+              inputStyle={styles.input}
+              keyboardType="email-address"
+            />
             <LoadFiles
               logo={logo}
               setLogo={setLogo}
@@ -188,9 +188,7 @@ const styles = StyleSheet.create({
   inputFieldsContainer: {
     marginTop: 20,
   },
-  scrollContent: {
-    flexGrow: 1,
-  },
+  scrollContent: {},
   currentOffersTitle: {
     marginBottom: 21,
     fontSize: 16,

@@ -38,17 +38,18 @@ const CompaniesScreen = ({ navigation, companies, principalCompany }) => {
 
   // Define function to handle navigation to Company Details screen
   const handleNavigateToCompanyDetails = (item) => {
-    navigation.navigate("CompaniesDetails", { data: item })
+    navigation.navigate("CompaniesDetails", { data: item });
   };
 
   // Define useEffect hook to set state variables after 1 second
   useEffect(() => {
+    setIsInitialLoading(true);
     setTimeout(() => {
       setData(companies);
       setPrincipalCompanyData(principalCompany);
       setIsInitialLoading(false);
     }, 1000);
-  }, []);
+  }, [companies, principalCompany]);
 
   // Define useCallback hook to swap principal company with another company
   const swapPrincipalCompany = useCallback(

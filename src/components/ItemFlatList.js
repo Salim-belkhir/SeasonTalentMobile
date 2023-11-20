@@ -254,5 +254,7 @@ const styles = StyleSheet.create({
   },
   fileTitle: {
     color: Colors.dark_grey,
+    width: "85%",
+    overflow: "hidden",
   },
 });

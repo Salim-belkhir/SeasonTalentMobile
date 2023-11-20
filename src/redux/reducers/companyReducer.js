@@ -64,14 +64,15 @@ const companyReducer = (state = initialState, action) => {
       return {
         ...state,
         companies: [
-          ...state.companies,
           {
-            id: state.companies.length + 1,
+            // random id
+            id: Math.floor(Math.random() * 99999),
             name: action.payload.title,
             address: action.payload.address,
             logo: action.payload.logo,
             ...action.payload,
           },
+          ...state.companies,
         ],
         loading: true,
         error: null,
