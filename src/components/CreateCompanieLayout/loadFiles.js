@@ -61,7 +61,7 @@ const LoadFiles = ({ logo, setLogo, uploadedFiles, setUploadedFiles }) => {
         "Veuillez choisir la bonne extension pour le logo [ jpg, png ]"
       );
 
-      setLogo(filteredFiles[0]);
+      setLogo(filteredFiles[0].uri);
     } catch (error) {
       showErrorModal("Erreur", "error", "Une erreur est survenue" + error);
     }
@@ -166,7 +166,7 @@ const LoadFiles = ({ logo, setLogo, uploadedFiles, setUploadedFiles }) => {
           </View>
         ) : (
           <View style={styles.companyLogoContainer}>
-            <Image source={{ uri: logo.uri }} style={styles.companyLogo} />
+            <Image source={{ uri: logo }} style={styles.companyLogo} />
             <Typography
               type="l_regular"
               typographyStyle={styles.companyLogoName}
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   },
 
   cancelLogoButton: {
-    marginLeft: 10,
+    marginLeft: 5,
   },
 
   companyLogoContainer: {
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   },
   companyLogoName: {
     color: Colors.dark_grey,
-    marginLeft: 10,
+    marginLeft: 6,
   },
   uploadedFiles: {
     backgroundColor: Colors.input_gray,
