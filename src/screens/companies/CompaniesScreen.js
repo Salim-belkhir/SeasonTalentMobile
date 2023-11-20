@@ -33,12 +33,12 @@ const CompaniesScreen = ({ navigation, companies, principalCompany }) => {
 
   // Define function to handle navigation to Add Company screen
   const handleNavigateToAddCompany = () => {
-    navigation.navigate("CompaniesAjouter");
+    navigation.navigate("CompanyCreation");
   };
 
   // Define function to handle navigation to Company Details screen
   const handleNavigateToCompanyDetails = (item) => {
-    navigation.navigate("CompaniesDetails", { data: item });
+    navigation.navigate("CompanyDetails", { data: item });
   };
 
   // Define useEffect hook to set state variables after 1 second
@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
     width: 53,
     height: 43,
     resizeMode: "contain",
+    borderRadius: 9,
   },
   principalCompanyDetails: {
     marginLeft: 20,

@@ -19,20 +19,19 @@ const mapDispatchToProps = {
 
 // the validation schema
 const validationSchema = Yup.object({
-  title: Yup.string().required("Requis"),
+  name: Yup.string().required("Requis"),
   address: Yup.string().required("Requis"),
   contact: Yup.string().email("Adresse email invalide").required("Requis"),
 });
 
 // Define the initial values for the form fields
 const initialValues = {
-  title: "",
+  name: "",
   address: "",
   contact: "",
 };
 
 const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
-  const [formValues, setFormValues] = useState({});
   const [logo, setLogo] = useState(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -41,15 +40,14 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
   // Define the initial values for the form fields, checking for the presence of dataToUpdate
   const initialFormValues = dataToUpdate ? { ...dataToUpdate } : initialValues;
 
-  // If there is dataToUpdate, set the initial form values to update an existing company
-  useEffect(() => {
-    setFormValues(initialFormValues);
-  }, []);
+  // If there is dataToUpdate, set the initial form values to update an existing job offer
+  const [formValues, setFormValues] = useState(initialFormValues);
 
   // Handle setting initial values when dataToUpdate changes
   useEffect(() => {
     if (dataToUpdate) {
       setFormValues({ ...dataToUpdate });
+      setLogo(dataToUpdate.logo);
     }
   }, [dataToUpdate]);
 
@@ -94,7 +92,6 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
     },
     [formValues, logo, uploadedFiles]
   );
-
   const formikProps = {
     initialValues: formValues,
     validationSchema,
@@ -115,7 +112,7 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
           <>
             <Typography
               type="l_bold"
-              typographyStyle={styles.currentOffersTitle}
+              typographyStyle={styles.currentOffersname}
             >
               {dataToUpdate
                 ? "Modification d’un établissement"
@@ -123,13 +120,13 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
             </Typography>
 
             <TextInput
-              label="Titre de l'établissement"
+              label="Nom de l'établissement"
               leftIcon="carryout"
-              placeholder="Titre de l'établissement"
-              onChangeText={handleChange("title")}
-              onBlur={handleBlur("title")}
-              value={values.title}
-              error={touched.title && errors.title}
+              placeholder="Nom de l'établissement"
+              onChangeText={handleChange("name")}
+              onBlur={handleBlur("name")}
+              value={values.name}
+              error={touched.name && errors.name}
               returnKeyType="next"
             />
 
@@ -189,7 +186,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   scrollContent: {},
-  currentOffersTitle: {
+  currentOffersname: {
     marginBottom: 21,
     fontSize: 16,
   },

@@ -1,38 +1,18 @@
 import * as DocumentPicker from "expo-document-picker";
 import { useState } from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  fileTypes,
+  formatFileResult,
+  maxFiles,
+  returnFileImage,
+} from "~/constants";
 import { Colors } from "~/theme";
 import Button from "../Button";
 import FlatList from "../FlatList";
 import Icon from "../Icon";
 import AlertModal from "../Modal";
 import Typography from "../Typography";
-
-const fileTypes = {
-  pdf: "application/pdf",
-  doc: "application/msword",
-  docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  jpg: "image/jpeg",
-  png: "image/png",
-  txt: "text/plain",
-};
-
-const formatFileResult = (result) => {
-  const formattedFiles = result.assets.map((file) => {
-    const { mimeType, name, size, uri } = file;
-    return {
-      mimeType,
-      name,
-      size,
-      uri,
-      canceled: result.canceled,
-    };
-  });
-
-  return formattedFiles;
-};
-
-const maxFiles = 3;
 
 const LoadFiles = ({ logo, setLogo, uploadedFiles, setUploadedFiles }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -97,6 +77,7 @@ const LoadFiles = ({ logo, setLogo, uploadedFiles, setUploadedFiles }) => {
       .map((file, index) => ({
         ...file,
         id: uploadedFiles.length + file.name + index,
+        logo: returnFileImage(file.mimeType),
       }))
       .filter(
         (file) =>
@@ -111,7 +92,6 @@ const LoadFiles = ({ logo, setLogo, uploadedFiles, setUploadedFiles }) => {
       );
       return;
     }
-
     setUploadedFiles([...uploadedFiles, ...newFiles]);
   };
 

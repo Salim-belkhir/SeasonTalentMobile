@@ -1,6 +1,6 @@
 import BottomSheetFilters from "./BottomSheetFilters";
 import Button from "./Button";
-import CreateCompanieLayout from "./CreateCompanieLayout";
+import CreateCompanieLayout from "./CreateCompanyLayout";
 import DefaultLayout from "./DefaultLayout";
 import DetailsLayout from "./DetailsLayout";
 import FlatList from "./FlatList";

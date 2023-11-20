@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { DefaultLayout } from "~/components";
-import CreateCompanieLayout from "~/components/CreateCompanieLayout";
+import CreateCompanieLayout from "~/components/CreateCompanyLayout";
 import { Colors } from "~/theme";
 
 const CreateCompanyScreen = ({ route }) => {

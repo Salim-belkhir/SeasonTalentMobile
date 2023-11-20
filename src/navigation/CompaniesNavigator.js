@@ -2,9 +2,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   CompaniesScreen,
   CreateCompanyScreen,
-  DetailsJobOffer,
+  DetailsCompanyScreen
 } from "~/screens";
-import SearchNavigator from "./SearchNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,13 +16,8 @@ const CompaniesNavigator = () => {
       }}
     >
       <Stack.Screen name="CompaniesHome" component={CompaniesScreen} />
-      <Stack.Screen name="CompaniesAjouter" component={CreateCompanyScreen} />
-      <Stack.Screen
-        name="CompaniesRecherche"
-        component={SearchNavigator}
-        initialParams={{ type: "companies" }}
-      />
-      <Stack.Screen name="CompaniesDetails" component={DetailsJobOffer} />
+      <Stack.Screen name="CompanyCreation" component={CreateCompanyScreen} />
+      <Stack.Screen name="CompanyDetails" component={DetailsCompanyScreen} />
     </Stack.Navigator>
   );
 };

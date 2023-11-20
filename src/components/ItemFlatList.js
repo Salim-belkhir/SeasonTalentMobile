@@ -183,6 +183,7 @@ ItemFlatList.files = function ({ item, itemStyle, onPress, ...props }) {
       }}
     >
       <View style={[simpleItemStyles, itemStyle]}>
+        <Image source={item.logo} style={styles.fileLogo} />
         <Typography type="l_regular" typographyStyle={styles.fileTitle}>
           {item.name}
         </Typography>
@@ -254,7 +255,14 @@ const styles = StyleSheet.create({
   },
   fileTitle: {
     color: Colors.dark_grey,
-    width: "85%",
+    width: "65%",
     overflow: "hidden",
+  },
+  fileLogo: {
+    width: 30,
+    height: 40,
+    borderRadius: 9,
+    resizeMode: "cover",
+    marginRight: 5,
   },
 });
