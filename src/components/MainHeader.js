@@ -86,7 +86,7 @@ MainHeader.goBackOnly = function ({
   return (
     <View style={headerStyle}>
       <Button
-        onPress={() => navigation.pop()}
+        onPress={() => navigation.goBack()}
         buttonStyle={[styles.goBackButton, goBackButtonStyle]}
       >
         <Icon name="left" size={28} color={colorIcon || Colors.main_black} />
