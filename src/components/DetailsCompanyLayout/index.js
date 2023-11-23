@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
@@ -27,6 +28,7 @@ const DetailsCompanyLayout = ({
   jobOffers,
 }) => {
   const [loadingJobOffers, setLoadingJobOffers] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (company) {
@@ -37,6 +39,11 @@ const DetailsCompanyLayout = ({
       }, 1000);
     }
   }, [company]);
+
+  const handleNavigateToJobOfferDetails = (item) => {
+    // navigate to the tab Emplois and then to the screen EmploisDetails
+    navigation.navigate("EmploisDetails", { item });
+  };
 
   return (
     <View style={styles.container}>
@@ -58,7 +65,7 @@ const DetailsCompanyLayout = ({
         isPrincipal={isPrincipal}
       />
 
-      <View style={{ flex: 1 }}>
+      <View style={styles.relatedOffersContainer}>
         <Typography type="l_bold" typographyStyle={styles.relatedOffers}>
           Les offres d’emplois liées
         </Typography>
@@ -70,7 +77,14 @@ const DetailsCompanyLayout = ({
             lottieStyle={styles.lottie}
           />
         ) : (
-          <FlatList items={jobOffers} type="horizontal" />
+          <FlatList
+            items={jobOffers}
+            horizontal
+            type="verticalList"
+            onPressedItem={handleNavigateToJobOfferDetails}
+            listStyle={styles.jobOffersList}
+            itemsStyle={styles.jobOfferItem}
+          />
         )}
       </View>
     </View>
@@ -101,13 +115,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 28,
   },
+  relatedOffersContainer: {
+    marginTop: 20,
+    paddingHorizontal: 23,
+  },
   relatedOffers: {
     color: Colors.main_black,
     fontSize: 18,
-    marginTop: 20,
   },
   lottie: {
     justifyContent: "flex-start",
     paddingTop: 26,
+  },
+  jobOffersList: {
+    marginTop: 20,
+  },
+  jobOfferItem: {
+    width: 170,
   },
 });

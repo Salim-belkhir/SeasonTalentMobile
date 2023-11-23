@@ -40,6 +40,7 @@ const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
   const { logo, location } = company;
   const start = formatDate(startDate);
   const end = formatDate(endDate);
+
   return (
     <TouchableOpacity
       onPress={() => onPress(item)}
@@ -69,7 +70,7 @@ const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
 
 ItemFlatList.horizontalList = function ({
   item,
-  itemsStyle,
+  itemStyle,
   onPress,
   ...props
 }) {
@@ -88,7 +89,7 @@ ItemFlatList.horizontalList = function ({
         flex: 1,
       }}
     >
-      <View style={[itemStyles, itemsStyle]}>
+      <View style={[itemStyles, itemStyle]}>
         <Image source={{ url: logo }} style={styles.logoPicture} />
         <Typography
           type="xs_bold"
@@ -105,7 +106,7 @@ ItemFlatList.horizontalList = function ({
   );
 };
 
-ItemFlatList.simpleItems = function ({ item, itemsStyle, onPress, ...props }) {
+ItemFlatList.simpleItems = function ({ item, itemStyle, onPress, ...props }) {
   const { label } = item;
 
   return (
@@ -116,7 +117,7 @@ ItemFlatList.simpleItems = function ({ item, itemsStyle, onPress, ...props }) {
         flex: 1,
       }}
     >
-      <View style={[simpleItemStyles, itemsStyle]}>
+      <View style={[simpleItemStyles, itemStyle]}>
         <Icon
           name="close"
           size={14}
@@ -134,7 +135,7 @@ ItemFlatList.simpleItems = function ({ item, itemsStyle, onPress, ...props }) {
   );
 };
 
-ItemFlatList.companyItem = function ({ item, itemsStyle, onPress, ...props }) {
+ItemFlatList.companyItem = function ({ item, itemStyle, onPress, ...props }) {
   const { logo, name, address } = item;
 
   // get the function swapItem from the props

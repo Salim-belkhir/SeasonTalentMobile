@@ -41,6 +41,14 @@ const FlatList = ({
           onPress={onPressedItem}
         />
       ),
+      // this is for the job offers to show in a vertical list using only 1 column
+      verticalList: (
+        <ItemFlatList.horizontalList
+          item={item}
+          itemStyle={itemsStyle}
+          onPress={onPressedItem}
+        />
+      ),
       default: (
         <ItemFlatList
           item={item}

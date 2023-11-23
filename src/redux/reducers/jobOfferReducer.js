@@ -478,6 +478,106 @@ const initialState = {
         },
       ],
     },
+    {
+      id: 10,
+      title: "Développeur C#",
+      company: {
+        id: 1,
+        name: "Google",
+        logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+        adress:
+          "1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis",
+        location: "États-Unis",
+      },
+      startDate: "2023-11-15T20:42:57.752Z",
+      endDate: "2023-12-23T20:42:57.752Z",
+      salary: "1500",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
+      advantages: [
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+        {
+          id: 4,
+          label: "Stock options",
+        },
+      ],
+      skills: [
+        {
+          id: 1,
+          label: "C#",
+        },
+        {
+          id: 2,
+          label: ".NET",
+        },
+        {
+          id: 3,
+          label: "ASP.NET",
+        },
+        {
+          id: 4,
+          label: "Entity Framework",
+        },
+      ],
+    },
+    {
+      id: 11,
+      title: "Développeur Scala",
+      company: {
+        id: 11,
+        name: "Oracle",
+        adress: "500 Oracle Pkwy, Redwood City, CA 94065, États-Unis",
+        location: "Redwood City",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/1024px-Oracle_logo.svg.png",
+      },
+      startDate: "2023-11-15T20:42:57.752Z",
+      endDate: "2023-12-23T20:42:57.752Z",
+      salary: "1500",
+      description: "Lorem ipsum dolor sit amet consectetur ",
+      advantages: [
+        {
+          id: 1,
+          label: "Salaire compétitif",
+        },
+        {
+          id: 2,
+          label: "Télétravail",
+        },
+        {
+          id: 3,
+          label: "Mutuelle",
+        },
+      ],
+      skills: [
+        {
+          id: 1,
+          label: "Scala",
+        },
+        {
+          id: 2,
+          label: "Play",
+        },
+        {
+          id: 3,
+          label: "Akka",
+        },
+        {
+          id: 4,
+          label: "Spark",
+        },
+      ],
+    },
   ],
   loading: false,
   error: null,
@@ -572,16 +672,12 @@ const jobOfferReducer = (state = initialState, action) => {
         error: null,
       };
     case jobOfferActions.FETCH_JOB_OFFERS_BY_COMPANY_ID:
-      console.log(action.payload);
-      const jobOffersByCompanyId = state.jobOffers.filter(
+      const searchingJobOffersByCompany = state.jobOffers.filter(
         (jobOffer) => jobOffer.company.id === action.payload
       );
-
       return {
-        // search job offers by company id from the jobOffers array
-        jobOffersByCompanyId: state.jobOffers.filter(
-          (jobOffer) => jobOffer.company.id === action.payload
-        ),
+        ...state,
+        jobOffersByCompanyId: searchingJobOffersByCompany,
       };
     default:
       return state;

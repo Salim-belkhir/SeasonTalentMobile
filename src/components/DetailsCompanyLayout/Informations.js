@@ -63,7 +63,6 @@ export default Informations;
 
 const styles = StyleSheet.create({
   InformationsContainer: {
-    flex: 1,
     backgroundColor: Colors.main_white,
   },
   fieldsContainer: {
@@ -85,10 +84,12 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+    marginLeft: 6,
     color: Colors.primary_color,
   },
   field: {
     color: Colors.main_black,
+    overflow: "hidden",
     width: "90%",
   },
   filesContainer: {
@@ -98,7 +99,8 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     borderColor: Colors.primary_color,
     borderRadius: 9,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingTop: 10,
   },
   fileContainer: {
     flexDirection: "row",
