@@ -2,7 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
-import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import SelectDropdown from "react-native-select-dropdown";
 import { connect } from "react-redux";
@@ -18,6 +24,10 @@ const mapDispatchToProps = {
   createJobOffer: jobOfferActions.createJobOffer,
   updateJobOffer: jobOfferActions.updateJobOffer,
 };
+
+const mapStateToProps = (state) => ({
+  companies: state.companies.companies,
+});
 
 // Define the validation schema for the form
 const validationSchema = Yup.object().shape({
@@ -111,6 +121,7 @@ const CreateJobOfferForm = ({
   createJobOffer,
   updateJobOffer,
   dataToUpdate,
+  companies,
 }) => {
   const navigation = useNavigation();
 
@@ -152,15 +163,22 @@ const CreateJobOfferForm = ({
     const jobOfferData = {
       ...values,
       id: dataToUpdate ? dataToUpdate.id : Math.random().toString(),
-      logo: dataToUpdate
-        ? dataToUpdate.logo
-        : "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-      location: etablissementList.find(
-        (etablissement) => etablissement.value === values.company
-      ).location,
+      // logo: dataToUpdate
+      //   ? dataToUpdate.logo
+      //   : "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+      // location: etablissementList.find(
+      //   (etablissement) => etablissement.value === values.company
+      // ).location,
+
+      company: {
+        ...companies.find((company) => company.name === values.company),
+        location: "New York",
+      },
       startDate: moment(formValues.startDate).format("YYYY-MM-DD"),
       endDate: moment(formValues.endDate).format("YYYY-MM-DD"),
     };
+
+    // console.log("jobOfferData", jobOfferData);
 
     if (dataToUpdate) {
       // If dataToUpdate exists, update the job offer
@@ -203,6 +221,10 @@ const CreateJobOfferForm = ({
     },
     [formValues]
   );
+
+  const toLowerCase = (string) => {
+    return string.toLowerCase();
+  };
 
   // Define the props for the Formik component
   const formikProps = {
@@ -266,17 +288,48 @@ const CreateJobOfferForm = ({
             />
 
             <SelectDropdown
-              data={etablissementList}
+              data={companies}
               onSelect={(selectedItem, index) => {
-                setFieldValue("company", selectedItem.value);
+                setFieldValue("company", selectedItem.name);
               }}
               buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem.label;
+                return (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <Image
+                      source={{ uri: selectedItem.logo }}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        resizeMode: "contain",
+                        marginRight: 10,
+                      }}
+                    />
+                    <Typography
+                      type="l_regular"
+                      typographyStyle={{
+                        color: Colors.dark_grey,
+                        fontSize: 16,
+                      }}
+                    >
+                      {selectedItem.name}
+                    </Typography>
+                  </View>
+                );
               }}
               rowTextForSelection={(item, index) => {
-                return item.label;
+                return item.name;
               }}
-              defaultButtonText="Selectionner un établissement"
+              defaultButtonText={
+                values.company
+                  ? values.company.name
+                  : "Sélectionner un établissement"
+              }
               renderDropdownIcon={(isOpened) => {
                 return (
                   <Icon
@@ -303,9 +356,7 @@ const CreateJobOfferForm = ({
               searchPlaceHolder="Rechercher un établissement"
               buttonStyle={[
                 styles.selectButton,
-                values.company && {
-                  borderBottomColor: Colors.primary_color,
-                },
+                values.company && { borderBottomColor: Colors.primary_color },
               ]}
               buttonTextStyle={[
                 styles.selectButtonText,
@@ -445,6 +496,8 @@ const CreateJobOfferForm = ({
                           (item, index) => item === values[key][index]
                         )
                       );
+                    } else if (key === "company") {
+                      return dataToUpdate[key].name === values[key];
                     }
                     return dataToUpdate[key] === values[key];
                   })
@@ -467,7 +520,7 @@ const CreateJobOfferForm = ({
   );
 };
 
-export default connect(null, mapDispatchToProps)(CreateJobOfferForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateJobOfferForm);
 
 const styles = StyleSheet.create({
   currentOffersTitle: {
@@ -526,8 +579,6 @@ const styles = StyleSheet.create({
   dropDownRow: {},
   dropDownRowText: {
     color: Colors.dark_grey,
-    fontSize: 15,
-    fontFamily: "Montserrat-medium",
   },
   descriptionInput: {
     marginTop: 15,

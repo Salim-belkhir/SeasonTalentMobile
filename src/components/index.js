@@ -2,6 +2,7 @@ import BottomSheetFilters from "./BottomSheetFilters";
 import Button from "./Button";
 import CreateCompanieLayout from "./CreateCompanyLayout";
 import DefaultLayout from "./DefaultLayout";
+import DetailsCompanyLayout from "./DetailsCompanyLayout";
 import DetailsLayout from "./DetailsLayout";
 import FlatList from "./FlatList";
 import Icon from "./Icon";
@@ -22,6 +23,7 @@ export {
   Button,
   CreateCompanieLayout,
   DefaultLayout,
+  DetailsCompanyLayout,
   DetailsLayout,
   FlatList,
   Icon,

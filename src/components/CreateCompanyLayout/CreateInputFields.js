@@ -229,6 +229,8 @@ export default connect(null, mapDispatchToProps)(CreateInputFields);
 const styles = StyleSheet.create({
   inputFieldsContainer: {
     marginTop: 20,
+    paddingLeft: 23,
+    paddingRight: 23,
   },
   scrollContent: {},
   currentOffersname: {

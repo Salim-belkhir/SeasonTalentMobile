@@ -3,6 +3,7 @@ const FETCH_COMPANY_BY_ID = "FETCH_COMPANY_BY_ID";
 const CREATE_COMPANY = "CREATE_COMPANY";
 const UPDATE_COMPANY = "UPDATE_COMPANY";
 const DELETE_COMPANY = "DELETE_COMPANY";
+const CHECK_IF_PRINCIPAL = "CHECK_IF_PRINCIPAL";
 
 const fetchCompanies = () => ({
   type: FETCH_COMPANIES,
@@ -28,12 +29,19 @@ const deleteCompany = (companyId) => ({
   payload: companyId,
 });
 
+const checkIfPrincipal = (companyId) => ({
+  type: CHECK_IF_PRINCIPAL,
+  payload: companyId,
+});
+
 export {
+  CHECK_IF_PRINCIPAL,
   CREATE_COMPANY,
   DELETE_COMPANY,
   FETCH_COMPANIES,
   FETCH_COMPANY_BY_ID,
   UPDATE_COMPANY,
+  checkIfPrincipal,
   createCompany,
   deleteCompany,
   fetchCompanies,

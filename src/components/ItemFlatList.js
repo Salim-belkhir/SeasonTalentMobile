@@ -36,7 +36,8 @@ const itemStyles = {
 };
 
 const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
-  const { startDate, endDate, logo, title, location, salary } = item;
+  const { startDate, endDate, company, title, salary } = item;
+  const { logo, location } = company;
   const start = formatDate(startDate);
   const end = formatDate(endDate);
   return (
@@ -72,7 +73,10 @@ ItemFlatList.horizontalList = function ({
   onPress,
   ...props
 }) {
-  const { logo, title, location, startDate, endDate } = item;
+  const { title, startDate, endDate, company } = item;
+
+  const { logo, location } = company;
+
   const start = formatDate(startDate);
   const end = formatDate(endDate);
 
