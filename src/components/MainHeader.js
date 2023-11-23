@@ -1,10 +1,10 @@
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import Typography from "./Typography";
-import { Colors } from "~/theme";
+import { useNavigation } from "@react-navigation/native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
+import { Colors } from "~/theme";
 import Button from "./Button";
 import Icon from "./Icon";
-import { useNavigation } from "@react-navigation/native";
+import Typography from "./Typography";
 
 const mapStateToProps = (state) => ({
   userInfo: state.googleAuth.userInfo,
@@ -40,10 +40,13 @@ const MainHeader = ({ navigation, userInfo }) => {
   );
 };
 
-MainHeader.basicHeader = connect(mapStateToProps)(function ({ userInfo }) {
+MainHeader.basicHeader = connect(mapStateToProps)(function ({
+  userInfo,
+  headerStyle,
+}) {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, headerStyle]}>
       <View style={styles.goBacktitleContainer}>
         <Button
           onPress={() => navigation.pop()}
@@ -81,7 +84,7 @@ MainHeader.goBackOnly = function ({
 }) {
   const navigation = useNavigation();
   return (
-    <View style={[headerStyle]}>
+    <View style={headerStyle}>
       <Button
         onPress={() => navigation.pop()}
         buttonStyle={[styles.goBackButton, goBackButtonStyle]}

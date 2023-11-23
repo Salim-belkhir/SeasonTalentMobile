@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
 import {
   DefaultLayout,
@@ -37,8 +37,11 @@ const CompaniesScreen = ({ navigation, companies, principalCompany }) => {
   };
 
   // Define function to handle navigation to Company Details screen
-  const handleNavigateToCompanyDetails = (item) => {
-    navigation.navigate("CompanyDetails", { data: item });
+  const handleNavigateToCompanyDetails = (item, principal) => {
+    navigation.navigate("CompanyDetails", {
+      data: item,
+      isPrincipal: principal,
+    });
   };
 
   // Define useEffect hook to set state variables after 1 second
@@ -75,6 +78,7 @@ const CompaniesScreen = ({ navigation, companies, principalCompany }) => {
         <Header
           handleNavigateToAddCompany={handleNavigateToAddCompany}
           principalCompanyData={principalCompanyData}
+          handleNavigateToCompanyDetails={handleNavigateToCompanyDetails}
         />
 
         {/* Render loading animation or company list */}
@@ -98,7 +102,11 @@ const CompaniesScreen = ({ navigation, companies, principalCompany }) => {
 };
 
 // Define Header component
-const Header = ({ handleNavigateToAddCompany, principalCompanyData }) => {
+const Header = ({
+  handleNavigateToAddCompany,
+  principalCompanyData,
+  handleNavigateToCompanyDetails,
+}) => {
   return (
     <View style={styles.header}>
       {/* Render main header */}
@@ -117,7 +125,10 @@ const Header = ({ handleNavigateToAddCompany, principalCompanyData }) => {
       </Typography>
 
       {/* Render principal company details */}
-      <PrincipalCompany principalCompanyData={principalCompanyData} />
+      <PrincipalCompany
+        principalCompanyData={principalCompanyData}
+        handleNavigateToCompanyDetails={handleNavigateToCompanyDetails}
+      />
 
       {/* Render title for other companies */}
       <Typography type="l_bold" typographyStyle={styles.currentCompanyTitle}>
@@ -128,9 +139,15 @@ const Header = ({ handleNavigateToAddCompany, principalCompanyData }) => {
 };
 
 // Define PrincipalCompany component
-const PrincipalCompany = ({ principalCompanyData }) => {
+const PrincipalCompany = ({
+  principalCompanyData,
+  handleNavigateToCompanyDetails,
+}) => {
   return (
-    <View style={styles.principalCompanyContainer}>
+    <TouchableOpacity
+      style={styles.principalCompanyContainer}
+      onPress={() => handleNavigateToCompanyDetails(principalCompanyData, true)}
+    >
       {/* Render principal company logo */}
       <Image
         source={{ uri: principalCompanyData?.logo }}
@@ -147,7 +164,7 @@ const PrincipalCompany = ({ principalCompanyData }) => {
           {principalCompanyData?.address}
         </Typography>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -164,7 +181,7 @@ const CompanyList = ({
         items={data}
         swapItem={swapPrincipalCompany}
         type="companyItems"
-        onPressedItem={handleNavigateToCompanyDetails}
+        onPressedItem={(item) => handleNavigateToCompanyDetails(item, false)}
         listStyle={styles.companiesList}
         itemsStyle={styles.companyItem}
       />
