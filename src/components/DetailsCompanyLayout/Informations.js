@@ -40,6 +40,13 @@ const Informations = ({ address, contact, uploadedFiles, isPrincipal }) => {
 
   return (
     <View style={styles.InformationsContainer}>
+      <View style={styles.principalLabel}>
+        {isPrincipal && (
+          <Typography type="l_bold" typographyStyle={styles.principalText}>
+            Cet établissement est principale .
+          </Typography>
+        )}
+      </View>
       <View style={styles.fieldsContainer}>
         {renderField("enviroment", address)}
         {renderField("mail", contact)}
@@ -47,13 +54,6 @@ const Informations = ({ address, contact, uploadedFiles, isPrincipal }) => {
 
       <View style={styles.filesContainer}>
         {renderItems(filesWithImage, renderFile)}
-      </View>
-      <View style={styles.principalLabel}>
-        {isPrincipal && (
-          <Typography type="l_medium" typographyStyle={styles.principalText}>
-            Cet établissement est principale .
-          </Typography>
-        )}
       </View>
     </View>
   );
@@ -123,10 +123,9 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   principalLabel: {
-    marginTop: 10,
     marginHorizontal: 20,
   },
   principalText: {
-    color: Colors.grey,
+    color: Colors.primary_color,
   },
 });

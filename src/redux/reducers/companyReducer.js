@@ -136,14 +136,23 @@ const companyReducer = (state = initialState, action) => {
         error: null,
       };
     case companiesActions.UPDATE_COMPANY:
-      return {
-        ...state,
-        companies: state.companies.map((company) =>
-          company.id === action.payload.id ? action.payload : company
-        ),
-        loading: true,
-        error: null,
-      };
+      if (action.payload.isPrincipal) {
+        return {
+          ...state,
+          principalCompany: action.payload,
+          loading: true,
+          error: null,
+        };
+      } else {
+        return {
+          ...state,
+          companies: state.companies.map((company) =>
+            company.id === action.payload.id ? action.payload : company
+          ),
+          loading: true,
+          error: null,
+        };
+      }
     case companiesActions.DELETE_COMPANY:
       return {
         ...state,

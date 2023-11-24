@@ -63,7 +63,11 @@ const DetailsCompanyLayout = ({
         </Typography>
       </MainHeader.goBackOnly>
 
-      <ActionsUD company={company} deleteCompany={deleteCompany} />
+      <ActionsUD
+        company={company}
+        deleteCompany={deleteCompany}
+        isPrincipal={isPrincipal}
+      />
       <Informations
         address={company.address}
         contact={company.contact}
