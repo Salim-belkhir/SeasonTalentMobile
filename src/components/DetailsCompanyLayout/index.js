@@ -42,7 +42,13 @@ const DetailsCompanyLayout = ({
 
   const handleNavigateToJobOfferDetails = (item) => {
     // navigate to the tab Emplois and then to the screen EmploisDetails
-    navigation.navigate("EmploisDetails", { item });
+    navigation.push("MainBottomTabNavigator", {
+      screen: "Emplois",
+      params: {
+        screen: "EmploisDetails",
+        params: { item },
+      },
+    });
   };
 
   return (

@@ -17,9 +17,19 @@ const MainBottomTabNavigator = () => {
     };
 
     const currentScreen = recursivelyFindRouteName(navigation.getState());
-
     // Use a switch case to handle different screen names
     switch (currentScreen) {
+      case "Emplois":
+        // check if the screen that we are coming from is EmploisDetails after CompanyDetails
+        const isComingFromEmploisDetails =
+          navigation.getState().routes[1].params?.screen === "EmploisDetails";
+
+        if (isComingFromEmploisDetails) {
+          navigation.setOptions({
+            tabBarStyle: { display: "none" },
+          });
+        }
+        break;
       case "CompanyCreation":
       case "CompanyDetails":
       case "EmploisRecherche":

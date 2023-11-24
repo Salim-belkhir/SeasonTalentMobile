@@ -12,7 +12,6 @@ const ActionsUD = ({ company, deleteCompany }) => {
   const [showModal, setShowModal] = useState(false);
 
   const navigateToEditCompany = () => {
-    console.log("navigateToEditCompany");
     navigation.navigate("CompanyCreation", {
       dataToUpdate: company,
     });
