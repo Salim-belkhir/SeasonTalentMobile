@@ -1,8 +1,11 @@
 import moment from "moment";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Colors } from "~/theme";
+import Button from "./Button";
 import Icon from "./Icon";
 import Typography from "./Typography";
+
+const formatDate = (date) => moment(date).format("DD MMM");
 
 const commonStyles = {
   itemStyle: {
@@ -33,9 +36,10 @@ const itemStyles = {
 };
 
 const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
-  const start = moment(item.startDate).format("DD MMM");
-
-  const end = moment(item.endDate).format("DD MMM");
+  const { startDate, endDate, company, title, salary } = item;
+  const { logo, location } = company;
+  const start = formatDate(startDate);
+  const end = formatDate(endDate);
 
   return (
     <TouchableOpacity
@@ -45,60 +49,153 @@ const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
         flex: 1,
       }}
     >
-      {type === "simpleItems" ? (
-        <View style={[simpleItemStyles, itemStyle]}>
-          <Icon
-            name="close"
-            size={14}
-            color={Colors.primary_color}
-            style={{ marginRight: 5 }}
-          />
-          <Typography
-            type="l_medium"
-            typographyStyle={commonStyles.typographyStyle}
-          >
-            {item.label}
+      <View style={styles.simpleDetailedItemContainer}>
+        <Image source={{ url: logo }} style={styles.logoPictureSimple} />
+        <View style={styles.titleAndSalaryContainer}>
+          <Typography type="s_semibold" typographyStyle={styles.title}>
+            {title}
           </Typography>
-        </View>
-      ) : type === "horizontalList" ? (
-        <View style={[itemStyles, itemStyle]}>
-          <Image source={{ url: item.logo }} style={styles.logoPicture} />
-          <Typography
-            type="xs_bold"
-            typographyStyle={commonStyles.typographyStyle}
-          >
-            {item.title}
+          <Typography type="s_regular">{salary} €/m</Typography>
+          <Typography type="s_regular" typographyStyle={styles.otherInfo}>
+            {location}
           </Typography>
-          <Typography type="xs_regular">
+          <Typography type="s_regular" typographyStyle={styles.otherInfo}>
             {start} - {end}
           </Typography>
-          <Typography type="xs_medium">{item.location}</Typography>
         </View>
-      ) : (
-        <View style={styles.simpleDetailedItemContainer}>
-          <Image source={{ url: item.logo }} style={styles.logoPictureSimple} />
-          <View style={styles.titleAndSalaryContainer}>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+ItemFlatList.horizontalList = function ({
+  item,
+  itemStyle,
+  onPress,
+  ...props
+}) {
+  const { title, startDate, endDate, company } = item;
+
+  const { logo, location } = company;
+
+  const start = formatDate(startDate);
+  const end = formatDate(endDate);
+
+  return (
+    <TouchableOpacity
+      onPress={() => onPress(item)}
+      {...props}
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={[itemStyles, itemStyle]}>
+        <Image source={{ url: logo }} style={styles.logoPicture} />
+        <Typography
+          type="xs_bold"
+          typographyStyle={commonStyles.typographyStyle}
+        >
+          {title}
+        </Typography>
+        <Typography type="xs_regular">
+          {start} - {end}
+        </Typography>
+        <Typography type="xs_medium">{location}</Typography>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+ItemFlatList.simpleItems = function ({ item, itemStyle, onPress, ...props }) {
+  const { label } = item;
+
+  return (
+    <TouchableOpacity
+      onPress={() => onPress(item)}
+      {...props}
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={[simpleItemStyles, itemStyle]}>
+        <Icon
+          name="close"
+          size={14}
+          color={Colors.primary_color}
+          style={{ marginRight: 5 }}
+        />
+        <Typography
+          type="l_medium"
+          typographyStyle={commonStyles.typographyStyle}
+        >
+          {label}
+        </Typography>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+ItemFlatList.companyItem = function ({ item, itemStyle, onPress, ...props }) {
+  const { logo, name, address } = item;
+
+  // get the function swapItem from the props
+  const { swapItem } = props;
+
+  return (
+    <TouchableOpacity
+      onPress={() => onPress(item)}
+      {...props}
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={styles.simpleDetailedItemContainer}>
+        <Image source={{ url: logo }} style={styles.logoPictureSimple} />
+        <View style={styles.companyDetails}>
+          <View style={styles.titleAndPositionContainer}>
             <Typography type="s_semibold" typographyStyle={styles.title}>
-              {item.title}
+              {name}
             </Typography>
-            <Typography type="s_regular">{item.salary} €/m</Typography>
-            <Typography type="s_regular" typographyStyle={styles.otherInfo}>
-              {item.location}
-            </Typography>
-            <Typography type="s_regular" typographyStyle={styles.otherInfo}>
-              {new Date(item.startDate).toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "short",
-              }) +
-                " - " +
-                new Date(item.endDate).toLocaleDateString("fr-FR", {
-                  day: "numeric",
-                  month: "short",
-                })}
+            <Typography
+              type="s_regular"
+              typographyStyle={styles.companyAddress}
+            >
+              <Icon name="enviroment" size={14} color={Colors.primary_color} />{" "}
+              {address}
             </Typography>
           </View>
+          {/* button to swap the item */}
+          <Button
+            hideIcon
+            onPress={() => swapItem(item)}
+            buttonStyle={styles.swapButton}
+          >
+            <Icon name="swap" size={20} color={Colors.primary_color} />
+          </Button>
         </View>
-      )}
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+ItemFlatList.files = function ({ item, itemStyle, onPress, ...props }) {
+  return (
+    <TouchableOpacity
+      onPress={() => onPress(item)}
+      {...props}
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={[simpleItemStyles, itemStyle]}>
+        <Image source={item.logo} style={styles.fileLogo} />
+        <Typography type="l_regular" typographyStyle={styles.fileTitle}>
+          {item.name}
+        </Typography>
+        <TouchableOpacity onPress={() => onPress(item)}>
+          <Icon name="close" size={18} color={Colors.main_black} />
+        </TouchableOpacity>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -117,17 +214,6 @@ const styles = StyleSheet.create({
     height: 43,
     resizeMode: "contain",
   },
-
-  simpleDetailedItemContainer: {
-    backgroundColor: Colors.pure_white,
-    borderRadius: 20,
-    flexDirection: "row",
-    paddingHorizontal: 20,
-    alignItems: "center",
-    paddingVertical: 2,
-    width: "100%",
-    height: 74,
-  },
   titleAndSalaryContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -142,5 +228,46 @@ const styles = StyleSheet.create({
   },
   otherInfo: {
     color: Colors.dark_grey,
+  },
+  simpleDetailedItemContainer: {
+    backgroundColor: Colors.pure_white,
+    borderRadius: 20,
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    alignItems: "center",
+    paddingVertical: 2,
+    width: "100%",
+    height: 74,
+  },
+  companyDetails: {
+    marginLeft: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  titleAndPositionContainer: {
+    width: "80%",
+  },
+  companyName: {},
+  companyAddress: {
+    color: Colors.primary_color,
+  },
+  swapButton: {
+    backgroundColor: Colors.main_white,
+    borderColor: "transparent",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 40,
+  },
+  fileTitle: {
+    color: Colors.dark_grey,
+    width: "65%",
+    overflow: "hidden",
+  },
+  fileLogo: {
+    width: 30,
+    height: 40,
+    borderRadius: 9,
+    resizeMode: "cover",
+    marginRight: 5,
   },
 });

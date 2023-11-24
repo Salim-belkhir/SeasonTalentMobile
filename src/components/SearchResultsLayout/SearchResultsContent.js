@@ -21,8 +21,8 @@ const SearchResultsContent = ({
   const navigation = useNavigation();
   const handleNavigateToJobOfferDetails = (item) => {
     navigation.navigate("EmploisDetails", { item });
-    // add the item to the list of consulted offers
 
+    // add the item to the list of consulted offers
     if (!consultedOffers.find((offer) => offer.id === item.id)) {
       loadRecentlyConsultedJobOffers([item, ...consultedOffers]);
     } else {
@@ -36,6 +36,7 @@ const SearchResultsContent = ({
     <View style={styles.container}>
       <FlatList
         items={results}
+        type="default"
         listStyle={styles.list}
         onPressedItem={handleNavigateToJobOfferDetails}
       />

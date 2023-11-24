@@ -50,14 +50,14 @@ const DetailsHeader = ({ data, deleteJobOffer }) => {
         style={styles.backgroundImage}
       />
       <View style={styles.headerInformationsContainer}>
-        <Image source={{ uri: data.logo }} style={styles.companyLogo} />
+        <Image source={{ uri: data.company.logo }} style={styles.companyLogo} />
         <Typography type="l_bold" typographyStyle={styles.title}>
           {data.title}
         </Typography>
 
         <View style={styles.otherInfosContainer}>
           {[
-            { name: "enviroment", text: data.location },
+            { name: "enviroment", text: data.company.location },
             {
               name: "calendar",
               text: start + " - " + end,

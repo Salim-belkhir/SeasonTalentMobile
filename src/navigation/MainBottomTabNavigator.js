@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "~/components";
-import { CandidatesScreen, CompaniesScreen, ProfileScreen } from "~/screens";
+import { CandidatesScreen, ProfileScreen } from "~/screens";
 import { Colors } from "~/theme";
+import CompaniesNavigator from "./CompaniesNavigator";
 import JobOffersNavigator from "./JobOffersNavigator";
 const BottomTab = createBottomTabNavigator();
 
@@ -16,9 +17,21 @@ const MainBottomTabNavigator = () => {
     };
 
     const currentScreen = recursivelyFindRouteName(navigation.getState());
-
     // Use a switch case to handle different screen names
     switch (currentScreen) {
+      case "Emplois":
+        // check if the screen that we are coming from is EmploisDetails after CompanyDetails
+        const isComingFromEmploisDetails =
+          navigation.getState().routes[1].params?.screen === "EmploisDetails";
+
+        if (isComingFromEmploisDetails) {
+          navigation.setOptions({
+            tabBarStyle: { display: "none" },
+          });
+        }
+        break;
+      case "CompanyCreation":
+      case "CompanyDetails":
       case "EmploisRecherche":
       case "SearchResults":
       case "SearchHome":
@@ -36,7 +49,7 @@ const MainBottomTabNavigator = () => {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Emplois"
+      initialRouteName="Établissements"
       screenOptions={{
         tabBarActiveTintColor: Colors.primary_color,
         tabBarInactiveTintColor: Colors.main_grey,
@@ -72,7 +85,7 @@ const MainBottomTabNavigator = () => {
       />
       <BottomTab.Screen
         name="Établissements"
-        component={CompaniesScreen}
+        component={CompaniesNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" size={size} color={color} />
