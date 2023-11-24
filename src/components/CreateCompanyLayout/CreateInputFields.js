@@ -32,7 +32,12 @@ const initialValues = {
   contact: "",
 };
 
-const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
+const CreateInputFields = ({
+  dataToUpdate,
+  createCompany,
+  updateCompany,
+  isPrincipal,
+}) => {
   const [logo, setLogo] = useState(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -67,6 +72,7 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
         logo: logo,
         proofs: uploadedFiles,
         id: dataToUpdate.id,
+        isPrincipal: isPrincipal,
       });
     } else {
       // If there is no dataToUpdate, create a new company
@@ -116,8 +122,9 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
         (key) => values[key] !== dataToUpdate[key]
       );
 
+      const isLogoFilled = logo !== null;
       // Checking if the logo is filled and different from the dataToUpdate
-      const isLogoChanged = logo !== null && logo !== dataToUpdate.logo;
+      const isLogoChanged = logo !== dataToUpdate.logo;
 
       // Checking if the proofs are filled and different from the dataToUpdate
       const isProofsChanged =
@@ -127,7 +134,9 @@ const CreateInputFields = ({ dataToUpdate, createCompany, updateCompany }) => {
       // if can update we return true else we return false
       return (
         isErrorsEmpty &&
-        ((isFormFilled && isFormDifferent) || isLogoChanged || isProofsChanged)
+        ((isFormFilled && isFormDifferent) ||
+          (isLogoFilled && isProofsChanged) ||
+          (isLogoChanged && isProofsChanged))
       );
     },
     [formValues, logo, uploadedFiles]

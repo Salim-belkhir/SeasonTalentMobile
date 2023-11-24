@@ -7,7 +7,10 @@ const CreateCompanyScreen = ({ route }) => {
   return (
     <DefaultLayout>
       <View style={styles.container}>
-        <CreateCompanieLayout dataToUpdate={route.params?.dataToUpdate} />
+        <CreateCompanieLayout
+          dataToUpdate={route.params?.dataToUpdate}
+          isPrincipal={route.params?.isPrincipal}
+        />
       </View>
     </DefaultLayout>
   );

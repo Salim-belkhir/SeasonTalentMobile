@@ -4,7 +4,7 @@ import MainHeader from "../MainHeader";
 import Typography from "../Typography";
 import CreateInputFields from "./CreateInputFields";
 
-const CreateCompanieLayout = ({ dataToUpdate }) => {
+const CreateCompanieLayout = ({ dataToUpdate, isPrincipal }) => {
   return (
     <View>
       {dataToUpdate ? (
@@ -21,7 +21,7 @@ const CreateCompanieLayout = ({ dataToUpdate }) => {
         <MainHeader.basicHeader headerStyle={styles.basicHeader} />
       )}
 
-      <CreateInputFields dataToUpdate={dataToUpdate} />
+      <CreateInputFields dataToUpdate={dataToUpdate} isPrincipal={isPrincipal} />
     </View>
   );
 };

@@ -7,13 +7,28 @@ import Icon from "../Icon";
 import AlertModal from "../Modal";
 import Typography from "../Typography";
 
-const ActionsUD = ({ company, deleteCompany }) => {
+const renderButton = (label, iconName, iconColor, onPress, typographyStyle) => (
+  <Button
+    label={label}
+    hideIcon
+    buttonStyle={styles.actionButton}
+    onPress={onPress}
+  >
+    <Icon name={iconName} size={18} color={iconColor} />
+    <Typography type="l_medium" typographyStyle={typographyStyle}>
+      {label}
+    </Typography>
+  </Button>
+);
+
+const ActionsUD = ({ company, deleteCompany, isPrincipal }) => {
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState(false);
 
   const navigateToEditCompany = () => {
     navigation.navigate("CompanyCreation", {
       dataToUpdate: company,
+      isPrincipal: isPrincipal,
     });
   };
 
@@ -27,18 +42,13 @@ const ActionsUD = ({ company, deleteCompany }) => {
 
   return (
     <View style={styles.logoContainer}>
-      {/* showing a modal to confirme the delete of the company */}
-      <Button
-        label="Modifier"
-        hideIcon
-        buttonStyle={styles.actionButton}
-        onPress={navigateToEditCompany}
-      >
-        <Icon name="edit" size={18} color={Colors.primary_color} />
-        <Typography type="l_medium" typographyStyle={styles.editButtonLabel}>
-          Modifier
-        </Typography>
-      </Button>
+      {renderButton(
+        "Modifier",
+        "edit",
+        Colors.primary_color,
+        navigateToEditCompany,
+        styles.editButtonLabel
+      )}
       <Image
         source={{
           uri: company.logo,
@@ -46,18 +56,14 @@ const ActionsUD = ({ company, deleteCompany }) => {
         alt="Company logo"
         style={styles.logo}
       />
-      <Button
-        label="Supprimer"
-        hideIcon
-        buttonStyle={styles.actionButton}
-        onPress={() => setShowModal(true)}
-      >
-        <Icon name="delete" size={18} color={Colors.error_color} />
-        <Typography type="l_medium" typographyStyle={styles.deleteButtonLabel}>
-          Supprimer
-        </Typography>
-      </Button>
-
+      {!isPrincipal &&
+        renderButton(
+          "Supprimer",
+          "delete",
+          Colors.error_color,
+          () => setShowModal(true),
+          styles.deleteButtonLabel
+        )}
       <AlertModal
         visible={showModal}
         title="Supprimer l'établissement"
