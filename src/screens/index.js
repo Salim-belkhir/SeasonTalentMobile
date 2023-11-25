@@ -1,4 +1,5 @@
-import CandidatesScreen from "./CandidatesScreen";
+import CandidatesScreen from "./Candidates/CandidatesScreen";
+import DetailsCandidate from "./Candidates/DetailsCandidate";
 import Login from "./LoginScreen";
 import ProfileScreen from "./ProfileScreen";
 import SearchHome from "./Search/SearchHomeScreen";
@@ -15,6 +16,7 @@ export {
   CompaniesScreen,
   CreateCompanyScreen,
   CreateJobOffer,
+  DetailsCandidate,
   DetailsCompanyScreen,
   DetailsJobOffer,
   JobOffersScreen,

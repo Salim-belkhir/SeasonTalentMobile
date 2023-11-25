@@ -9,7 +9,7 @@ import {
   Loading,
   MainHeader,
   NavigatorButton,
-  SearchJobOffer,
+  SearchBar,
   Typography,
 } from "~/components";
 import { jobOfferActions } from "~/redux/actions";
@@ -91,10 +91,11 @@ const JobOffersScreen = ({
       <View style={styles.container}>
         <View style={styles.header}>
           <MainHeader navigation={navigation} />
-          <SearchJobOffer
+          <SearchBar
             action={handleSearchJobOffer}
             setShowFilter={setShowFilter}
             showFilterButton={true}
+            searchType="emploi"
           />
           <NavigatorButton
             label="Créer une offre d'emploi"

@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "~/components";
-import { CandidatesScreen, ProfileScreen } from "~/screens";
+import { ProfileScreen } from "~/screens";
 import { Colors } from "~/theme";
+import CandidatesNavigator from "./CandidateNavigator";
 import CompaniesNavigator from "./CompaniesNavigator";
 import JobOffersNavigator from "./JobOffersNavigator";
 const BottomTab = createBottomTabNavigator();
@@ -49,7 +50,7 @@ const MainBottomTabNavigator = () => {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Établissements"
+      initialRouteName="Candidats"
       screenOptions={{
         tabBarActiveTintColor: Colors.primary_color,
         tabBarInactiveTintColor: Colors.main_grey,
@@ -67,7 +68,7 @@ const MainBottomTabNavigator = () => {
     >
       <BottomTab.Screen
         name="Candidats"
-        component={CandidatesScreen}
+        component={CandidatesNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="rocket1" size={size} color={color} />
