@@ -119,7 +119,6 @@ const JobOffersScreen = ({
             type="horizontalList"
             onPressedItem={handleNavigateToJobOfferDetails}
             listStyle={styles.jobOffersList}
-            itemsStyle={styles.jobOfferItem}
           />
         )}
         <BottomSheetFilters
@@ -155,9 +154,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     paddingHorizontal: 19,
-  },
-  jobOfferItem: {
-    borderRadius: 12,
   },
   loadingContainer: {
     justifyContent: "center",
