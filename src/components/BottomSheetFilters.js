@@ -142,8 +142,7 @@ const Location = ({ location, onChange }) => {
 };
 
 const Salary = ({ salaryRange, onChange }) => {
-  console.log("salaryRange", salaryRange);
-
+  
   const sliderProps = useMemo(() => {
     return {
       type: "range", // ios only

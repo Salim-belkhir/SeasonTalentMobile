@@ -65,6 +65,14 @@ const JobOffersScreen = ({
   };
 
   useEffect(() => {
+    setIsInitialLoading(true);
+    setTimeout(() => {
+      filterJobOffers(filterBy);
+      setIsInitialLoading(false);
+    }, 1000);
+  }, [jobOffers]);
+
+  useEffect(() => {
     setTimeout(() => {
       filterJobOffers(filterBy);
       setIsInitialLoading(false);

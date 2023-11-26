@@ -55,28 +55,6 @@ const initialValues = {
   skills: [],
 };
 
-// Define the list of establishments to be displayed in the dropdown
-const etablissementList = [
-  {
-    id: 1,
-    label: "Etablissement 1",
-    value: "etablissement1",
-    location: "Montpellier",
-  },
-  {
-    id: 2,
-    label: "Etablissement 2",
-    value: "etablissement2",
-    location: "Paris",
-  },
-  {
-    id: 3,
-    label: "Etablissement 3",
-    value: "etablissement3",
-    location: "Cupertino",
-  },
-];
-
 const DateTimePicker = ({ dates, handleOpenDatePicker }) => {
   return (
     <View style={styles.datePickerContainer}>
@@ -163,28 +141,17 @@ const CreateJobOfferForm = ({
     const jobOfferData = {
       ...values,
       id: dataToUpdate ? dataToUpdate.id : Math.random().toString(),
-      // logo: dataToUpdate
-      //   ? dataToUpdate.logo
-      //   : "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-      // location: etablissementList.find(
-      //   (etablissement) => etablissement.value === values.company
-      // ).location,
-
       company: {
-        ...companies.find((company) => company.name === values.company),
-        location: "New York",
+        ...companies.find((company) => company.name === values.company.name),
       },
       startDate: moment(formValues.startDate).format("YYYY-MM-DD"),
       endDate: moment(formValues.endDate).format("YYYY-MM-DD"),
     };
 
-    // console.log("jobOfferData", jobOfferData);
-
     if (dataToUpdate) {
       // If dataToUpdate exists, update the job offer
       // Assuming an update function from jobOfferActions is available
       // Recompany 'updateJobOffer' with your actual update function
-
       updateJobOffer(jobOfferData);
     } else {
       // Otherwise, create a new job offer
@@ -232,6 +199,37 @@ const CreateJobOfferForm = ({
     validationSchema,
     onSubmit: handleJobOfferAction,
   };
+
+  function displaySelectedCompany(selectedItem) {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
+        <Image
+          source={{ uri: selectedItem.logo }}
+          style={{
+            width: 30,
+            height: 30,
+            resizeMode: "contain",
+            marginRight: 10,
+          }}
+        />
+        <Typography
+          type="l_regular"
+          typographyStyle={{
+            color: Colors.dark_grey,
+            fontSize: 16,
+          }}
+        >
+          {selectedItem.name}
+        </Typography>
+      </View>
+    );
+  }
 
   return (
     <Formik {...formikProps}>
@@ -290,44 +288,17 @@ const CreateJobOfferForm = ({
             <SelectDropdown
               data={companies}
               onSelect={(selectedItem, index) => {
-                setFieldValue("company", selectedItem.name);
+                setFieldValue("company", selectedItem);
               }}
               buttonTextAfterSelection={(selectedItem, index) => {
-                return (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    <Image
-                      source={{ uri: selectedItem.logo }}
-                      style={{
-                        width: 30,
-                        height: 30,
-                        resizeMode: "contain",
-                        marginRight: 10,
-                      }}
-                    />
-                    <Typography
-                      type="l_regular"
-                      typographyStyle={{
-                        color: Colors.dark_grey,
-                        fontSize: 16,
-                      }}
-                    >
-                      {selectedItem.name}
-                    </Typography>
-                  </View>
-                );
+                return displaySelectedCompany(selectedItem);
               }}
               rowTextForSelection={(item, index) => {
                 return item.name;
               }}
               defaultButtonText={
                 values.company
-                  ? values.company.name
+                  ? displaySelectedCompany(values.company)
                   : "Sélectionner un établissement"
               }
               renderDropdownIcon={(isOpened) => {
@@ -335,7 +306,10 @@ const CreateJobOfferForm = ({
                   <Icon
                     name={isOpened ? "up" : "down"}
                     color={
-                      values.company ? Colors.primary_color : Colors.main_grey
+                      values.company &&
+                      values.company.name !== dataToUpdate?.company.name
+                        ? Colors.primary_color
+                        : Colors.main_grey
                     }
                     size={24}
                   />
@@ -356,11 +330,17 @@ const CreateJobOfferForm = ({
               searchPlaceHolder="Rechercher un établissement"
               buttonStyle={[
                 styles.selectButton,
-                values.company && { borderBottomColor: Colors.primary_color },
+                values.company &&
+                  values.company.name !== dataToUpdate?.company.name && {
+                    borderBottomColor: Colors.primary_color,
+                  },
               ]}
               buttonTextStyle={[
                 styles.selectButtonText,
-                values.company && { color: Colors.primary_color },
+                values.company &&
+                  values.company.name !== dataToUpdate?.company.name && {
+                    color: Colors.primary_color,
+                  },
               ]}
               dropdownStyle={styles.dropDown}
               rowStyle={styles.dropDownRow}
@@ -391,11 +371,11 @@ const CreateJobOfferForm = ({
               onSubmitEditing={() => {
                 if (values.advantage.label !== "") {
                   setFieldValue("advantages", [
-                    ...values.advantages,
                     {
                       label: values.advantage,
                       id: values.advantages.length + 1,
                     },
+                    ...values.advantages,
                   ]);
                   setFieldValue("advantage", {
                     label: "",
@@ -433,11 +413,11 @@ const CreateJobOfferForm = ({
               onSubmitEditing={() => {
                 if (values.skill.label !== "") {
                   setFieldValue("skills", [
-                    ...values.skills,
                     {
                       label: values.skill,
                       id: values.skills.length + 1,
                     },
+                    ...values.skills,
                   ]);
                   setFieldValue("skill", {
                     label: "",
@@ -497,7 +477,7 @@ const CreateJobOfferForm = ({
                         )
                       );
                     } else if (key === "company") {
-                      return dataToUpdate[key].name === values[key];
+                      return dataToUpdate[key].name === values[key].name;
                     }
                     return dataToUpdate[key] === values[key];
                   })
