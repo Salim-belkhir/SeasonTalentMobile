@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Keyboard, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -24,9 +24,14 @@ const mapStateToProps = (state) => ({
 });
 
 const DEFAULT_FILTERS = {
+  searchWord: {
+    id: 1,
+    label: "",
+  },
   searchWords: [],
-  startDate: moment().add(-1, "years").format("YYYY-MM-DD"),
+  startDate: moment().format("YYYY-MM-DD"), // set the date of today
   endDate: moment().add(1, "years").format("YYYY-MM-DD"),
+  location: "",
   minSalary: 750,
   maxSalary: 1750,
 };
@@ -39,7 +44,7 @@ const JobOffersScreen = ({
 }) => {
   const [showFilter, setShowFilter] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [filterBy, setFilterBy] = useState();
+  const [filterBy, setFilterBy] = useState(DEFAULT_FILTERS);
   const [totalAppliedFilter, setTotalAppliedFilter] = useState(0);
 
   const handleSearchJobOffer = () => {
@@ -59,32 +64,18 @@ const JobOffersScreen = ({
     setShowFilter(false);
   };
 
-  const refetchWithFilter = useCallback(() => {
-    // we need to set up a default filter because when the first time that the job offers screen is rendered,
-    // the filterBy state is not yet set
-    const filters = filterBy || DEFAULT_FILTERS;
-    filterJobOffers(filters);
-  }, [filterBy]);
-
   useEffect(() => {
-    refetchWithFilter();
     setTimeout(() => {
+      filterJobOffers(filterBy);
       setIsInitialLoading(false);
     }, 1500);
-  }, [refetchWithFilter]);
+  }, [filterBy]);
 
-  const handleFilterChange = (filters) => {
+  const onApplyFilters = (filters) => {
+    // console.log("onApplyFilters --> ", filters);
     setFilterBy(filters);
     setIsInitialLoading(true);
   };
-
-  useEffect(() => {
-    setIsInitialLoading(true);
-    filterJobOffers(DEFAULT_FILTERS);
-    setTimeout(() => {
-      setIsInitialLoading(false);
-    }, 1500);
-  }, [jobOffers]);
 
   return (
     <DefaultLayout>
@@ -124,10 +115,12 @@ const JobOffersScreen = ({
         <BottomSheetFilters
           open={showFilter}
           onClose={closeFilter}
-          onApplyFilter={handleFilterChange}
+          onApplyFilters={onApplyFilters}
           onTotalFilterAppliedChange={(total) => {
             setTotalAppliedFilter(total);
           }}
+          defaultFilters={filterBy}
+          type="jobOffers"
         />
       </View>
     </DefaultLayout>

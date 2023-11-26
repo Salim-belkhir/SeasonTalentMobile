@@ -3,6 +3,7 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import {
+  BottomSheetFilters,
   Button,
   DefaultLayout,
   FlatList,
@@ -215,15 +216,14 @@ const CandidatesScreen = ({
             renderCandidatesList()
           )}
         </View>
-        {/* <BottomSheetFilters
-          defaultFilters={filterBy}
+        <BottomSheetFilters
           open={showFilter}
           onClose={closeFilter}
           onApplyFilter={handleFilterChange}
           onTotalFilterAppliedChange={(total) => {
             setTotalAppliedFilter(total);
           }}
-        /> */}
+        />
       </View>
     </DefaultLayout>
   );

@@ -62,7 +62,7 @@ const DetailsHeader = ({ data, deleteJobOffer }) => {
               name: "calendar",
               text: start + " - " + end,
             },
-            { name: "wallet", text: data.salary },
+            { name: "wallet", text: data.salary + " €/m" },
           ].map(({ name, text }) => (
             <View key={name} style={styles.info}>
               <Icon name={name} size={16} color={Colors.main_white} />
