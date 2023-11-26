@@ -125,8 +125,6 @@ const SelectCompany = function ({
   dataToUpdateCompany,
   company,
 }) {
-  console.log("dataToUpdateCompany", dataToUpdateCompany);
-  console.log("company", company);
   return (
     <SelectDropdown
       data={companies}
@@ -149,7 +147,7 @@ const SelectCompany = function ({
           <Icon
             name={isOpened ? "up" : "down"}
             color={
-              company && company.name !== dataToUpdateCompany.name
+              company && company.name !== dataToUpdateCompany?.name
                 ? Colors.primary_color
                 : Colors.main_grey
             }
@@ -248,6 +246,8 @@ const CreateJobOfferForm = ({
       id: dataToUpdate ? dataToUpdate.id : Math.random().toString(),
       company: {
         ...companies.find((company) => company.name === values.company.name),
+        // extract only the address city from the company address
+        location: values.company.address.toLowerCase().split(",")[2],
       },
       startDate: moment(formValues.startDate).format("YYYY-MM-DD"),
       endDate: moment(formValues.endDate).format("YYYY-MM-DD"),
@@ -355,7 +355,9 @@ const CreateJobOfferForm = ({
             <SelectCompany
               companies={companies}
               setFieldValue={setFieldValue}
-              dataToUpdateCompany={dataToUpdate && dataToUpdate.company}
+              dataToUpdateCompany={
+                dataToUpdate ? dataToUpdate.company : formValues.company
+              }
               company={values.company}
             />
             <TextInput

@@ -480,10 +480,9 @@ const filterJobOffers = (jobOffers, filters) => {
   return jobOffers.filter((jobOffer) => {
     // Filter by searchWords
     // we check if every search word is included in the job offer
-    // it the title , skills or advantages
+    // or in the title or skills or advantages
     const searchWordsMatch = searchWords.every((word) => {
       const lowerCaseWord = word.label.toLowerCase();
-      console.log(lowerCaseWord);
       return (
         jobOffer.company.name.toLowerCase().includes(lowerCaseWord) ||
         jobOffer.title.toLowerCase().includes(lowerCaseWord) ||

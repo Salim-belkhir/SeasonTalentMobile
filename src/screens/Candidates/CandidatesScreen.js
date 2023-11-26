@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import moment from "moment";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -18,8 +19,9 @@ import { Colors } from "~/theme";
 
 const mapStateToProps = (state) => ({
   candidates: state.candidates.candidates,
-  matchedCandidates: state.candidates.matchedCandidatesToJobOffers,
+  matchedCandidates: state.candidates.filteredMatchedCandidatesToJobOffers,
   favoriteCandidates: state.candidates.favoriteCandidates,
+  filteredCandidates: state.candidates.filteredCandidates,
 });
 
 const mapDispatchToProps = {
@@ -27,6 +29,18 @@ const mapDispatchToProps = {
   fetchFavoriteCandidates: candidatesActions.fetchFavoriteCandidates,
   addCandidateToFavorite: candidatesActions.addCandidateToFavorite,
   deleteCandidateFromFavorite: candidatesActions.deleteCandidateFromFavorite,
+  filterCandidates: candidatesActions.filterCandidates,
+};
+
+const DEFAULT_FILTERS = {
+  searchWord: {
+    id: 1,
+    label: "",
+  },
+  searchWords: [],
+  startDate: moment().format("YYYY-MM-DD"), // set the date of today
+  endDate: moment().add(1, "years").format("YYYY-MM-DD"),
+  location: "",
 };
 
 const CandidatesScreen = ({
@@ -38,11 +52,13 @@ const CandidatesScreen = ({
   deleteCandidateFromFavorite,
   favoriteCandidates,
   fetchFavoriteCandidates,
+  filterCandidates,
+  filteredCandidates,
 }) => {
   const navigation = useNavigation();
   const [showFilter, setShowFilter] = useState(false);
   const [selectedTab, setSelectedTab] = useState("");
-  const [filterBy, setFilterBy] = useState();
+  const [filterBy, setFilterBy] = useState(DEFAULT_FILTERS);
   const [totalAppliedFilter, setTotalAppliedFilter] = useState(0);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [recommend, setRecommend] = useState(false);
@@ -91,14 +107,6 @@ const CandidatesScreen = ({
     navigation.push("CandidatsRecherche");
   };
 
-  const handleFilterChange = (filter) => {
-    setFilterBy(filter);
-  };
-
-  const closeFilter = () => {
-    setShowFilter(false);
-  };
-
   const handleNavigateToCandidateDetails = (item) => {
     navigation.navigate("CandidatsDetails", { item });
   };
@@ -111,36 +119,30 @@ const CandidatesScreen = ({
     }
   };
 
-  const renderCandidatesList = () => {
-    let items = candidates;
-    if (selectedTab === "favoris") {
-      items = favoriteCandidates;
-    } else if (selectedTab === "archives") {
-      items = candidates.filter(
-        (candidate) => candidate.experiences.length !== 0
-      );
-    } else if (selectedTab === "Candidats recommandés") {
-      items = matchedCandidates;
-    }
-    return (
-      <FlatList
-        key={selectedTab}
-        items={items}
-        type={
-          selectedTab === "favoris" ||
-          selectedTab === "archives" ||
-          !recommend ||
-          selectedTab === "Tous les candidats" ||
-          selectedTab === ""
-            ? "candidates"
-            : "matchedCandidates"
-        }
-        onPressedItem={handleNavigateToCandidateDetails}
-        listStyle={styles.candidatesList}
-        onPressFavorite={handleFavoriteCandidate}
-      />
-    );
+  const closeFilter = () => {
+    setShowFilter(false);
   };
+
+  const onApplyFilters = (filter) => {
+    setFilterBy(filter);
+    setIsInitialLoading(true);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      filterCandidates(filterBy);
+      fetchMatchingCandidates();
+      setIsInitialLoading(false);
+    }, 1500);
+  }, [filterBy]);
+
+  useEffect(() => {
+    setIsInitialLoading(true);
+    setTimeout(() => {
+      filterCandidates(filterBy);
+      setIsInitialLoading(false);
+    }, 1000);
+  }, [candidates]);
 
   return (
     <DefaultLayout>
@@ -213,16 +215,26 @@ const CandidatesScreen = ({
               lottieStyle={styles.loadingContainer}
             />
           ) : (
-            renderCandidatesList()
+            renderCandidatesList(
+              selectedTab,
+              filteredCandidates,
+              favoriteCandidates,
+              matchedCandidates,
+              recommend,
+              handleNavigateToCandidateDetails,
+              handleFavoriteCandidate
+            )
           )}
         </View>
         <BottomSheetFilters
           open={showFilter}
           onClose={closeFilter}
-          onApplyFilter={handleFilterChange}
+          onApplyFilters={onApplyFilters}
           onTotalFilterAppliedChange={(total) => {
             setTotalAppliedFilter(total);
           }}
+          type="candidates"
+          defaultFilters={filterBy}
         />
       </View>
     </DefaultLayout>
@@ -277,3 +289,57 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+const renderCandidatesList = (
+  selectedTab,
+  candidates,
+  favoriteCandidates,
+  matchedCandidates,
+  recommend,
+  handleNavigateToCandidateDetails,
+  handleFavoriteCandidate
+) => {
+  let items = candidates;
+  if (selectedTab === "favoris") {
+    items = favoriteCandidates;
+  } else if (selectedTab === "archives") {
+    items = candidates.filter(
+      (candidate) => candidate.experiences.length !== 0
+    );
+  } else if (selectedTab === "Candidats recommandés") {
+    items = matchedCandidates;
+  }
+  return (
+    <>
+      {items.length === 0 ? (
+        <Typography
+          type="l_medium"
+          typographyStyle={{
+            paddingLeft: 20,
+            color: Colors.main_grey,
+            paddingTop: 20,
+          }}
+        >
+          Aucun candidat trouvé
+        </Typography>
+      ) : (
+        <FlatList
+          key={selectedTab}
+          items={items}
+          type={
+            selectedTab === "favoris" ||
+            selectedTab === "archives" ||
+            !recommend ||
+            selectedTab === "Tous les candidats" ||
+            selectedTab === ""
+              ? "candidates"
+              : "matchedCandidates"
+          }
+          onPressedItem={handleNavigateToCandidateDetails}
+          listStyle={styles.candidatesList}
+          onPressFavorite={handleFavoriteCandidate}
+        />
+      )}
+    </>
+  );
+};

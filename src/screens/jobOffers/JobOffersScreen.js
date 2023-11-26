@@ -80,7 +80,6 @@ const JobOffersScreen = ({
   }, [filterBy]);
 
   const onApplyFilters = (filters) => {
-    // console.log("onApplyFilters --> ", filters);
     setFilterBy(filters);
     setIsInitialLoading(true);
   };

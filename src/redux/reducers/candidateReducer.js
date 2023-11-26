@@ -1,3 +1,4 @@
+import moment from "moment";
 import { candidatesActions } from "../actions";
 
 // Define the initialState
@@ -271,6 +272,7 @@ const initialState = {
   searchedCandidates: [],
   recentlyConsultedCandidates: [],
   filteredCandidates: [],
+  filteredMatchedCandidatesToJobOffers: [],
   filteredResultsCandidates: [],
   favoriteCandidates: [],
   loading: false,
@@ -289,16 +291,32 @@ const candidateReducer = (state = initialState, action) => {
       // for each item of the array matchedCandidatesToJobOffers
       // get the candidate from the candidates array
       // and add it to the matchedCandidatesToJobOffers array
-      const matchedCandidatesToJobOffers =
-        state.matchedCandidatesToJobOffers.map((item) => {
-          const candidate = state.candidates.find(
+
+      if (state.filteredCandidates.length === 0) {
+        return {
+          ...state,
+          matchedCandidatesToJobOffers: [],
+        };
+      }
+
+      const matchedCandidatesToJobOffers = state.matchedCandidatesToJobOffers
+        .map((item) => {
+          const candidate = state.filteredCandidates.find(
             (candidate) => candidate.id === item.idCandidate
           );
-          return { ...item, candidate };
-        });
+          if (candidate !== undefined) {
+            return {
+              ...item,
+              candidate,
+            };
+          }
+          return undefined;
+        })
+        .filter((item) => item !== undefined);
+
       return {
         ...state,
-        matchedCandidatesToJobOffers,
+        filteredMatchedCandidatesToJobOffers: matchedCandidatesToJobOffers,
       };
 
     case candidatesActions.FETCH_CANDIDATE_BY_ID:
@@ -319,7 +337,7 @@ const candidateReducer = (state = initialState, action) => {
     case candidatesActions.FILTER_CANDIDATES:
       return {
         ...state,
-        filteredCandidates: action.payload,
+        filteredCandidates: filterCandidates(state.candidates, action.payload),
       };
     case candidatesActions.FILTER_RESULTS_CANDIDATES:
       return {
@@ -393,3 +411,51 @@ const candidateReducer = (state = initialState, action) => {
 // Export the reducer
 
 export default candidateReducer;
+
+const filterCandidates = (candidates, filters) => {
+  const { searchWords, startDate, endDate, location } = filters;
+
+  return candidates.filter((candidate) => {
+    // Filter by searchWords
+    // We check if any searchWord is included in the candidate name
+    // or in the candidate description or in the candidate skills
+    // or in the candidate experiences titles or in the candidate experiences reviews
+    const searchWordsMatch =
+      searchWords.length === 0 ||
+      searchWords.some((word) => {
+        const lowerCaseWord = word.label.toLowerCase();
+        return (
+          candidate.name.toLowerCase().includes(lowerCaseWord) ||
+          candidate.description.toLowerCase().includes(lowerCaseWord) ||
+          candidate.skills.some((skill) =>
+            skill.label.toLowerCase().includes(lowerCaseWord)
+          ) ||
+          candidate.experiences.some(
+            (experience) =>
+              experience.title.toLowerCase().includes(lowerCaseWord) ||
+              experience.review.description
+                .toLowerCase()
+                .includes(lowerCaseWord)
+          )
+        );
+      });
+
+    // Filter by startDate
+    const startDateMatch =
+      !startDate ||
+      moment(candidate.availability.startDate).isSameOrAfter(startDate);
+    // Filter by endDate
+    const endDateMatch =
+      !endDate ||
+      moment(candidate.availability.endDate).isSameOrBefore(endDate);
+
+    // Filter by location
+    const locationMatch =
+      !location ||
+      candidate.location.toLowerCase().includes(location.toLowerCase());
+
+    const isMatch =
+      searchWordsMatch && startDateMatch && endDateMatch && locationMatch;
+    return isMatch;
+  });
+};

@@ -142,7 +142,6 @@ const Location = ({ location, onChange }) => {
 };
 
 const Salary = ({ salaryRange, onChange }) => {
-  
   const sliderProps = useMemo(() => {
     return {
       type: "range", // ios only
@@ -227,8 +226,9 @@ const BottomSheetFilters = ({
       filterBy.startDate !== defaultFilters.startDate ||
       filterBy.endDate !== defaultFilters.endDate ||
       filterBy.location !== defaultFilters.location ||
-      filterBy.minSalary !== defaultFilters.minSalary ||
-      filterBy.maxSalary !== defaultFilters.maxSalary
+      (type === "jobOffers" &&
+        (filterBy.minSalary !== defaultFilters.minSalary ||
+          filterBy.maxSalary !== defaultFilters.maxSalary))
     );
   }, [filterBy]);
 
