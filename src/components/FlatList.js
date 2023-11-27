@@ -69,6 +69,14 @@ const FlatList = ({
           {...otherProps}
         />
       ),
+      reviews: (
+        <ItemFlatList.reviews
+          item={item}
+          itemStyle={itemsStyle}
+          onPress={onPressedItem}
+          {...otherProps}
+        />
+      ),
       default: (
         <ItemFlatList
           item={item}

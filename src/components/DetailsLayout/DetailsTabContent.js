@@ -1,51 +1,33 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
+import FlatList from "../FlatList";
 import Typography from "../Typography";
 
-const TABS = [
-  { name: "description", label: "Description" },
-  { name: "advantages", label: "Avantages" },
-  { name: "skills", label: "Compétences" },
-];
+const DetailsTabContent = ({ data, type }) => {
+  const TABS = [
+    { name: "description", label: "Description" },
+    { name: "skills", label: "Compétences" },
+  ];
 
-const DetailsTabContent = ({ data }) => {
+  if (type !== "candidate") {
+    TABS.push({ name: "advantages", label: "Avantages" });
+  } else {
+    TABS.push({ name: "experiences", label: "Avis" });
+  }
+
   const [activeTab, setActiveTab] = useState(TABS[0].name);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
 
-  const renderTabContent = (tabName) => {
-    const tabData = data[tabName];
-    return (
-      <View style={styles.tabContent}>
-        {tabName === "description" ? (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={styles.descriptionContainer}
-          >
-            <Typography type="l_regular">{tabData}</Typography>
-          </ScrollView>
-        ) : (
-          <View style={styles.tabContentList}>
-            {tabData.map((item, index) => (
-              <View style={styles.tabContentTextContainer} key={index}>
-                <Typography type="l_medium">{item.label}</Typography>
-              </View>
-            ))}
-          </View>
-        )}
-      </View>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.headerInformationsTab}>
-        {TABS.map((tab) => (
+        {TABS.map((tab, index) => (
           <Typography
-            key={tab.name}
+            key={index}
             type="l_bold"
             typographyStyle={[
               styles.tabTitle,
@@ -58,7 +40,7 @@ const DetailsTabContent = ({ data }) => {
         ))}
       </View>
 
-      {renderTabContent(activeTab)}
+      {renderTabContent(data[activeTab], activeTab)}
     </View>
   );
 };
@@ -108,4 +90,47 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     margin: 5,
   },
+  reviewList: {
+    marginTop: 20,
+  },
 });
+
+const renderTabContent = (tabData, tabName) => {
+  return (
+    <View style={styles.tabContent}>
+      {tabName === "description" ? (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.descriptionContainer}
+        >
+          <Typography type="l_regular">{tabData}</Typography>
+        </ScrollView>
+      ) : tabName === "experiences" ? (
+        tabData.length > 0 ? (
+          <FlatList
+            items={tabData}
+            type="reviews"
+            listStyle={styles.reviewList}
+          />
+        ) : (
+          <View style={styles.tabContentList}>
+            <Typography
+              type="l_medium"
+              typographyStyle={{ color: Colors.main_grey }}
+            >
+              Aucun avis donné pour le moment .
+            </Typography>
+          </View>
+        )
+      ) : (
+        <View style={styles.tabContentList}>
+          {tabData.map((item, index) => (
+            <View style={styles.tabContentTextContainer} key={index}>
+              <Typography type="l_medium">{item.label}</Typography>
+            </View>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+};

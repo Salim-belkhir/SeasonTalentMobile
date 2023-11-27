@@ -31,6 +31,8 @@ const MainBottomTabNavigator = () => {
           });
         }
         break;
+      case "CandidateDetails":
+      case "CandidateSearch":
       case "CompanyCreation":
       case "CompanyDetails":
       case "EmploisRecherche":

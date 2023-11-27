@@ -108,7 +108,7 @@ const CandidatesScreen = ({
   };
 
   const handleNavigateToCandidateDetails = (item) => {
-    navigation.navigate("CandidatsDetails", { item });
+    navigation.navigate("CandidateDetails", { item, recommend });
   };
 
   const handleFavoriteCandidate = (item) => {
@@ -142,7 +142,7 @@ const CandidatesScreen = ({
       filterCandidates(filterBy);
       setIsInitialLoading(false);
     }, 1000);
-  }, [candidates]);
+  }, []);
 
   return (
     <DefaultLayout>

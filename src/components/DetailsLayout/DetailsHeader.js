@@ -2,34 +2,77 @@ import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { connect } from "react-redux";
-import { jobOfferActions } from "~/redux/actions";
 import { Colors } from "~/theme";
 import Button from "../Button";
 import Icon from "../Icon";
 import MainHeader from "../MainHeader";
-import AlertModal from "../Modal";
 import Typography from "../Typography";
 
-// Define mapDispatchToProps to connect createJobOffer action to the component
-const mapDispatchToProps = {
-  deleteJobOffer: jobOfferActions.deleteJobOffer,
+const formatDate = (date) => {
+  return moment(date).format("DD MMM");
 };
-const DetailsHeader = ({ data, deleteJobOffer }) => {
+
+const DetailsHeader = ({
+  data,
+  deleteJobOffer,
+  type,
+  addCandidateToFavorite,
+  deleteCandidateFromFavorite,
+  setShowModal,
+  setConfirmAction,
+  setTitleModal,
+  setMessageModal,
+  setTypeModal,
+}) => {
   const navigation = useNavigation();
-  const [showModal, setShowModal] = useState(false);
+  const [informations, setInformations] = useState(
+    type === "candidate"
+      ? {
+          id: data.id,
+          image: data.image,
+          title: data.name,
+          location: data.location,
+          start: formatDate(data.availability.startDate),
+          end: formatDate(data.availability.endDate),
+          salary:
+            data.experiences.length > 0
+              ? data.experiences[0].joOffer.company.name
+              : "Aucune",
+          isFavorite: data.isFavorite,
+          location: data.location,
+        }
+      : {
+          id: data.id,
+          image: data.company.logo,
+          title: data.title,
+          location: data.company.location,
+          start: formatDate(data.startDate),
+          end: formatDate(data.endDate),
+          salary: data.salary,
+          location: data.company.location,
+        }
+  );
 
-  const deleteJobModal = () => setShowModal(true);
-  const confirmDelete = () => {
-    setShowModal(false);
-    deleteJobOffer(data.id);
-    navigation.pop();
+  const handleFavoriteCandidate = (item) => {
+    if (item.isFavorite) {
+      deleteCandidateFromFavorite(item.id);
+    } else {
+      addCandidateToFavorite(item.id);
+    }
   };
-  const cancelDelete = () => setShowModal(false);
 
-  const start = moment(data.startDate).format("DD MMM");
-
-  const end = moment(data.endDate).format("DD MMM");
+  const deleteJobModal = () => {
+    setShowModal(true);
+    setTypeModal("error");
+    setTitleModal("Supprimer l'offre d'emploi");
+    setMessageModal(
+      "Êtes-vous sûr de vouloir supprimer cette offre d'emploi ?"
+    );
+    setConfirmAction(() => () => {
+      deleteJobOffer(informations.id);
+      navigation.goBack();
+    });
+  };
 
   return (
     <MainHeader.goBackOnly
@@ -37,32 +80,30 @@ const DetailsHeader = ({ data, deleteJobOffer }) => {
       goBackButtonStyle={styles.goBackButton}
       colorIcon={Colors.main_white}
     >
-      <AlertModal
-        visible={showModal}
-        title="Supprimer l'offre d'emploi"
-        message="Êtes-vous sûr de vouloir supprimer cette offre d'emploi ?"
-        onClose={cancelDelete}
-        type="error"
-        action={confirmDelete}
-      />
       <Image
         source={require("~/assets/images/background.png")}
         style={styles.backgroundImage}
       />
       <View style={styles.headerInformationsContainer}>
-        <Image source={{ uri: data.company.logo }} style={styles.companyLogo} />
+        <Image
+          source={{ uri: informations.image }}
+          style={[
+            styles.companyLogo,
+            type === "candidate" && { borderRadius: 20 },
+          ]}
+        />
         <Typography type="l_bold" typographyStyle={styles.title}>
-          {data.title}
+          {informations.title}
         </Typography>
 
         <View style={styles.otherInfosContainer}>
           {[
-            { name: "enviroment", text: data.company.location },
+            { name: "enviroment", text: informations.location },
             {
               name: "calendar",
-              text: start + " - " + end,
+              text: informations.start + " - " + informations.end,
             },
-            { name: "wallet", text: data.salary + " €/m" },
+            { name: "wallet", text: informations.salary },
           ].map(({ name, text }) => (
             <View key={name} style={styles.info}>
               <Icon name={name} size={16} color={Colors.main_white} />
@@ -73,14 +114,40 @@ const DetailsHeader = ({ data, deleteJobOffer }) => {
           ))}
         </View>
       </View>
-      <Button buttonStyle={styles.rightActionButton} onPress={deleteJobModal}>
-        <Icon name="delete" size={30} color={Colors.error_color} />
-      </Button>
+      {type === "jobOffer" ? (
+        <Button buttonStyle={styles.rightActionButton} onPress={deleteJobModal}>
+          <Icon name="delete" size={30} color={Colors.error_color} />
+        </Button>
+      ) : (
+        <Button
+          hideIcon
+          onPress={() => {
+            handleFavoriteCandidate({
+              id: informations.id,
+              isFavorite: informations.isFavorite,
+            });
+
+            setInformations({
+              ...informations,
+              isFavorite: !informations.isFavorite,
+            });
+          }}
+          buttonStyle={styles.rightActionButton}
+        >
+          <Icon
+            name={informations.isFavorite ? "heart" : "hearto"}
+            size={30}
+            color={
+              informations.isFavorite ? Colors.error_color : Colors.main_white
+            }
+          />
+        </Button>
+      )}
     </MainHeader.goBackOnly>
   );
 };
 
-export default connect(null, mapDispatchToProps)(DetailsHeader);
+export default DetailsHeader;
 
 const styles = StyleSheet.create({
   container: {

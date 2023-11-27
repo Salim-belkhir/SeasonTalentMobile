@@ -1,10 +1,14 @@
-import { Text } from "react-native";
-import { DefaultLayout } from "~/components";
+import { DefaultLayout, DetailsLayout } from "~/components";
 
 const DetailsCandidate = ({ route }) => {
+  
   return (
     <DefaultLayout>
-      <Text>DetailsCandidate</Text>
+      <DetailsLayout
+        data={route.params.item}
+        type="candidate"
+        recommend={route.params.recommend}
+      />
     </DefaultLayout>
   );
 };

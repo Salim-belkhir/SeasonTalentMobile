@@ -42,7 +42,16 @@ const initialState = {
       experiences: [
         {
           id: 305,
-          title: "Google",
+          joOffer: {
+            id: 1,
+            title: "Développeur Fullstack JS",
+            company: {
+              id: 1,
+              name: "Google",
+              logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+              location: "États-Unis",
+            },
+          },
           review: {
             id: 1,
             date: "2023-06-01",
@@ -53,7 +62,16 @@ const initialState = {
         },
         {
           id: 400,
-          title: "Facebook",
+          joOffer: {
+            id: 2,
+            title: "Développeur Fullstack JS",
+            company: {
+              id: 2,
+              name: "Facebook",
+              logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/600px-Facebook_Logo_%282019%29.png",
+              location: "États-Unis",
+            },
+          },
           review: {
             id: 2,
             date: "2023-01-01",
@@ -101,7 +119,16 @@ const initialState = {
       experiences: [
         {
           id: 302,
-          title: "Tesla",
+          joOffer: {
+            id: 1,
+            title: "Développeur Fullstack JS",
+            company: {
+              id: 1,
+              name: "Google",
+              logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+              location: "États-Unis",
+            },
+          },
           review: {
             id: 1,
             date: "2021-01-01",
@@ -314,6 +341,8 @@ const candidateReducer = (state = initialState, action) => {
         })
         .filter((item) => item !== undefined);
 
+      
+
       return {
         ...state,
         filteredMatchedCandidatesToJobOffers: matchedCandidatesToJobOffers,
@@ -362,6 +391,7 @@ const candidateReducer = (state = initialState, action) => {
         ),
       };
     case candidatesActions.ADD_CANIDATE_TO_FAVORITE:
+      // this need to be changed depending on witch object we will need
       return {
         ...state,
         candidates: state.candidates.map((candidate) =>
@@ -369,16 +399,24 @@ const candidateReducer = (state = initialState, action) => {
             ? { ...candidate, isFavorite: true }
             : candidate
         ),
-        matchedCandidatesToJobOffers: state.matchedCandidatesToJobOffers.map(
+        filteredMatchedCandidatesToJobOffers: state.filteredMatchedCandidatesToJobOffers.map(
           (item) =>
             item.idCandidate === action.payload
-              ? { ...item, candidate: { ...item.candidate, isFavorite: true } }
+              ? {
+                  ...item,
+                  candidate: { ...item.candidate, isFavorite: true },
+                }
               : item
         ),
         favoriteCandidates: [
           ...state.favoriteCandidates,
           state.candidates.find((candidate) => candidate.id === action.payload),
         ],
+        filteredCandidates: state.filteredCandidates.map((candidate) =>
+          candidate.id === action.payload
+            ? { ...candidate, isFavorite: true }
+            : candidate
+        ),
       };
     case candidatesActions.DELETE_CANIDATE_FROM_FAVORITE:
       return {
@@ -393,7 +431,7 @@ const candidateReducer = (state = initialState, action) => {
         favoriteCandidates: state.favoriteCandidates.filter(
           (candidate) => candidate.id !== action.payload
         ),
-        matchedCandidatesToJobOffers: state.matchedCandidatesToJobOffers.map(
+        filteredMatchedCandidatesToJobOffers: state.filteredMatchedCandidatesToJobOffers.map(
           (item) =>
             item.idCandidate === action.payload
               ? {
@@ -401,6 +439,11 @@ const candidateReducer = (state = initialState, action) => {
                   candidate: { ...item.candidate, isFavorite: false },
                 }
               : item
+        ),
+        filteredCandidates: state.filteredCandidates.map((candidate) =>
+          candidate.id === action.payload
+            ? { ...candidate, isFavorite: false }
+            : candidate
         ),
       };
     default:
