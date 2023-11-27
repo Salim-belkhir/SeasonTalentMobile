@@ -341,8 +341,6 @@ const candidateReducer = (state = initialState, action) => {
         })
         .filter((item) => item !== undefined);
 
-      
-
       return {
         ...state,
         filteredMatchedCandidatesToJobOffers: matchedCandidatesToJobOffers,
@@ -399,15 +397,15 @@ const candidateReducer = (state = initialState, action) => {
             ? { ...candidate, isFavorite: true }
             : candidate
         ),
-        filteredMatchedCandidatesToJobOffers: state.filteredMatchedCandidatesToJobOffers.map(
-          (item) =>
+        filteredMatchedCandidatesToJobOffers:
+          state.filteredMatchedCandidatesToJobOffers.map((item) =>
             item.idCandidate === action.payload
               ? {
                   ...item,
                   candidate: { ...item.candidate, isFavorite: true },
                 }
               : item
-        ),
+          ),
         favoriteCandidates: [
           ...state.favoriteCandidates,
           state.candidates.find((candidate) => candidate.id === action.payload),
@@ -431,15 +429,15 @@ const candidateReducer = (state = initialState, action) => {
         favoriteCandidates: state.favoriteCandidates.filter(
           (candidate) => candidate.id !== action.payload
         ),
-        filteredMatchedCandidatesToJobOffers: state.filteredMatchedCandidatesToJobOffers.map(
-          (item) =>
+        filteredMatchedCandidatesToJobOffers:
+          state.filteredMatchedCandidatesToJobOffers.map((item) =>
             item.idCandidate === action.payload
               ? {
                   ...item,
                   candidate: { ...item.candidate, isFavorite: false },
                 }
               : item
-        ),
+          ),
         filteredCandidates: state.filteredCandidates.map((candidate) =>
           candidate.id === action.payload
             ? { ...candidate, isFavorite: false }

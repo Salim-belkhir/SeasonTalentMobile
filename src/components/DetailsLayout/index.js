@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { candidatesActions, jobOfferActions } from "~/redux/actions";
 import { Colors } from "~/theme";
 import AlertModal from "../Modal";
+import SelectDropdownGen from "../SelectDropDown";
 import DetailsFooter from "./DetailsFooter";
 import DetailsHeader from "./DetailsHeader";
 import DetailsTabContent from "./DetailsTabContent";
@@ -16,6 +17,10 @@ const mapDispatchToProps = {
   affectCandidateToJobOffer: candidatesActions.affectCandidateToJobOffer,
 };
 
+const mapStateToProps = (state) => ({
+  jobOffers: state.jobOffers.jobOffers,
+});
+
 const DetailsLayout = ({
   data,
   type,
@@ -24,6 +29,7 @@ const DetailsLayout = ({
   addCandidateToFavorite,
   deleteCandidateFromFavorite,
   affectCandidateToJobOffer,
+  jobOffers,
 }) => {
   if (type === "candidate" && recommend) {
     data = {
@@ -37,6 +43,21 @@ const DetailsLayout = ({
   const [titleModal, setTitleModal] = useState("");
   const [messageModal, setMessageModal] = useState("");
   const [typeModal, setTypeModal] = useState("error");
+
+  const handleHireCandidate = () => {
+    setShowModal(true);
+    setTitleModal("Embaucher");
+    setTypeModal("confirm");
+    setMessageModal(
+      "Voulez-vous embaucher ce candidat pour le poste de " +
+        data.jobOffer.title +
+        " ?"
+    );
+    setConfirmAction(() => () => {
+      affectCandidateToJobOffer(data.id, data.jobOffer.id);
+      navigation.goBack();
+    });
+  };
 
   return (
     <View
@@ -62,12 +83,8 @@ const DetailsLayout = ({
         data={data}
         type={type}
         recommend={recommend}
-        affectCandidateToJobOffer={affectCandidateToJobOffer}
-        setShowModal={setShowModal}
-        setConfirmAction={setConfirmAction}
-        setTitleModal={setTitleModal}
-        setMessageModal={setMessageModal}
-        setTypeModal={setTypeModal}
+        handleHireCandidate={handleHireCandidate}
+        jobOffers={jobOffers}
       />
       <AlertModal
         visible={showModal}
@@ -81,4 +98,4 @@ const DetailsLayout = ({
   );
 };
 
-export default connect(null, mapDispatchToProps)(DetailsLayout);
+export default connect(mapStateToProps, mapDispatchToProps)(DetailsLayout);

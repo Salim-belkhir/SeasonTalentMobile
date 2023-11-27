@@ -2,34 +2,16 @@ import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
 import Button from "../Button";
+import SelectDropdownGen from "../SelectDropDown";
 
 const DetailsFooter = ({
   data,
   type,
   recommend,
-  affectCandidateToJobOffer,
-  setShowModal,
-  setConfirmAction,
-  setTitleModal,
-  setMessageModal,
-  setTypeModal,
+  handleHireCandidate,
+  jobOffers,
 }) => {
   const navigation = useNavigation();
-
-  const handleHireCandidate = () => {
-    setShowModal(true);
-    setTitleModal("Embaucher");
-    setTypeModal("confirm");
-    setMessageModal(
-      "Voulez-vous embaucher ce candidat pour le poste de " +
-        data.jobOffer.title +
-        " ?"
-    );
-    setConfirmAction(() => () => {
-      affectCandidateToJobOffer(data.id, data.jobOffer.id);
-      navigation.goBack();
-    });
-  };
 
   return (
     <View style={styles.container}>
@@ -44,12 +26,33 @@ const DetailsFooter = ({
       ) : recommend ? (
         <Button
           label="Embaucher"
-          onPress={handleHireCandidate}
+          onPress={handleHireCandidate(data)}
           hideIcon
           labelTypographyStyle={styles.labelTypographyStyle}
           buttonStyle={styles.buttonStyle}
         />
-      ) : null}
+      ) : (
+        <SelectDropdownGen
+          data={jobOffers}
+          type="jobOffer"
+          onSelect={(jobOffer) => {
+            console.log("jobOffer");
+            // handleHireCandidate({
+            //   ...data,
+            //   jobOffer: jobOffer,
+            // });
+          }}
+          displaySelectedItem={(selectedItem) => {
+            return selectedItem.title;
+          }}
+          displayItemForSelection={(item) => {
+            return item.title;
+          }}
+          selectorButtonStyle={styles.selectorButtonStyle}
+          selectorbuttonTextStyle={styles.selectorbuttonTextStyle}
+          dropdownStyle={styles.dropDown}
+        />
+      )}
     </View>
   );
 };
@@ -65,5 +68,21 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     marginBottom: 35,
+  },
+  selectorButtonStyle: {
+    backgroundColor: Colors.primary_color,
+    borderWidth: 0,
+    borderRadius: 10,
+    height: 50,
+    paddingHorizontal: 15,
+  },
+  selectorbuttonTextStyle: {
+    color: Colors.main_white,
+    fontFamily: "Montserrat-semiBold",
+    fontSize: 14,
+    textAlign: "left",
+  },
+  dropDown: {
+   
   },
 });

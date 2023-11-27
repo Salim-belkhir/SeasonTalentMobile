@@ -14,6 +14,7 @@ import AlertModal from "./Modal";
 import NavigatorButton from "./NavigatorButton";
 import SearchBar from "./SearchBar";
 import SearchLayout from "./SearchLayout";
+import SelectDropdownGen from "./SelectDropDown";
 import TextInput from "./TextInput";
 import Typography from "./Typography";
 
@@ -34,6 +35,7 @@ export {
   NavigatorButton,
   SearchBar,
   SearchLayout,
+  SelectDropdownGen,
   TextInput,
   Typography,
 };
