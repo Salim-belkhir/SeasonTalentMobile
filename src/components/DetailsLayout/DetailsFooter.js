@@ -32,26 +32,28 @@ const DetailsFooter = ({
           buttonStyle={styles.buttonStyle}
         />
       ) : (
-        <SelectDropdownGen
-          data={jobOffers}
-          type="jobOffer"
-          onSelect={(jobOffer) => {
-            console.log("jobOffer");
-            // handleHireCandidate({
-            //   ...data,
-            //   jobOffer: jobOffer,
-            // });
-          }}
-          displaySelectedItem={(selectedItem) => {
-            return selectedItem.title;
-          }}
-          displayItemForSelection={(item) => {
-            return item.title;
-          }}
-          selectorButtonStyle={styles.selectorButtonStyle}
-          selectorbuttonTextStyle={styles.selectorbuttonTextStyle}
-          dropdownStyle={styles.dropDown}
-        />
+        <View style={{ marginBottom: 10 }}>
+          <SelectDropdownGen
+            data={jobOffers}
+            type="jobOffer"
+            onSelect={(jobOffer) => {
+              console.log("jobOffer");
+              // handleHireCandidate({
+              //   ...data,
+              //   jobOffer: jobOffer,
+              // });
+            }}
+            displaySelectedItem={(selectedItem) => {
+              return selectedItem.title;
+            }}
+            displayItemForSelection={(item) => {
+              return item.title;
+            }}
+            selectorButtonStyle={styles.selectorButtonStyle}
+            selectorbuttonTextStyle={styles.selectorbuttonTextStyle}
+            dropdownStyle={styles.dropDown}
+          />
+        </View>
       )}
     </View>
   );
@@ -82,7 +84,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "left",
   },
-  dropDown: {
-   
-  },
+  dropDown: {},
 });

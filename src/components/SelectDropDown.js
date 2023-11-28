@@ -55,6 +55,7 @@ const SelectDropdownGen = ({
       dropdownStyle={styles.dropDown}
       rowStyle={styles.dropDownRow}
       rowTextStyle={styles.dropDownRowText}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
@@ -62,12 +63,6 @@ const SelectDropdownGen = ({
 export default SelectDropdownGen;
 
 const styles = StyleSheet.create({
-  selectDropdownContainer: {
-    width: "100%",
-    position: "absolute",
-    zIndex: 1,
-    height: "100%",
-  },
   selectButton: {
     height: 40,
     width: "100%",
@@ -81,13 +76,11 @@ const styles = StyleSheet.create({
     color: Colors.main_grey,
   },
   dropDown: {
+    marginTop: 10,
     width: "100%",
-    marginBottom: 10,
+    height: 300,
     borderWidth: 0,
-    elevation: 0,
-    shadowOpacity: 0,
-    borderRadius: 12,
-    padding: 5,
+    borderRadius: 10,
     backgroundColor: Colors.primary_color,
   },
   dropDownRow: {
