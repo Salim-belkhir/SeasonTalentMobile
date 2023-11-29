@@ -1,36 +1,26 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
-import { connect } from "react-redux";
-import { jobOfferActions } from "~/redux/actions";
 import FlatList from "../FlatList";
 
-const mapDispatchToProps = {
-  loadRecentlyConsultedJobOffers:
-    jobOfferActions.loadRecentlyConsultedJobOffers,
-};
-
-const mapStateToProps = (state) => ({
-  consultedOffers: state.jobOffers.recentlyConsultedJobOffers,
-});
-
-const SearchResultsContent = ({
-  results,
-  loadRecentlyConsultedJobOffers,
-  consultedOffers,
-}) => {
+const SearchResultsContent = ({ results }) => {
   const navigation = useNavigation();
   const handleNavigateToJobOfferDetails = (item) => {
     navigation.navigate("EmploisDetails", { item });
 
-    // add the item to the list of consulted offers
-    if (!consultedOffers.find((offer) => offer.id === item.id)) {
-      loadRecentlyConsultedJobOffers([item, ...consultedOffers]);
-    } else {
-      loadRecentlyConsultedJobOffers([
-        item,
-        ...consultedOffers.filter((consulterOffer) => consulterOffer !== item),
-      ]);
-    }
+    AsyncStorage.getItem("consultedOffers").then((offers) => {
+      if (offers) {
+        const consultedOffers = JSON.parse(offers);
+        if (!consultedOffers.find((offer) => offer.id === item.id)) {
+          AsyncStorage.setItem(
+            "consultedOffers",
+            JSON.stringify([...consultedOffers, item])
+          );
+        }
+      } else {
+        AsyncStorage.setItem("consultedOffers", JSON.stringify([item]));
+      }
+    });
   };
   return (
     <View style={styles.container}>
@@ -44,10 +34,7 @@ const SearchResultsContent = ({
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SearchResultsContent);
+export default SearchResultsContent;
 
 const styles = StyleSheet.create({
   container: {

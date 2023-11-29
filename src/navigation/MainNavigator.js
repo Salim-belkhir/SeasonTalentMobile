@@ -1,9 +1,10 @@
-import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login } from "~/screens";
-import MainBottomTabNavigator from "./MainBottomTabNavigator";
 import { connect } from "react-redux";
+import { Login } from "~/screens";
+import SubscriptionWalkthroughNavigator from "./SubscriptionWalkthroughNavigator";
+
+import MainBottomTabNavigator from "./MainBottomTabNavigator";
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.googleAuth.isAuthenticated,
@@ -37,14 +38,23 @@ const MainNavigator = ({ isAuthenticated }) => {
         }}
       >
         {!isAuthenticated ? (
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              headerTitle: "Login",
-              headerShown: false,
-            }}
-          />
+          <>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerTitle: "Login",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="SubscriptionWalkthrough"
+              component={SubscriptionWalkthroughNavigator}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </>
         ) : (
           <Stack.Screen
             name="MainBottomTabNavigator"

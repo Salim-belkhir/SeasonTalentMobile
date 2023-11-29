@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
+import candidateReducer from "./candidateReducer";
 import companyReducer from "./companyReducer";
 import jobOfferReducer from "./jobOfferReducer";
 import logInReducer from "./logInReducer";
@@ -15,6 +16,7 @@ const myReducer = combineReducers({
   googleAuth: authReducer,
   jobOffers: jobOfferReducer,
   companies: companyReducer,
+  candidates: candidateReducer,
 });
 
 export default myReducer;

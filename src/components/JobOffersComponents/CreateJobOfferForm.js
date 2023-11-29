@@ -55,28 +55,6 @@ const initialValues = {
   skills: [],
 };
 
-// Define the list of establishments to be displayed in the dropdown
-const etablissementList = [
-  {
-    id: 1,
-    label: "Etablissement 1",
-    value: "etablissement1",
-    location: "Montpellier",
-  },
-  {
-    id: 2,
-    label: "Etablissement 2",
-    value: "etablissement2",
-    location: "Paris",
-  },
-  {
-    id: 3,
-    label: "Etablissement 3",
-    value: "etablissement3",
-    location: "Cupertino",
-  },
-];
-
 const DateTimePicker = ({ dates, handleOpenDatePicker }) => {
   return (
     <View style={styles.datePickerContainer}>
@@ -107,6 +85,109 @@ const DateTimePicker = ({ dates, handleOpenDatePicker }) => {
         </Typography>
       </TouchableOpacity>
     </View>
+  );
+};
+
+const displaySelectedCompany = (selectedItem) => {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+      }}
+    >
+      <Image
+        source={{ uri: selectedItem.logo }}
+        style={{
+          width: 30,
+          height: 30,
+          resizeMode: "contain",
+          marginRight: 10,
+        }}
+      />
+      <Typography
+        type="l_regular"
+        typographyStyle={{
+          color: Colors.dark_grey,
+          fontSize: 16,
+        }}
+      >
+        {selectedItem.name}
+      </Typography>
+    </View>
+  );
+};
+
+const SelectCompany = function ({
+  companies,
+  setFieldValue,
+  dataToUpdateCompany,
+  company,
+}) {
+  return (
+    <SelectDropdown
+      data={companies}
+      onSelect={(selectedItem) => {
+        setFieldValue("company", selectedItem);
+      }}
+      buttonTextAfterSelection={(selectedItem) => {
+        return displaySelectedCompany(selectedItem);
+      }}
+      rowTextForSelection={(item) => {
+        return item.name;
+      }}
+      defaultButtonText={
+        company
+          ? displaySelectedCompany(company)
+          : "Sélectionner un établissement"
+      }
+      renderDropdownIcon={(isOpened) => {
+        return (
+          <Icon
+            name={isOpened ? "up" : "down"}
+            color={
+              company && company.name !== dataToUpdateCompany?.name
+                ? Colors.primary_color
+                : Colors.main_grey
+            }
+            size={24}
+          />
+        );
+      }}
+      dropdownIconPosition={"right"}
+      renderSearchInputLeftIcon={() => {
+        return (
+          <Icon
+            name="search1"
+            size={20}
+            color={Colors.main_grey}
+            style={{
+              marginLeft: 10,
+            }}
+          />
+        );
+      }}
+      search
+      searchPlaceHolder="Rechercher un établissement"
+      buttonStyle={[
+        styles.selectButton,
+        company &&
+          company.name !== dataToUpdateCompany.name && {
+            borderBottomColor: Colors.primary_color,
+          },
+      ]}
+      buttonTextStyle={[
+        styles.selectButtonText,
+        company &&
+          company.name !== dataToUpdateCompany.name && {
+            color: Colors.primary_color,
+          },
+      ]}
+      dropdownStyle={styles.dropDown}
+      rowStyle={styles.dropDownRow}
+      rowTextStyle={styles.dropDownRowText}
+    />
   );
 };
 
@@ -163,16 +244,10 @@ const CreateJobOfferForm = ({
     const jobOfferData = {
       ...values,
       id: dataToUpdate ? dataToUpdate.id : Math.random().toString(),
-      // logo: dataToUpdate
-      //   ? dataToUpdate.logo
-      //   : "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-      // location: etablissementList.find(
-      //   (etablissement) => etablissement.value === values.company
-      // ).location,
-
       company: {
-        ...companies.find((company) => company.name === values.company),
-        location: "New York",
+        ...companies.find((company) => company.name === values.company.name),
+        // extract only the address city from the company address
+        location: values.company.address.toLowerCase().split(",")[2],
       },
       startDate: moment(formValues.startDate).format("YYYY-MM-DD"),
       endDate: moment(formValues.endDate).format("YYYY-MM-DD"),
@@ -184,7 +259,6 @@ const CreateJobOfferForm = ({
       // If dataToUpdate exists, update the job offer
       // Assuming an update function from jobOfferActions is available
       // Recompany 'updateJobOffer' with your actual update function
-
       updateJobOffer(jobOfferData);
     } else {
       // Otherwise, create a new job offer
@@ -265,7 +339,6 @@ const CreateJobOfferForm = ({
               error={touched.title && errors.title}
               returnKeyType="next"
             />
-
             {onShowDatePicker && (
               <View style={styles.showCalendar}>
                 <CalendarPicker
@@ -278,7 +351,6 @@ const CreateJobOfferForm = ({
                 />
               </View>
             )}
-
             <DateTimePicker
               dates={{
                 startDate: formValues.startDate,
@@ -286,87 +358,14 @@ const CreateJobOfferForm = ({
               }}
               handleOpenDatePicker={handleOpenDatePicker}
             />
-
-            <SelectDropdown
-              data={companies}
-              onSelect={(selectedItem, index) => {
-                setFieldValue("company", selectedItem.name);
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    <Image
-                      source={{ uri: selectedItem.logo }}
-                      style={{
-                        width: 30,
-                        height: 30,
-                        resizeMode: "contain",
-                        marginRight: 10,
-                      }}
-                    />
-                    <Typography
-                      type="l_regular"
-                      typographyStyle={{
-                        color: Colors.dark_grey,
-                        fontSize: 16,
-                      }}
-                    >
-                      {selectedItem.name}
-                    </Typography>
-                  </View>
-                );
-              }}
-              rowTextForSelection={(item, index) => {
-                return item.name;
-              }}
-              defaultButtonText={
-                values.company
-                  ? values.company.name
-                  : "Sélectionner un établissement"
+            <SelectCompany
+              companies={companies}
+              setFieldValue={setFieldValue}
+              dataToUpdateCompany={
+                dataToUpdate ? dataToUpdate.company : formValues.company
               }
-              renderDropdownIcon={(isOpened) => {
-                return (
-                  <Icon
-                    name={isOpened ? "up" : "down"}
-                    color={
-                      values.company ? Colors.primary_color : Colors.main_grey
-                    }
-                    size={24}
-                  />
-                );
-              }}
-              dropdownIconPosition={"right"}
-              renderSearchInputLeftIcon={() => {
-                return (
-                  <Icon
-                    name="search1"
-                    size={20}
-                    color={Colors.main_grey}
-                    style={{ marginLeft: 10 }}
-                  />
-                );
-              }}
-              search
-              searchPlaceHolder="Rechercher un établissement"
-              buttonStyle={[
-                styles.selectButton,
-                values.company && { borderBottomColor: Colors.primary_color },
-              ]}
-              buttonTextStyle={[
-                styles.selectButtonText,
-                values.company && { color: Colors.primary_color },
-              ]}
-              dropdownStyle={styles.dropDown}
-              rowStyle={styles.dropDownRow}
-              rowTextStyle={styles.dropDownRowText}
+              company={values.company}
             />
-
             <TextInput
               label="Salaire"
               leftIcon="wallet"
@@ -391,11 +390,11 @@ const CreateJobOfferForm = ({
               onSubmitEditing={() => {
                 if (values.advantage.label !== "") {
                   setFieldValue("advantages", [
-                    ...values.advantages,
                     {
                       label: values.advantage,
                       id: values.advantages.length + 1,
                     },
+                    ...values.advantages,
                   ]);
                   setFieldValue("advantage", {
                     label: "",
@@ -418,7 +417,6 @@ const CreateJobOfferForm = ({
                 );
               }}
             />
-
             <TextInput
               label="Compétences"
               placeholder="Compétences"
@@ -433,11 +431,11 @@ const CreateJobOfferForm = ({
               onSubmitEditing={() => {
                 if (values.skill.label !== "") {
                   setFieldValue("skills", [
-                    ...values.skills,
                     {
                       label: values.skill,
                       id: values.skills.length + 1,
                     },
+                    ...values.skills,
                   ]);
                   setFieldValue("skill", {
                     label: "",
@@ -447,7 +445,6 @@ const CreateJobOfferForm = ({
               }}
               inputStyle={styles.input}
             />
-
             <FlatList
               items={values.skills}
               type={"simpleItems"}
@@ -461,7 +458,6 @@ const CreateJobOfferForm = ({
                 );
               }}
             />
-
             <TextInput
               placeholder="Description"
               leftIcon="filetext1"
@@ -497,7 +493,7 @@ const CreateJobOfferForm = ({
                         )
                       );
                     } else if (key === "company") {
-                      return dataToUpdate[key].name === values[key];
+                      return dataToUpdate[key].name === values[key].name;
                     }
                     return dataToUpdate[key] === values[key];
                   })

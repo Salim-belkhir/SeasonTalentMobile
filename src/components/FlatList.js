@@ -25,6 +25,7 @@ const FlatList = ({
           item={item}
           itemStyle={itemsStyle}
           onPress={onPressedItem}
+          {...otherProps}
         />
       ),
       horizontalList: (
@@ -32,6 +33,7 @@ const FlatList = ({
           item={item}
           itemStyle={itemsStyle}
           onPress={onPressedItem}
+          {...otherProps}
         />
       ),
       files: (
@@ -39,6 +41,7 @@ const FlatList = ({
           item={item}
           itemStyle={itemsStyle}
           onPress={onPressedItem}
+          {...otherProps}
         />
       ),
       // this is for the job offers to show in a vertical list using only 1 column
@@ -47,6 +50,31 @@ const FlatList = ({
           item={item}
           itemStyle={itemsStyle}
           onPress={onPressedItem}
+          {...otherProps}
+        />
+      ),
+      candidates: (
+        <ItemFlatList.candidates
+          item={item}
+          itemStyle={itemsStyle}
+          onPress={onPressedItem}
+          {...otherProps}
+        />
+      ),
+      matchedCandidates: (
+        <ItemFlatList.matchedCandidates
+          item={item}
+          itemStyle={itemsStyle}
+          onPress={onPressedItem}
+          {...otherProps}
+        />
+      ),
+      reviews: (
+        <ItemFlatList.reviews
+          item={item}
+          itemStyle={itemsStyle}
+          onPress={onPressedItem}
+          {...otherProps}
         />
       ),
       default: (
@@ -54,6 +82,7 @@ const FlatList = ({
           item={item}
           itemStyle={itemsStyle}
           onPress={onPressedItem}
+          {...otherProps}
         />
       ),
     };
@@ -65,7 +94,7 @@ const FlatList = ({
 
   const keyExtractor = (item) => item.id.toString();
 
-  const numColumns = type === "horizontalList" ? 2 : 1;
+  const numColumns = type === "horizontalList" || type === "candidates" ? 2 : 1;
 
   return (
     <Fl

@@ -1,10 +1,9 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
 import { Formik } from "formik";
+import { StyleSheet, View } from "react-native";
 import * as Yup from "yup";
+import { Colors } from "~/theme";
 import Button from "../Button";
 import TextInput from "../TextInput";
-import { Colors } from "~/theme";
 
 // This is the validation schema used to validate the form fields
 const validationSchema = Yup.object().shape({
@@ -40,7 +39,10 @@ const SignUpSection = ({ navigation }) => {
   const handleSignUp = (values) => {
     // Handle sign up logic here
     console.log(values);
-    navigation.navigate("Details");
+    navigation.navigate("SubscriptionWalkthrough", {
+      screen: "FirstStep",
+      params: { data: values },
+    });
   };
 
   // Formik props object

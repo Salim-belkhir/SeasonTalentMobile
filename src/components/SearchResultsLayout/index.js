@@ -4,7 +4,6 @@ import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import { jobOfferActions } from "~/redux/actions";
 import { Colors } from "~/theme";
-import BottomSheetFilters from "../BottomSheetFilters";
 import Loading from "../Loading";
 import SearchResultsContent from "./SearchResultsContent";
 import SearchResultsHeader from "./SearchResultsHeader";
@@ -30,14 +29,8 @@ const SearchResultsLayout = ({
   filteredJobOffers,
   filterResultsJobOffers,
 }) => {
-  const [showFilter, setShowFilter] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [filterBy, setFilterBy] = useState();
-  const [totalAppliedFilter, setTotalAppliedFilter] = useState(0);
-
-  const closeFilter = () => {
-    setShowFilter(false);
-  };
 
   const refetchWithFilter = useCallback(() => {
     // we need to set up a default filter because when the first time that the job offers screen is rendered,
@@ -53,17 +46,11 @@ const SearchResultsLayout = ({
     }, 1500);
   }, [refetchWithFilter]);
 
-  const handleFilterChange = (filter) => {
-    setFilterBy(filter);
-    setIsInitialLoading(false);
-  };
-
   return (
     <View style={styles.container}>
       <SearchResultsHeader
         searchTitle={searchResults.searchValue}
         nbResults={filteredJobOffers.length}
-        setShowFilter={setShowFilter}
       />
       {isInitialLoading ? (
         <Loading
@@ -75,14 +62,6 @@ const SearchResultsLayout = ({
       ) : (
         <SearchResultsContent results={filteredJobOffers} />
       )}
-      <BottomSheetFilters
-        open={showFilter}
-        onClose={closeFilter}
-        onApplyFilter={handleFilterChange}
-        onTotalFilterAppliedChange={(total) => {
-          setTotalAppliedFilter(total);
-        }}
-      />
     </View>
   );
 };

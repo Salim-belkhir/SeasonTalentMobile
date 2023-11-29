@@ -5,7 +5,7 @@ import Button from "./Button";
 import Icon from "./Icon";
 import Typography from "./Typography";
 
-const formatDate = (date) => moment(date).format("DD MMM");
+const formatDate = (date) => moment(date).format("DD MMM YY");
 
 const commonStyles = {
   itemStyle: {
@@ -33,6 +33,7 @@ const itemStyles = {
   height: 170,
   marginLeft: 5,
   marginRight: 5,
+  overflow: "hidden",
 };
 
 const ItemFlatList = ({ type, item, itemStyle, onPress, ...props }) => {
@@ -200,6 +201,154 @@ ItemFlatList.files = function ({ item, itemStyle, onPress, ...props }) {
   );
 };
 
+ItemFlatList.candidates = function ({ item, itemStyle, onPress, ...props }) {
+  const { name, location, availability, experiences, image, isFavorite } = item;
+  const lastExperience = () => {
+    if (experiences.length > 0) {
+      return experiences[0].joOffer.company.name;
+    }
+    return "Aucune expérience";
+  };
+
+  const start = availability.startDate
+    ? formatDate(availability.startDate)
+    : "Non Disponible";
+  const end = availability.endDate ? formatDate(availability.endDate) : "";
+
+  return (
+    <TouchableOpacity
+      onPress={() => onPress(item)}
+      {...props}
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={styles.candidateItemContainer}>
+        <Image
+          source={require("~/assets/images/background.png")}
+          style={styles.backgroundImage}
+        />
+
+        <View style={styles.candidateHeader}>
+          <Image source={{ uri: image }} style={styles.candidatePicture} />
+          <Typography type="l_medium" typographyStyle={styles.candidateName}>
+            {name}
+          </Typography>
+          <Button
+            hideIcon
+            onPress={() =>
+              props.onPressFavorite({
+                id: item.id,
+                isFavorite: isFavorite,
+              })
+            }
+            buttonStyle={styles.favoriteButton}
+          >
+            <Icon
+              name={isFavorite ? "heart" : "hearto"}
+              size={20}
+              color={isFavorite ? Colors.error_color : Colors.main_white}
+            />
+          </Button>
+        </View>
+
+        <View style={styles.candidateDetails}>
+          <Typography type="l_regular" typographyStyle={styles.candidateInfo}>
+            <Icon name="enviroment" size={18} color={Colors.main_white} />{" "}
+            {location}
+          </Typography>
+          <Typography type="l_regular" typographyStyle={styles.candidateInfo}>
+            <Icon name="calendar" size={18} color={Colors.main_white} /> {start}{" "}
+            {end}
+          </Typography>
+          <Typography type="l_regular" typographyStyle={styles.candidateInfo}>
+            <Icon name="wallet" size={18} color={Colors.main_white} />{" "}
+            {lastExperience()}
+          </Typography>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+ItemFlatList.matchedCandidates = function ({
+  item,
+  itemStyle,
+  onPress,
+  ...props
+}) {
+  return (
+    <TouchableOpacity
+      onPress={() => onPress(item)}
+      {...props}
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={styles.matchedContainer}>
+        <ItemFlatList.candidates
+          item={{
+            ...item.candidate,
+            id: item.idCandidate,
+          }}
+          onPress={() => onPress(item)}
+          {...props}
+        />
+        <Icon name="aliyun" size={24} color={Colors.primary_color} />
+        <ItemFlatList.horizontalList
+          item={item.jobOffer}
+          onPress={() => onPress(item)}
+          {...props}
+        />
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+ItemFlatList.reviews = function ({ item, itemStyle, onPress, ...props }) {
+  const { title } = item.joOffer;
+  const { name, logo, location } = item.joOffer.company;
+  const { date, description, reviewer } = item.review;
+
+  const reviewDate = formatDate(date);
+
+  return (
+    <TouchableOpacity
+      onPress={() => onPress(item)}
+      {...props}
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={styles.simpleDetailedItemContainer}>
+        <Image source={{ url: logo }} style={styles.logoPictureSimple} />
+        <View style={styles.titleAndSalaryContainer}>
+          <Typography type="s_semibold" typographyStyle={styles.title}>
+            {title}
+          </Typography>
+          <Typography type="s_regular">
+            <Icon name="calendar" size={14} color={Colors.dark_grey} />{" "}
+            {reviewDate}
+          </Typography>
+          <Typography type="s_regular" typographyStyle={styles.reviewInfo}>
+            <Icon name="enviroment" size={14} color={Colors.primary_color} />{" "}
+            {location}
+          </Typography>
+          <Typography type="s_regular" typographyStyle={styles.reviewInfo}>
+            {name}
+          </Typography>
+          <Typography type="s_regular" typographyStyle={styles.reviewInfo}>
+            Par {reviewer}
+          </Typography>
+          <Typography type="s_regular" typographyStyle={styles.reviewText}>
+            {description}
+          </Typography>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 export default ItemFlatList;
 
 const styles = StyleSheet.create({
@@ -235,9 +384,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 20,
     alignItems: "center",
-    paddingVertical: 2,
+    paddingVertical: 10,
     width: "100%",
-    height: 74,
   },
   companyDetails: {
     marginLeft: 20,
@@ -269,5 +417,63 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     resizeMode: "cover",
     marginRight: 5,
+  },
+  candidateItemContainer: {
+    borderRadius: 12,
+    overflow: "hidden",
+    height: 170,
+    marginLeft: 5,
+    marginRight: 5,
+    alignItems: "center",
+  },
+  backgroundImage: {
+    resizeMode: "cover",
+    width: "100%",
+    height: 220,
+    position: "absolute",
+    zIndex: -1,
+  },
+  candidateHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingTop: 5,
+    justifyContent: "space-between",
+  },
+  candidatePicture: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    resizeMode: "cover",
+  },
+  candidateName: {
+    color: Colors.main_white,
+    overflow: "hidden",
+    fontSize: 12,
+    width: "60%",
+    marginLeft: 5,
+    textAlign: "center",
+  },
+  favoriteButton: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+  },
+  candidateDetails: {},
+  candidateInfo: {
+    color: Colors.main_white,
+    marginTop: 8,
+    fontSize: 12,
+  },
+  matchedContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  reviewInfo: {
+    color: Colors.primary_color,
+  },
+  reviewText: {
+    color: Colors.dark_grey,
+    marginTop: 10,
   },
 });

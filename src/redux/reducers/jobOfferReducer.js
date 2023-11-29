@@ -10,14 +10,12 @@ const initialState = {
       company: {
         id: 1,
         name: "Google",
-        logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-        adress:
-          "1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis",
+        logo: "https://static.vecteezy.com/system/resources/previews/022/484/503/non_2x/google-lens-icon-logo-symbol-free-png.png",
         location: "États-Unis",
       },
       // location: "Mountain View",
-      startDate: "2023-11-15T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       // logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
       description:
@@ -55,7 +53,7 @@ const initialState = {
         },
         {
           id: 4,
-          label: "MongoDB",
+          label: "bibo",
         },
       ],
     },
@@ -63,15 +61,14 @@ const initialState = {
       id: 2,
       title: "Designer UX/UI",
       company: {
-        id: 2,
+        id: 5,
         name: "Apple",
-        logo: "https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202306080953",
-        adress: "1 Apple Park Way, Cupertino, CA 95014, États-Unis",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png",
         location: "États-Unis",
       },
       // location: "Cupertino",
-      startDate: "2023-11-15T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       // logo: "https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202306080953",
       description:
@@ -117,15 +114,13 @@ const initialState = {
       id: 3,
       title: "Développeur iOS",
       company: {
-        id: 3,
+        id: 6,
         name: "Facebook",
-        logo: "https://www.facebook.com/images/fb_icon_325x325.png",
-        adress: "1 Hacker Way, Menlo Park, CA 94025, États-Unis",
         logo: "https://www.facebook.com/images/fb_icon_325x325.png",
         location: "Menlo Park",
       },
-      startDate: "2023-11-10T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -170,15 +165,14 @@ const initialState = {
       id: 4,
       title: "Développeur Java",
       company: {
-        id: 4,
+        id: 2,
         name: "Microsoft",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1024px-Microsoft_logo.svg.png",
-        adress: "One Microsoft Way, Redmond, WA 98052, États-Unis",
         location: "Redmond",
       },
-      startDate: "2023-11-10T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
-      salary: "1500",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
+      salary: "400",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
       advantages: [
@@ -222,14 +216,13 @@ const initialState = {
       id: 5,
       title: "Développeur Python",
       company: {
-        id: 5,
+        id: 3,
         name: "Netflix",
-        adress: "100 Winchester Cir, Los Gatos, CA 95032, États-Unis",
         location: "Los Gatos",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1024px-Netflix_2015_logo.svg.png",
       },
-      startDate: "2023-11-10T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -274,15 +267,14 @@ const initialState = {
       id: 6,
       title: "Développeur Ruby",
       company: {
-        id: 6,
+        id: 7,
         name: "Airbnb",
-        adress: "888 Brannan St, San Francisco, CA 94103, États-Unis",
         location: "San Francisco",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/1024px-Airbnb_Logo_B%C3%A9lo.svg.png",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/1200px-Airbnb_Logo_B%C3%A9lo.svg.png",
       },
       salary: "1500",
-      startDate: "2023-11-10T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
       advantages: [
@@ -326,14 +318,13 @@ const initialState = {
       id: 7,
       title: "Développeur C++",
       company: {
-        id: 7,
+        id: 8,
         name: "Amazon",
-        adress: "410 Terry Ave N, Seattle, WA 98109, États-Unis",
         location: "Seattle",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png",
       },
-      startDate: "2023-11-10T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -371,210 +362,6 @@ const initialState = {
         {
           id: 4,
           label: "Qt",
-        },
-      ],
-    },
-    {
-      id: 8,
-      title: "Développeur Go",
-      company: {
-        id: 8,
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png",
-        name: "Spotify",
-        adress: "45 W 18th St, New York, NY 10011, États-Unis",
-        location: "Stockholm",
-      },
-      startDate: "2023-11-10T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
-      salary: "1500",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
-      advantages: [
-        {
-          id: 1,
-          label: "Salaire compétitif",
-        },
-        {
-          id: 2,
-          label: "Télétravail",
-        },
-        {
-          id: 3,
-          label: "Mutuelle",
-        },
-        {
-          id: 4,
-          label: "Stock options",
-        },
-      ],
-      skills: [
-        {
-          id: 1,
-          label: "Go",
-        },
-        {
-          id: 2,
-          label: "Docker",
-        },
-        {
-          id: 3,
-          label: "Kubernetes",
-        },
-        {
-          id: 4,
-          label: "Terraform",
-        },
-      ],
-    },
-    {
-      id: 9,
-      title: "Développeur PHP",
-      company: {
-        id: 9,
-        name: "Uber",
-        adress: "1455 Market St, San Francisco, CA 94103, États-Unis",
-        location: "Cupertino",
-        logo: "data:image/png;base64,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",
-      },
-      startDate: "2023-11-15T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
-      salary: "1500",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
-      advantages: [
-        {
-          id: 1,
-          label: "Salaire compétitif",
-        },
-        {
-          id: 2,
-          label: "Télétravail",
-        },
-        {
-          id: 3,
-          label: "Mutuelle",
-        },
-        {
-          id: 4,
-          label: "Stock options",
-        },
-      ],
-      skills: [
-        {
-          id: 1,
-          label: "PHP",
-        },
-        {
-          id: 2,
-          label: "Laravel",
-        },
-        {
-          id: 3,
-          label: "Symfony",
-        },
-        {
-          id: 4,
-          label: "PHPUnit",
-        },
-      ],
-    },
-    {
-      id: 10,
-      title: "Développeur C#",
-      company: {
-        id: 1,
-        name: "Google",
-        logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-        adress:
-          "1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis",
-        location: "États-Unis",
-      },
-      startDate: "2023-11-15T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
-      salary: "1500",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
-      advantages: [
-        {
-          id: 1,
-          label: "Salaire compétitif",
-        },
-        {
-          id: 2,
-          label: "Télétravail",
-        },
-        {
-          id: 3,
-          label: "Mutuelle",
-        },
-        {
-          id: 4,
-          label: "Stock options",
-        },
-      ],
-      skills: [
-        {
-          id: 1,
-          label: "C#",
-        },
-        {
-          id: 2,
-          label: ".NET",
-        },
-        {
-          id: 3,
-          label: "ASP.NET",
-        },
-        {
-          id: 4,
-          label: "Entity Framework",
-        },
-      ],
-    },
-    {
-      id: 11,
-      title: "Développeur Scala",
-      company: {
-        id: 11,
-        name: "Oracle",
-        adress: "500 Oracle Pkwy, Redwood City, CA 94065, États-Unis",
-        location: "Redwood City",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/1024px-Oracle_logo.svg.png",
-      },
-      startDate: "2023-11-15T20:42:57.752Z",
-      endDate: "2023-12-23T20:42:57.752Z",
-      salary: "1500",
-      description: "Lorem ipsum dolor sit amet consectetur ",
-      advantages: [
-        {
-          id: 1,
-          label: "Salaire compétitif",
-        },
-        {
-          id: 2,
-          label: "Télétravail",
-        },
-        {
-          id: 3,
-          label: "Mutuelle",
-        },
-      ],
-      skills: [
-        {
-          id: 1,
-          label: "Scala",
-        },
-        {
-          id: 2,
-          label: "Play",
-        },
-        {
-          id: 3,
-          label: "Akka",
-        },
-        {
-          id: 4,
-          label: "Spark",
         },
       ],
     },
@@ -692,9 +479,12 @@ const filterJobOffers = (jobOffers, filters) => {
 
   return jobOffers.filter((jobOffer) => {
     // Filter by searchWords
+    // we check if every search word is included in the job offer
+    // or in the title or skills or advantages
     const searchWordsMatch = searchWords.every((word) => {
       const lowerCaseWord = word.label.toLowerCase();
       return (
+        jobOffer.company.name.toLowerCase().includes(lowerCaseWord) ||
         jobOffer.title.toLowerCase().includes(lowerCaseWord) ||
         jobOffer.skills.some((skill) =>
           skill.label.toLowerCase().includes(lowerCaseWord)
@@ -706,6 +496,8 @@ const filterJobOffers = (jobOffers, filters) => {
     });
 
     // Filter by date
+    // if the date is not specified, we don't filter by date
+    // if the start date is the same or after the start date of the job offer we keep it
     const startDateMatch =
       !startDate || moment(jobOffer.startDate).isSameOrAfter(startDate, "day");
     const endDateMatch =
@@ -719,7 +511,8 @@ const filterJobOffers = (jobOffers, filters) => {
     // Filter by location
     // if the location is not specified, we don't filter by location
     const locationMatch =
-      !location || jobOffer.location.toLowerCase() === location.toLowerCase();
+      !location ||
+      jobOffer.company.location.toLowerCase() === location.toLowerCase();
 
     const isMatch =
       searchWordsMatch &&

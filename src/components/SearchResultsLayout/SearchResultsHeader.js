@@ -5,7 +5,7 @@ import Button from "../Button";
 import Icon from "../Icon";
 import Typography from "../Typography";
 
-const SearchResultsHeader = ({ searchTitle, nbResults, setShowFilter }) => {
+const SearchResultsHeader = ({ searchTitle, nbResults }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -25,13 +25,6 @@ const SearchResultsHeader = ({ searchTitle, nbResults, setShowFilter }) => {
         <Typography type="l_medium" typographyStyle={styles.nbResults}>
           {nbResults} {nbResults > 1 ? "Offres trouvées" : "Offre trouvée"}
         </Typography>
-        <Button
-          hideIcon
-          buttonStyle={styles.button}
-          onPress={() => setShowFilter(true)}
-        >
-          <Icon name="filter" size={28} color={Colors.primary_color} />
-        </Button>
       </View>
     </View>
   );
@@ -43,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.pure_white,
     width: "100%",
-    height: "20%",
+    height: 130,
     paddingHorizontal: 23,
     justifyContent: "flex-end",
   },
@@ -67,7 +60,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 10,
+    marginVertical: 10,
+
   },
   nbResults: {
     fontSize: 16,

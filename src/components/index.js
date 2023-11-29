@@ -12,8 +12,10 @@ import LoginLayout from "./LoginLayout";
 import MainHeader from "./MainHeader";
 import AlertModal from "./Modal";
 import NavigatorButton from "./NavigatorButton";
-import SearchJobOffer from "./SearchJobOffer";
+import SearchBar from "./SearchBar";
 import SearchLayout from "./SearchLayout";
+import SelectDropdownGen from "./SelectDropDown";
+import SubscriptionWalkthroughLayout from "./SubscriptionWalkthroughLayout";
 import TextInput from "./TextInput";
 import Typography from "./Typography";
 
@@ -32,8 +34,10 @@ export {
   LoginLayout,
   MainHeader,
   NavigatorButton,
-  SearchJobOffer,
+  SearchBar,
   SearchLayout,
+  SelectDropdownGen,
+  SubscriptionWalkthroughLayout,
   TextInput,
   Typography,
 };

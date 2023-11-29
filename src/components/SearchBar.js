@@ -12,7 +12,7 @@ const initialValues = {
   search: "",
 };
 
-const SearchJobOffer = ({
+const SearchBar = ({
   searchHistory,
   setSearchHistory,
   action,
@@ -21,6 +21,7 @@ const SearchJobOffer = ({
   setShowFilter,
   showFilterButton,
   search,
+  searchType,
 }) => {
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState(false);
@@ -28,10 +29,7 @@ const SearchJobOffer = ({
     if (values.search === "") {
       return;
     }
-    // resetForm({ values: { search: "" } });
-    // // setSearch("");
     if (resultsReady) {
-      //check before if the search is already in the history
       if (!searchHistory.includes(values.search)) {
         setSearchHistory((history) => [values.search, ...history]);
       } else {
@@ -42,6 +40,7 @@ const SearchJobOffer = ({
       }
       navigation.navigate("SearchResults", {
         searchValue: values.search,
+        searchType: searchType,
       });
     } else {
       setShowModal(true);
@@ -50,10 +49,8 @@ const SearchJobOffer = ({
 
   const initialFormValues = search !== "" ? { search: search } : initialValues;
 
-  // If there is dataToUpdate, set the initial form values to update an existing job offer
   const [formValues, setFormValues] = useState(initialFormValues);
 
-  // Handle setting initial values when dataToUpdate changes
   useEffect(() => {
     if (search !== "") {
       setFormValues({ search: search });
@@ -73,7 +70,7 @@ const SearchJobOffer = ({
             />
           )}
           <TextInput
-            placeholder="Rechercher une offre"
+            placeholder={`Rechercher un ${searchType}`}
             leftIcon="search1"
             onChangeText={(Text) => {
               handleChange("search")(Text);
@@ -88,7 +85,6 @@ const SearchJobOffer = ({
             }
             inputStyle={styles.textInput}
             onSubmitEditing={handleSubmit}
-            // disable the return key on the keyboard until the results are ready
             returnKeyType="search"
           />
           {showFilterButton && (
@@ -106,7 +102,7 @@ const SearchJobOffer = ({
   );
 };
 
-export default SearchJobOffer;
+export default SearchBar;
 
 const styles = StyleSheet.create({
   container: {
