@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Keyboard, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -9,7 +9,7 @@ import {
   Loading,
   MainHeader,
   NavigatorButton,
-  SearchJobOffer,
+  SearchBar,
   Typography,
 } from "~/components";
 import { jobOfferActions } from "~/redux/actions";
@@ -24,9 +24,14 @@ const mapStateToProps = (state) => ({
 });
 
 const DEFAULT_FILTERS = {
+  searchWord: {
+    id: 1,
+    label: "",
+  },
   searchWords: [],
-  startDate: moment().add(-1, "years").format("YYYY-MM-DD"),
+  startDate: moment().format("YYYY-MM-DD"), // set the date of today
   endDate: moment().add(1, "years").format("YYYY-MM-DD"),
+  location: "",
   minSalary: 750,
   maxSalary: 1750,
 };
@@ -39,7 +44,7 @@ const JobOffersScreen = ({
 }) => {
   const [showFilter, setShowFilter] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [filterBy, setFilterBy] = useState();
+  const [filterBy, setFilterBy] = useState(DEFAULT_FILTERS);
   const [totalAppliedFilter, setTotalAppliedFilter] = useState(0);
 
   const handleSearchJobOffer = () => {
@@ -59,42 +64,36 @@ const JobOffersScreen = ({
     setShowFilter(false);
   };
 
-  const refetchWithFilter = useCallback(() => {
-    // we need to set up a default filter because when the first time that the job offers screen is rendered,
-    // the filterBy state is not yet set
-    const filters = filterBy || DEFAULT_FILTERS;
-    filterJobOffers(filters);
-  }, [filterBy]);
+  useEffect(() => {
+    setIsInitialLoading(true);
+    setTimeout(() => {
+      filterJobOffers(filterBy);
+      setIsInitialLoading(false);
+    }, 1000);
+  }, [jobOffers]);
 
   useEffect(() => {
-    refetchWithFilter();
     setTimeout(() => {
+      filterJobOffers(filterBy);
       setIsInitialLoading(false);
     }, 1500);
-  }, [refetchWithFilter]);
+  }, [filterBy]);
 
-  const handleFilterChange = (filters) => {
+  const onApplyFilters = (filters) => {
     setFilterBy(filters);
     setIsInitialLoading(true);
   };
-
-  useEffect(() => {
-    setIsInitialLoading(true);
-    filterJobOffers(DEFAULT_FILTERS);
-    setTimeout(() => {
-      setIsInitialLoading(false);
-    }, 1500);
-  }, [jobOffers]);
 
   return (
     <DefaultLayout>
       <View style={styles.container}>
         <View style={styles.header}>
           <MainHeader navigation={navigation} />
-          <SearchJobOffer
+          <SearchBar
             action={handleSearchJobOffer}
             setShowFilter={setShowFilter}
             showFilterButton={true}
+            searchType="emploi"
           />
           <NavigatorButton
             label="Créer une offre d'emploi"
@@ -118,16 +117,17 @@ const JobOffersScreen = ({
             type="horizontalList"
             onPressedItem={handleNavigateToJobOfferDetails}
             listStyle={styles.jobOffersList}
-            itemsStyle={styles.jobOfferItem}
           />
         )}
         <BottomSheetFilters
           open={showFilter}
           onClose={closeFilter}
-          onApplyFilter={handleFilterChange}
+          onApplyFilters={onApplyFilters}
           onTotalFilterAppliedChange={(total) => {
             setTotalAppliedFilter(total);
           }}
+          defaultFilters={filterBy}
+          type="jobOffers"
         />
       </View>
     </DefaultLayout>
@@ -154,9 +154,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     paddingHorizontal: 19,
-  },
-  jobOfferItem: {
-    borderRadius: 12,
   },
   loadingContainer: {
     justifyContent: "center",

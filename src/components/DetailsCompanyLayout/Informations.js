@@ -63,7 +63,7 @@ export default Informations;
 
 const styles = StyleSheet.create({
   InformationsContainer: {
-    backgroundColor: Colors.main_white,
+    marginTop: 20,
   },
   fieldsContainer: {
     marginTop: 10,

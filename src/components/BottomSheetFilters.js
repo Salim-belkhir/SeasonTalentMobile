@@ -142,6 +142,26 @@ const Location = ({ location, onChange }) => {
 };
 
 const Salary = ({ salaryRange, onChange }) => {
+  const sliderProps = useMemo(() => {
+    return {
+      type: "range", // ios only
+      min: 0,
+      max: 2500,
+      selectedMaximum: salaryRange.maxSalary,
+      selectedMinimum: salaryRange.minSalary,
+      tintColor: Colors.input_gray,
+      handleColor: Colors.primary_color,
+      handlePressedColor: Colors.primary_color,
+      tintColorBetweenHandles: Colors.primary_color,
+      onChange: onChange,
+      minLabelColor: Colors.main_black,
+      maxLabelColor: Colors.main_black,
+      lineHeight: 4,
+      maxLabelFontSize: 16,
+      minLabelFontSize: 16,
+    };
+  }, []);
+
   return (
     <View style={styles.salaryContainer}>
       <View style={styles.salaryLabelContainer}>
@@ -158,50 +178,22 @@ const Salary = ({ salaryRange, onChange }) => {
         </Typography>
       </View>
       <View style={styles.salaryRangeContainer}>
-        <RangeSlider
-          type="range" // ios only
-          min={0}
-          max={2500}
-          selectedMinimum={750} // ios only
-          selectedMaximum={1750} // ios only
-          tintColor={Colors.input_gray}
-          handleColor={Colors.primary_color}
-          handlePressedColor={Colors.primary_color}
-          tintColorBetweenHandles={Colors.primary_color}
-          onChange={onChange}
-          minLabelColor={Colors.main_black}
-          maxLabelColor={Colors.main_black}
-          lineHeight={4}
-          maxLabelFontSize={16}
-          minLabelFontSize={16}
-        />
+        <RangeSlider {...sliderProps} />
       </View>
     </View>
   );
 };
 
-const DEFAULT_FILTERS = {
-  searchWord: {
-    label: "",
-    id: "",
-  },
-  searchWords: [],
-  startDate: moment().format("YYYY-MM-DD"), // set the date of today
-  // set the date of one year after the current date
-  endDate: moment().add(1, "years").format("YYYY-MM-DD"),
-  location: "",
-  minSalary: 750,
-  maxSalary: 1750,
-};
-
 const BottomSheetFilters = ({
   open,
+  defaultFilters,
+  type,
   onClose = () => {},
-  onApplyFilter = () => {},
+  onApplyFilters = () => {},
   onTotalFilterAppliedChange = () => {},
 }) => {
   const [snapToIndex, setSnapToIndex] = useState(-1);
-  const [filterBy, setFilterBy] = useState(DEFAULT_FILTERS);
+  const [filterBy, setFilterBy] = useState(defaultFilters);
   const [onShowDatePicker, setOnShowDatePicker] = useState(false);
 
   const updateFilterBy = (value) => {
@@ -231,19 +223,18 @@ const BottomSheetFilters = ({
   const isReadyToSubmit = useMemo(() => {
     return (
       filterBy.searchWords.length > 0 ||
-      filterBy.startDate !== DEFAULT_FILTERS.startDate ||
-      filterBy.endDate !== DEFAULT_FILTERS.endDate ||
-      filterBy.location !== DEFAULT_FILTERS.location ||
-      filterBy.minSalary !== DEFAULT_FILTERS.minSalary ||
-      filterBy.maxSalary !== DEFAULT_FILTERS.maxSalary
+      filterBy.startDate !== defaultFilters.startDate ||
+      filterBy.endDate !== defaultFilters.endDate ||
+      filterBy.location !== defaultFilters.location ||
+      (type === "jobOffers" &&
+        (filterBy.minSalary !== defaultFilters.minSalary ||
+          filterBy.maxSalary !== defaultFilters.maxSalary))
     );
   }, [filterBy]);
 
   const handleSubmit = useCallback(() => {
-    onApplyFilter(filterBy);
-    const { totalApplied, filterTrack } = Object.entries(
-      DEFAULT_FILTERS
-    ).reduce(
+    onApplyFilters(filterBy);
+    const { totalApplied, filterTrack } = Object.entries(defaultFilters).reduce(
       (result, [key, defaultValue]) => {
         if (filterBy[key] !== defaultValue) {
           const updatedFilterTrack = { ...result.filterTrack };
@@ -267,7 +258,7 @@ const BottomSheetFilters = ({
     );
     onTotalFilterAppliedChange(totalApplied);
     handleClose();
-  }, [filterBy, onApplyFilter, onTotalFilterAppliedChange, handleClose]);
+  }, [filterBy, onApplyFilters, onTotalFilterAppliedChange, handleClose]);
 
   const handleSearchWordChange = useCallback(
     (value) => {
@@ -319,7 +310,7 @@ const BottomSheetFilters = ({
   }, [filterBy]);
 
   const handleClear = useCallback(() => {
-    setFilterBy(DEFAULT_FILTERS);
+    setFilterBy(defaultFilters);
   }, []);
 
   const handleLocationChange = useCallback(
@@ -351,15 +342,12 @@ const BottomSheetFilters = ({
     [filterBy]
   );
 
-  const handleSalaryChange = useCallback(
-    (min, max) => {
-      updateFilterBy({
-        minSalary: min,
-        maxSalary: max,
-      });
-    },
-    [filterBy]
-  );
+  const handleSalaryChange = (min, max) => {
+    updateFilterBy({
+      minSalary: min,
+      maxSalary: max,
+    });
+  };
 
   return (
     <BottomSheet
@@ -419,14 +407,15 @@ const BottomSheetFilters = ({
             location={filterBy.location}
             onChange={handleLocationChange}
           />
-
-          <Salary
-            salaryRange={{
-              minSalary: filterBy.minSalary,
-              maxSalary: filterBy.maxSalary,
-            }}
-            onChange={handleSalaryChange}
-          />
+          {type === "jobOffers" && (
+            <Salary
+              salaryRange={{
+                minSalary: filterBy.minSalary,
+                maxSalary: filterBy.maxSalary,
+              }}
+              onChange={handleSalaryChange}
+            />
+          )}
         </View>
       </TouchableWithoutFeedback>
     </BottomSheet>

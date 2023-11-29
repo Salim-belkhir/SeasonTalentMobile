@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { searchJobOffer } from "~/redux/actions/jobOfferActions";
 import Loading from "../Loading";
 import MainHeader from "../MainHeader";
-import SearchJobOffer from "../SearchJobOffer";
+import SearchBar from "../SearchBar";
 import Typography from "../Typography";
 
 const SearchHeader = ({
@@ -47,7 +47,7 @@ const SearchHeader = ({
           Recherche
         </Typography>
       </MainHeader.exitOnly>
-      <SearchJobOffer
+      <SearchBar
         searchHistory={searchHistory}
         setSearchHistory={setSearchHistory}
         setSearch={handleSearch}
@@ -55,6 +55,7 @@ const SearchHeader = ({
         resultsReady={resultsReady}
         setSearchReady={setResultsReady}
         showFilterButton={false}
+        searchType={"emploi"}
       />
       {showLottie && (
         <Loading

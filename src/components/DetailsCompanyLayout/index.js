@@ -86,7 +86,7 @@ const DetailsCompanyLayout = ({
             show={loadingJobOffers}
             lottieStyle={styles.lottie}
           />
-        ) : (
+        ) : jobOffers.length > 0 ? (
           <FlatList
             items={jobOffers}
             horizontal
@@ -95,6 +95,10 @@ const DetailsCompanyLayout = ({
             listStyle={styles.jobOffersList}
             itemsStyle={styles.jobOfferItem}
           />
+        ) : (
+          <Typography type="l_medium" typographyStyle={styles.noJobOffers}>
+            Aucune offre d'emploi liée
+          </Typography>
         )}
       </View>
     </View>
@@ -132,6 +136,7 @@ const styles = StyleSheet.create({
   relatedOffers: {
     color: Colors.main_black,
     fontSize: 18,
+    marginTop: 20,
   },
   lottie: {
     justifyContent: "flex-start",
@@ -142,5 +147,9 @@ const styles = StyleSheet.create({
   },
   jobOfferItem: {
     width: 170,
+  },
+  noJobOffers: {
+    marginTop: 20,
+    color: Colors.main_grey,
   },
 });
