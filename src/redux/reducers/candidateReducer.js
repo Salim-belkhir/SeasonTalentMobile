@@ -377,9 +377,34 @@ const candidateReducer = (state = initialState, action) => {
         candidates: action.payload,
       };
     case candidatesActions.AFFECT_CANDIDATE_TO_JOB_OFFER:
+      // we need to delete the job offer from the jobOffers array
+
       return {
         ...state,
-        candidate: action.payload,
+        candidates: state.candidates.map((candidate) =>
+          candidate.id === action.payload.candidateId
+            ? {
+                ...candidate,
+                availability: {
+                  startDate: null,
+                  endDate: null,
+                },
+                experiences: [
+                  {
+                    id: Math.floor(Math.random() * 1000),
+                    joOffer: action.payload.jobOffer,
+                    review: {
+                      id: Math.floor(Math.random() * 1000),
+                      date: moment().format("YYYY-MM-DD"),
+                      description: "",
+                      reviewer: "",
+                    },
+                  },
+                  ...candidate.experiences,
+                ],
+              }
+            : candidate
+        ),
       };
     case candidatesActions.FETCH_FAVORITE_CANDIDATES:
       return {

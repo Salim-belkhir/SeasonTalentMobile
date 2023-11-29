@@ -24,8 +24,12 @@ const DetailsHeader = ({
           image: data.image,
           title: data.name,
           location: data.location,
-          start: formatDate(data.availability.startDate),
-          end: formatDate(data.availability.endDate),
+          start: data.availability.startDate
+            ? formatDate(data.availability.startDate)
+            : "Non Disponible",
+          end: data.availability.endDate
+            ? formatDate(data.availability.endDate)
+            : "",
           salary:
             data.experiences.length > 0
               ? data.experiences[0].joOffer.company.name
@@ -196,6 +200,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 28,
     color: Colors.main_white,
-    marginLeft: 6,
+    marginHorizontal: 3,
   },
 });

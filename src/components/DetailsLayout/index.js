@@ -55,7 +55,11 @@ const DetailsLayout = ({
         " ?"
     );
     setConfirmAction(() => () => {
-      affectCandidateToJobOffer(candidateId, jobOffer.id);
+      affectCandidateToJobOffer({
+        candidateId: candidateId,
+        jobOffer: jobOffer,
+      });
+      deleteJobOffer(jobOffer.id);
       navigation.goBack();
     });
   };

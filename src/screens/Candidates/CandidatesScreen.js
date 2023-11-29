@@ -103,9 +103,7 @@ const CandidatesScreen = ({
     setSelectedTab("archives");
   };
 
-  const handleSearchCandidate = () => {
-    navigation.push("CandidatsRecherche");
-  };
+  const handleSearchCandidate = () => {};
 
   const handleNavigateToCandidateDetails = (item) => {
     navigation.navigate("CandidateDetails", { item, recommend });
@@ -145,7 +143,7 @@ const CandidatesScreen = ({
       filterCandidates(filterBy);
       setIsInitialLoading(false);
     }, 1000);
-  }, []);
+  }, [candidates]);
 
   return (
     <DefaultLayout>
@@ -221,6 +219,7 @@ const CandidatesScreen = ({
             renderCandidatesList(
               selectedTab,
               filteredCandidates,
+              candidates,
               favoriteCandidates,
               matchedCandidates,
               recommend,
@@ -295,6 +294,7 @@ const styles = StyleSheet.create({
 
 const renderCandidatesList = (
   selectedTab,
+  filteredCandidates,
   candidates,
   favoriteCandidates,
   matchedCandidates,
@@ -302,7 +302,7 @@ const renderCandidatesList = (
   handleNavigateToCandidateDetails,
   handleFavoriteCandidate
 ) => {
-  let items = candidates;
+  let items = filteredCandidates;
   if (selectedTab === "favoris") {
     items = favoriteCandidates;
   } else if (selectedTab === "archives") {

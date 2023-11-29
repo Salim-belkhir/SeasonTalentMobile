@@ -210,8 +210,10 @@ ItemFlatList.candidates = function ({ item, itemStyle, onPress, ...props }) {
     return "Aucune expérience";
   };
 
-  const start = formatDate(availability.startDate);
-  const end = formatDate(availability.endDate);
+  const start = availability.startDate
+    ? formatDate(availability.startDate)
+    : "Non Disponible";
+  const end = availability.endDate ? formatDate(availability.endDate) : "";
 
   return (
     <TouchableOpacity
@@ -257,7 +259,7 @@ ItemFlatList.candidates = function ({ item, itemStyle, onPress, ...props }) {
           </Typography>
           <Typography type="l_regular" typographyStyle={styles.candidateInfo}>
             <Icon name="calendar" size={18} color={Colors.main_white} /> {start}{" "}
-            - {end}
+            {end}
           </Typography>
           <Typography type="l_regular" typographyStyle={styles.candidateInfo}>
             <Icon name="wallet" size={18} color={Colors.main_white} />{" "}
