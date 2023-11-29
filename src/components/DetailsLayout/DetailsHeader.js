@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
@@ -14,17 +13,10 @@ const formatDate = (date) => {
 
 const DetailsHeader = ({
   data,
-  deleteJobOffer,
   type,
-  addCandidateToFavorite,
-  deleteCandidateFromFavorite,
-  setShowModal,
-  setConfirmAction,
-  setTitleModal,
-  setMessageModal,
-  setTypeModal,
+  handleFavoriteCandidate = () => {},
+  deleteJobModal = () => {},
 }) => {
-  const navigation = useNavigation();
   const [informations, setInformations] = useState(
     type === "candidate"
       ? {
@@ -52,27 +44,6 @@ const DetailsHeader = ({
           location: data.company.location,
         }
   );
-
-  const handleFavoriteCandidate = (item) => {
-    if (item.isFavorite) {
-      deleteCandidateFromFavorite(item.id);
-    } else {
-      addCandidateToFavorite(item.id);
-    }
-  };
-
-  const deleteJobModal = () => {
-    setShowModal(true);
-    setTypeModal("error");
-    setTitleModal("Supprimer l'offre d'emploi");
-    setMessageModal(
-      "Êtes-vous sûr de vouloir supprimer cette offre d'emploi ?"
-    );
-    setConfirmAction(() => () => {
-      deleteJobOffer(informations.id);
-      navigation.goBack();
-    });
-  };
 
   return (
     <MainHeader.goBackOnly
@@ -115,7 +86,10 @@ const DetailsHeader = ({
         </View>
       </View>
       {type === "jobOffer" ? (
-        <Button buttonStyle={styles.rightActionButton} onPress={deleteJobModal}>
+        <Button
+          buttonStyle={styles.rightActionButton}
+          onPress={() => deleteJobModal(informations.id)}
+        >
           <Icon name="delete" size={30} color={Colors.error_color} />
         </Button>
       ) : (

@@ -73,7 +73,7 @@ const SearchSuggestion = ({ search, suggestedJobOffers }) => {
       return (
         <View style={styles.noJobOfferContainer}>
           <Typography type="l_medium" typographyStyle={styles.noJobOfferText}>
-            No job offer matched your search
+            Aucune offre ne correspond à votre recherche
           </Typography>
         </View>
       );

@@ -14,8 +14,8 @@ const initialState = {
         location: "États-Unis",
       },
       // location: "Mountain View",
-      startDate: "2023-12-26",
-      endDate: "2024-06-23",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       // logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
       description:
@@ -67,8 +67,8 @@ const initialState = {
         location: "États-Unis",
       },
       // location: "Cupertino",
-      startDate: "2023-12-26",
-      endDate: "2024-06-23",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       // logo: "https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202306080953",
       description:
@@ -119,8 +119,8 @@ const initialState = {
         logo: "https://www.facebook.com/images/fb_icon_325x325.png",
         location: "Menlo Park",
       },
-      startDate: "2023-12-26",
-      endDate: "2024-06-23",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -170,8 +170,8 @@ const initialState = {
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1024px-Microsoft_logo.svg.png",
         location: "Redmond",
       },
-      startDate: "2023-12-26",
-      endDate: "2024-06-23",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "400",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -221,8 +221,8 @@ const initialState = {
         location: "Los Gatos",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1024px-Netflix_2015_logo.svg.png",
       },
-      startDate: "2023-12-26",
-      endDate: "2024-06-23",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
@@ -273,8 +273,8 @@ const initialState = {
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/1200px-Airbnb_Logo_B%C3%A9lo.svg.png",
       },
       salary: "1500",
-      startDate: "2023-12-26",
-      endDate: "2024-06-23",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
       advantages: [
@@ -323,8 +323,8 @@ const initialState = {
         location: "Seattle",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png",
       },
-      startDate: "2023-12-26",
-      endDate: "2024-06-23",
+      startDate: "2023-12-01",
+      endDate: "2024-11-29",
       salary: "1500",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",

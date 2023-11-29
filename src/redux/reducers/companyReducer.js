@@ -151,7 +151,6 @@ const initialState = {
 const companyReducer = (state = initialState, action) => {
   switch (action.type) {
     case companiesActions.FETCH_COMPANIES:
-      console.log("FETCH_COMPANIES");
       return {
         ...state,
         loading: true,

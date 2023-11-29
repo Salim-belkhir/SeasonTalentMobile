@@ -1,10 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { View } from "react-native";
 import { connect } from "react-redux";
 import { candidatesActions, jobOfferActions } from "~/redux/actions";
 import { Colors } from "~/theme";
 import AlertModal from "../Modal";
-import SelectDropdownGen from "../SelectDropDown";
 import DetailsFooter from "./DetailsFooter";
 import DetailsHeader from "./DetailsHeader";
 import DetailsTabContent from "./DetailsTabContent";
@@ -43,18 +43,40 @@ const DetailsLayout = ({
   const [titleModal, setTitleModal] = useState("");
   const [messageModal, setMessageModal] = useState("");
   const [typeModal, setTypeModal] = useState("error");
+  const navigation = useNavigation();
 
-  const handleHireCandidate = () => {
+  const handleHireCandidate = (candidateId, jobOffer) => {
     setShowModal(true);
     setTitleModal("Embaucher");
     setTypeModal("confirm");
     setMessageModal(
       "Voulez-vous embaucher ce candidat pour le poste de " +
-        data.jobOffer.title +
+        jobOffer.title +
         " ?"
     );
     setConfirmAction(() => () => {
-      affectCandidateToJobOffer(data.id, data.jobOffer.id);
+      affectCandidateToJobOffer(candidateId, jobOffer.id);
+      navigation.goBack();
+    });
+  };
+
+  const handleFavoriteCandidate = (item) => {
+    if (item.isFavorite) {
+      deleteCandidateFromFavorite(item.id);
+    } else {
+      addCandidateToFavorite(item.id);
+    }
+  };
+
+  const deleteJobModal = (id) => {
+    setShowModal(true);
+    setTypeModal("error");
+    setTitleModal("Supprimer l'offre d'emploi");
+    setMessageModal(
+      "Êtes-vous sûr de vouloir supprimer cette offre d'emploi ?"
+    );
+    setConfirmAction(() => () => {
+      deleteJobOffer(id);
       navigation.goBack();
     });
   };
@@ -69,14 +91,8 @@ const DetailsLayout = ({
       <DetailsHeader
         data={data}
         type={type}
-        deleteJobOffer={deleteJobOffer}
-        addCandidateToFavorite={addCandidateToFavorite}
-        deleteCandidateFromFavorite={deleteCandidateFromFavorite}
-        setShowModal={setShowModal}
-        setConfirmAction={setConfirmAction}
-        setTitleModal={setTitleModal}
-        setMessageModal={setMessageModal}
-        setTypeModal={setTypeModal}
+        handleFavoriteCandidate={handleFavoriteCandidate}
+        deleteJobModal={deleteJobModal}
       />
       <DetailsTabContent data={data} type={type} />
       <DetailsFooter

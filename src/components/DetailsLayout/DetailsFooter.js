@@ -1,7 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
 import Button from "../Button";
+import ItemFlatList from "../ItemFlatList";
 import SelectDropdownGen from "../SelectDropDown";
 
 const DetailsFooter = ({
@@ -12,6 +15,22 @@ const DetailsFooter = ({
   jobOffers,
 }) => {
   const navigation = useNavigation();
+  const [dropRef, setDropRef] = useState(null);
+
+  const handlePossibleToHireOffers = () => {
+    const results = jobOffers.filter((jobOffer) => {
+      return (
+        // check only the date of start and end of the job offer and the availability of the candidate
+        moment(jobOffer.startDate).isSameOrBefore(
+          data.availability.startDate
+        ) && moment(jobOffer.endDate).isSameOrAfter(data.availability.endDate)
+      );
+    });
+
+    return results;
+  };
+
+  const possibleJobOffers = handlePossibleToHireOffers();
 
   return (
     <View style={styles.container}>
@@ -26,32 +45,36 @@ const DetailsFooter = ({
       ) : recommend ? (
         <Button
           label="Embaucher"
-          onPress={handleHireCandidate(data)}
+          onPress={() => handleHireCandidate(data.id, data.jobOffer)}
           hideIcon
           labelTypographyStyle={styles.labelTypographyStyle}
           buttonStyle={styles.buttonStyle}
         />
       ) : (
-        <View style={{ marginBottom: 10 }}>
+        <View style={{ marginBottom: 20 }}>
           <SelectDropdownGen
-            data={jobOffers}
+            setDropRef={setDropRef}
+            data={possibleJobOffers}
             type="jobOffer"
-            onSelect={(jobOffer) => {
-              console.log("jobOffer");
-              // handleHireCandidate({
-              //   ...data,
-              //   jobOffer: jobOffer,
-              // });
+            onSelect={(selectedItem) => {
+              handleHireCandidate(data.id, selectedItem);
             }}
             displaySelectedItem={(selectedItem) => {
               return selectedItem.title;
             }}
             displayItemForSelection={(item) => {
-              return item.title;
+              return (
+                <ItemFlatList
+                  item={item}
+                  onPress={() => {
+                    dropRef.current.closeDropdown();
+                    handleHireCandidate(data.id, item);
+                  }}
+                />
+              );
             }}
             selectorButtonStyle={styles.selectorButtonStyle}
             selectorbuttonTextStyle={styles.selectorbuttonTextStyle}
-            dropdownStyle={styles.dropDown}
           />
         </View>
       )}

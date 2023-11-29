@@ -131,7 +131,10 @@ const CandidatesScreen = ({
   useEffect(() => {
     setTimeout(() => {
       filterCandidates(filterBy);
-      fetchMatchingCandidates();
+      if (matchedCandidates.length !== 0) {
+        fetchMatchingCandidates();
+      }
+
       setIsInitialLoading(false);
     }, 1500);
   }, [filterBy]);

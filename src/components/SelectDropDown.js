@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { StyleSheet } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import Icon from "react-native-vector-icons/AntDesign";
@@ -11,10 +12,18 @@ const SelectDropdownGen = ({
   displayItemForSelection = () => {},
   selectorButtonStyle,
   selectorbuttonTextStyle,
-  dropdownStyle,
+  setDropRef,
+  ...props
 }) => {
+  const dropDownRef = useRef(null);
+
+  useEffect(() => {
+    setDropRef(dropDownRef);
+  }, []);
+
   return (
     <SelectDropdown
+      ref={dropDownRef}
       data={data}
       onSelect={(selectedItem) => {
         onSelect(selectedItem);
@@ -56,6 +65,7 @@ const SelectDropdownGen = ({
       rowStyle={styles.dropDownRow}
       rowTextStyle={styles.dropDownRowText}
       showsVerticalScrollIndicator={false}
+      {...props}
     />
   );
 };
@@ -76,21 +86,13 @@ const styles = StyleSheet.create({
     color: Colors.main_grey,
   },
   dropDown: {
-    marginTop: 10,
-    width: "100%",
-    height: 300,
+    height: 500,
     borderWidth: 0,
     borderRadius: 10,
-    backgroundColor: Colors.primary_color,
   },
   dropDownRow: {
-    backgroundColor: Colors.main_white,
     borderBottomWidth: 0,
-    height: 40,
-    justifyContent: "center",
+    marginVertical: 15,
   },
-  dropDownRowText: {
-    fontSize: 16,
-    color: Colors.main_grey,
-  },
+  dropDownRowText: {},
 });

@@ -19,7 +19,7 @@ const initialState = {
       location: "Paris",
       availability: {
         startDate: "2023-12-01",
-        endDate: "2024-01-10",
+        endDate: "2024-11-29",
       },
       skills: [
         {
@@ -96,7 +96,7 @@ const initialState = {
       location: "Montpellier",
       availability: {
         startDate: "2023-12-01",
-        endDate: "2024-01-10",
+        endDate: "2024-11-29",
       },
       skills: [
         {
@@ -194,8 +194,8 @@ const initialState = {
           location: "États-Unis",
         },
         // location: "Mountain View",
-        startDate: "2023-11-15T20:42:57.752Z",
-        endDate: "2023-12-23T20:42:57.752Z",
+        startDate: "2023-12-01",
+        endDate: "2024-11-29",
         salary: "1500",
         // logo: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
         description:
@@ -251,8 +251,8 @@ const initialState = {
           adress: "One Microsoft Way, Redmond, WA 98052, États-Unis",
           location: "Redmond",
         },
-        startDate: "2023-11-10T20:42:57.752Z",
-        endDate: "2023-12-23T20:42:57.752Z",
+        startDate: "2023-12-01",
+        endDate: "2024-11-29",
         salary: "1500",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl vitae aliquam ultricies, nunc nisl ultricies nunc, vitae aliquam",
