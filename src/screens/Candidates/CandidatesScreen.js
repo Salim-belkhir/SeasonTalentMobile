@@ -141,6 +141,7 @@ const CandidatesScreen = ({
     setIsInitialLoading(true);
     setTimeout(() => {
       filterCandidates(filterBy);
+      fetchMatchingCandidates();
       setIsInitialLoading(false);
     }, 1000);
   }, [candidates]);
