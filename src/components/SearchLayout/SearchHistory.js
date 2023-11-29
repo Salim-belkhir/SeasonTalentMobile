@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
 import { jobOfferActions } from "~/redux/actions";
@@ -97,6 +97,7 @@ const SearchHistory = ({
 
   const renderConsultedOffers = () => (
     <FlatList
+      type="default"
       items={consultedOffers}
       onPressedItem={handleNavigateToJobOfferDetails}
       listStyle={styles.consultedOffersList}
