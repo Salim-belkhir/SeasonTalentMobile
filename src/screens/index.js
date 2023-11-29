@@ -4,6 +4,10 @@ import Login from "./LoginScreen";
 import ProfileScreen from "./ProfileScreen";
 import SearchHome from "./Search/SearchHomeScreen";
 import SearchResults from "./Search/SearchResultsScreen";
+import EndStep from "./SubscriptionWalkthrough/EndStep";
+import FirstStep from "./SubscriptionWalkthrough/FirstSteps";
+import SecondStep from "./SubscriptionWalkthrough/SecondStep";
+import ThirdStep from "./SubscriptionWalkthrough/ThirdStep";
 import CompaniesScreen from "./companies/CompaniesScreen";
 import CreateCompanyScreen from "./companies/CreateCompanyScreen";
 import DetailsCompanyScreen from "./companies/DetailsCompanyScreen";
@@ -19,9 +23,13 @@ export {
   DetailsCandidate,
   DetailsCompanyScreen,
   DetailsJobOffer,
+  EndStep,
+  FirstStep,
   JobOffersScreen,
   Login,
   ProfileScreen,
   SearchHome,
   SearchResults,
+  SecondStep,
+  ThirdStep,
 };

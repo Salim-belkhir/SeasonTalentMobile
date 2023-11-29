@@ -15,6 +15,7 @@ import NavigatorButton from "./NavigatorButton";
 import SearchBar from "./SearchBar";
 import SearchLayout from "./SearchLayout";
 import SelectDropdownGen from "./SelectDropDown";
+import SubscriptionWalkthroughLayout from "./SubscriptionWalkthroughLayout";
 import TextInput from "./TextInput";
 import Typography from "./Typography";
 
@@ -36,6 +37,7 @@ export {
   SearchBar,
   SearchLayout,
   SelectDropdownGen,
+  SubscriptionWalkthroughLayout,
   TextInput,
   Typography,
 };
