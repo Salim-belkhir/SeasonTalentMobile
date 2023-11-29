@@ -253,6 +253,8 @@ const CreateJobOfferForm = ({
       endDate: moment(formValues.endDate).format("YYYY-MM-DD"),
     };
 
+    // console.log("jobOfferData", jobOfferData);
+
     if (dataToUpdate) {
       // If dataToUpdate exists, update the job offer
       // Assuming an update function from jobOfferActions is available
@@ -293,6 +295,10 @@ const CreateJobOfferForm = ({
     },
     [formValues]
   );
+
+  const toLowerCase = (string) => {
+    return string.toLowerCase();
+  };
 
   // Define the props for the Formik component
   const formikProps = {
