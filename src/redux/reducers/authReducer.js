@@ -14,7 +14,6 @@ const initialeState = {
 const authReducer = (state = initialeState, action) => {
   switch (action.type) {
     case GOOGLE_SIGN_IN:
-      console.log("action.payload", action.payload);
       return {
         ...state,
         isAuthenticated: true,

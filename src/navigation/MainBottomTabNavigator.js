@@ -52,7 +52,7 @@ const MainBottomTabNavigator = () => {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Candidats"
+      initialRouteName="Établissements"
       screenOptions={{
         tabBarActiveTintColor: Colors.primary_color,
         tabBarInactiveTintColor: Colors.main_grey,
