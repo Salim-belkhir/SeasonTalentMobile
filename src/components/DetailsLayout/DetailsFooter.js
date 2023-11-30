@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Colors } from "~/theme";
 import Button from "../Button";
@@ -30,7 +30,13 @@ const DetailsFooter = ({
     return results;
   };
 
-  const possibleJobOffers = handlePossibleToHireOffers();
+  const [possibleJobOffers, setPossibleJobOffers] = useState(null);
+
+  useEffect(() => {
+    if (type === "candidate") {
+      setPossibleJobOffers(handlePossibleToHireOffers());
+    }
+  }, [type]);
 
   return (
     <View style={styles.container}>

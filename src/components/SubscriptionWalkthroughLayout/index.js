@@ -26,7 +26,7 @@ const steps = [
   },
 ];
 
-const SubscriptionWalkthroughLayout = ({ step, data, children }) => {
+const SubscriptionWalkthroughLayout = ({ step, children }) => {
   return (
     <DefaultLayout>
       <View style={styles.container}>
